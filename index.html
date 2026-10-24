@@ -265,15 +265,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </form>
   </section>
   <script>
-    /* Drops honeypot submissions and tells GTM about real ones. */
+    /* Zoho's newer forms answer with JSON meant for their own script, so a plain
+       form post leaves the visitor staring at raw data. Instead, send the sign-up
+       in the background and take the visitor to our own "check your inbox" page.
+       The browser can't read Zoho's reply (cross-site), but the request still
+       arrives, as a normal form post would. If fetch is unavailable or the network
+       fails, fall back to the ordinary post. Also drops honeypot submissions and
+       tells GTM about real ones. */
     (function () {
       var form = document.querySelector('.signup-form');
       if (!form) return;
+      var THANKS = '/looker-list/thanks/';
       form.addEventListener('submit', function (e) {
         var hp = form.querySelector('[name="zc_website"]');
         if (hp && hp.value !== '') { e.preventDefault(); return; }
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ event: 'newsletter_signup', list_name: 'Poof Books', form_location: 'poofbooks.com.au' });
+        if (!window.fetch || !window.URLSearchParams) return;   // old browser: normal post
+        e.preventDefault();
+        var button = form.querySelector('button[type="submit"]');
+        if (button) { button.disabled = true; button.textContent = 'Joining…'; }
+        var data = new URLSearchParams();
+        Array.prototype.forEach.call(form.elements, function (el) {
+          if (el.name && el.name !== 'zc_website') data.append(el.name, el.value);
+        });
+        fetch(form.action, { method: 'POST', mode: 'no-cors', body: data })
+          .then(function () { window.location.href = THANKS; })
+          .catch(function () { form.submit(); });
       });
     })();
   </script>
