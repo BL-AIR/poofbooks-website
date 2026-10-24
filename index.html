@@ -231,7 +231,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h1>M2M books. Nothing else.</h1>
   <p class="lede"><span>An online bookshop for gay men, curated in Melbourne.</span><span>The shelves are being stocked.</span></p>
 
-  <!-- Mailing list: Zoho Campaigns' own "No CSS" embed for the "Looker List signup -
+  <!-- Mailing list: Zoho Campaigns' own "No CSS" embed (Long Form) for the "Looker List signup -
        website" form in the Poof Books Zoho Campaigns organisation (org 7007794325),
        restyled to match the site. Zoho's script (optin.min.js) adds anti-spam tokens
        at submit time; a hand-built post without them is silently flagged as spam, so
@@ -244,56 +244,72 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2 id="signup-heading">The Poof Books Looker List</h2>
     <p class="signup-promise">Be first through the door when the shop opens, with the odd early look at what's going on the shelves. Nothing else.</p>
     <div name="signupFormContainer">
-      <input type="hidden" id="signupTmplName" value="quick_form_1">
+      <input type="hidden" id="signupTmplName" value="large_form_1">
       <input type="hidden" value="0" id="recapThemeOptin">
       <input type="hidden" id="orgNameFull" value="Poof Books">
       <div id="sf3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638" data-type="signupform">
         <div id="customForm">
-          <div name="SIGNUP_BODY">
-            <div id="Zc_SignupSuccess" style="display:none"><span id="signupSuccessMsg">Thank you for signing up.</span></div>
-            <form method="POST" id="zcampaignOptinForm" class="signup-fields" action="https://zcmp-user.maillist-manage.com.au/weboptin.zc" target="_zcSignup">
-              <div id="errorMsgDiv">Please check the marked field(s).</div>
-              <div class="signup-field">
-                <label class="visually-hidden" for="FIRSTNAME">First name</label>
-                <input type="text" placeholder="First name" changeitem="SIGNUP_FORM_FIELD" name="FIRSTNAME" id="FIRSTNAME" autocomplete="given-name">
-              </div>
-              <div class="signup-field signup-field-email">
-                <label class="visually-hidden" for="EMBED_FORM_EMAIL_LABEL">Email address</label>
-                <input type="email" placeholder="Email address" changeitem="SIGNUP_FORM_FIELD" name="CONTACT_EMAIL" id="EMBED_FORM_EMAIL_LABEL" autocomplete="email">
-              </div>
-              <div class="signup-button">
-                <input type="button" name="SIGNUP_SUBMIT_BUTTON" id="zcWebOptin" value="Join the list">
-              </div>
-              <!-- Zoho CRM needs a last name (and, as Campaigns sees it, a company) on every
-                   Lead; the form only asks for a first name, so both are filled with the source -->
-              <input type="hidden" changeitem="SIGNUP_FORM_FIELD" name="LASTNAME" id="LASTNAME" value="Looker List">
-              <input type="hidden" changeitem="SIGNUP_FORM_FIELD" name="COMPANYNAME" id="COMPANYNAME" value="Looker List">
-              <input type="hidden" id="fieldBorder" value="">
-              <input type="hidden" id="submitType" name="submitType" value="optinCustomView">
-              <input type="hidden" id="emailReportId" name="emailReportId" value="">
-              <input type="hidden" id="formType" name="formType" value="QuickForm">
-              <input type="hidden" name="zx" id="cmpZuid" value="11a1b275ac">
-              <input type="hidden" name="zcvers" value="2.0">
-              <input type="hidden" name="oldListIds" id="allCheckedListIds" value="">
-              <input type="hidden" id="mode" name="mode" value="OptinCreateView">
-              <input type="hidden" id="zcld" name="zcld" value="1bb1c5b8262e7d2">
-              <input type="hidden" id="zctd" name="zctd" value="">
-              <input type="hidden" id="document_domain" value="">
-              <input type="hidden" id="zc_Url" value="zcmp-user.maillist-manage.com.au">
-              <input type="hidden" id="new_optin_response_in" value="1">
-              <input type="hidden" id="duplicate_optin_response_in" value="0">
-              <input type="hidden" name="zc_trackCode" id="zc_trackCode" value="ZCFORMVIEW">
-              <input type="hidden" id="zc_formIx" name="zc_formIx" value="3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638">
-              <input type="hidden" id="viewFrom" value="URL_ACTION">
-              <span style="display: none" id="dt_CONTACT_EMAIL">1,true,6,Contact Email,2</span>
-              <span style="display: none" id="dt_FIRSTNAME">1,false,1,First Name,2</span>
-              <span style="display: none" id="dt_LASTNAME">1,false,1,Last Name,2</span>
-              <span style="display: none" id="dt_COMPANYNAME">1,false,1,Company Name,2</span>
-            </form>
+          <input type="hidden" id="recapTheme" value="0">
+          <input type="hidden" id="isRecapIntegDone" value="false">
+          <input type="hidden" id="signupFormMode" value="">
+          <input type="hidden" id="signupFormType" value="LargeForm_Vertical">
+          <input type="hidden" id="recapModeTheme" value="">
+          <div name="SIGNUP_PAGE" id="SIGNUP_PAGE">
+            <div id="signupMainDiv" name="SIGNUPFORM">
+              <div id="Zc_SignupSuccess" style="display:none"><span id="signupSuccessMsg">Thank you for signing up.</span></div>
+              <form method="POST" id="zcampaignOptinForm" action="https://zcmp-user.maillist-manage.com.au/weboptin.zc" target="_zcSignup">
+                <div id="SIGNUP_BODY_ALL" name="SIGNUP_BODY_ALL">
+                  <div id="SIGNUP_BODY" name="SIGNUP_BODY">
+                    <div id="errorMsgDiv">Please check the marked field(s).</div>
+                    <div name="fieldsdivSf" class="zcsffieldsdiv signup-fields">
+                      <div class="signup-field">
+                        <label class="visually-hidden" for="ml-first">First name</label>
+                        <input id="ml-first" name="FIRSTNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="text" placeholder="First name" autocomplete="given-name">
+                        <span style="display:none" id="dt_FIRSTNAME">1,false,1,First Name,2</span>
+                      </div>
+                      <div class="signup-field signup-field-email">
+                        <label class="visually-hidden" for="ml-email">Email address</label>
+                        <input id="ml-email" name="CONTACT_EMAIL" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="email" placeholder="Email address" autocomplete="email">
+                        <span style="display:none" id="dt_CONTACT_EMAIL">1,true,6,Contact Email,2</span>
+                      </div>
+                      <!-- Zoho CRM needs a last name and (as Campaigns sees it) a company on every
+                           Lead; the form only asks for a first name, so both carry the source -->
+                      <input name="LASTNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="50" type="hidden" value="Looker List">
+                      <span style="display:none" id="dt_LASTNAME">1,false,1,Last Name,2</span>
+                      <input name="COMPANYNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="hidden" value="Looker List">
+                      <span style="display:none" id="dt_COMPANYNAME">1,false,1,Company Name,2</span>
+                      <div class="signup-button">
+                        <input type="button" action="Save" id="zcWebOptin" name="SIGNUP_SUBMIT_BUTTON" value="Join the list">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Zoho Campaigns hidden tags: keep exactly as issued -->
+                  <input type="hidden" id="fieldBorder" value="rgb(222, 222, 222)">
+                  <input type="hidden" name="zc_trackCode" id="zc_trackCode" value="">
+                  <input type="hidden" name="viewFrom" id="viewFrom" value="URL_ACTION">
+                  <input type="hidden" id="submitType" name="submitType" value="optinCustomView">
+                  <input type="hidden" id="lD" name="lD" value="1bb1c5b8262e7d2">
+                  <input type="hidden" name="emailReportId" id="emailReportId" value="">
+                  <input type="hidden" name="zx" id="cmpZuid" value="11a1b275ac">
+                  <input type="hidden" name="zcvers" value="2.0">
+                  <input type="hidden" name="oldListIds" id="allCheckedListIds" value="">
+                  <input type="hidden" id="mode" name="mode" value="OptinCreateView">
+                  <input type="hidden" id="zcld" name="zcld" value="1bb1c5b8262e7d2">
+                  <input type="hidden" id="zctd" name="zctd" value="">
+                  <input type="hidden" id="document_domain" value="campaigns.zoho.com.au">
+                  <input type="hidden" id="zc_Url" value="zcmp-user.maillist-manage.com.au">
+                  <input type="hidden" id="new_optin_response_in" value="1">
+                  <input type="hidden" id="duplicate_optin_response_in" value="0">
+                  <input type="hidden" id="zc_formIx" name="zc_formIx" value="3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638">
+                </div>
+              </form>
+            </div>
           </div>
+          <input type="hidden" id="isCaptchaNeeded" value="false">
+          <input type="hidden" id="superAdminCap" value="0">
+          <img src="https://zcmp-user.maillist-manage.com.au/images/spacer.gif" id="refImage" style="display:none;" alt="">
         </div>
       </div>
-      <input type="hidden" id="signupFormType" value="QuickForm_Vertical">
       <div id="zcOptinOverLay" oncontextmenu="return false" style="display:none"></div>
       <div id="zcOptinSuccessPopup" style="display:none">
         <span id="closeSuccess" onclick="closeSuccessPopup()">×</span>
@@ -320,7 +336,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       });
     })();
   </script>
-  <script src="https://ma.zoho.com.au/js/optin.min.js" onload="setupSF('sf3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638','ZCFORMVIEW',false,'light',false,'undefined')"></script>
+  <script src="https://ma.zoho.com.au/js/optin.min.js" onload="setupSF('sf3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638','ZCFORMVIEW',false,'light',false,'0'); if (window.referenceSetter) referenceSetter(document.getElementById('refImage'));"></script>
 </main>
 <footer>
   <span>poofbooks.com.au</span>
