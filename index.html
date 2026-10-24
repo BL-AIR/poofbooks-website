@@ -264,8 +264,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <div class="signup-button">
                 <input type="button" name="SIGNUP_SUBMIT_BUTTON" id="zcWebOptin" value="Join the list">
               </div>
-              <!-- Zoho CRM needs a last name on every Lead; the form only asks for a first name -->
+              <!-- Zoho CRM needs a last name (and, as Campaigns sees it, a company) on every
+                   Lead; the form only asks for a first name, so both are filled with the source -->
               <input type="hidden" changeitem="SIGNUP_FORM_FIELD" name="LASTNAME" id="LASTNAME" value="Looker List">
+              <input type="hidden" changeitem="SIGNUP_FORM_FIELD" name="COMPANYNAME" id="COMPANYNAME" value="Looker List">
               <input type="hidden" id="fieldBorder" value="">
               <input type="hidden" id="submitType" name="submitType" value="optinCustomView">
               <input type="hidden" id="emailReportId" name="emailReportId" value="">
@@ -286,6 +288,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <span style="display: none" id="dt_CONTACT_EMAIL">1,true,6,Contact Email,2</span>
               <span style="display: none" id="dt_FIRSTNAME">1,false,1,First Name,2</span>
               <span style="display: none" id="dt_LASTNAME">1,false,1,Last Name,2</span>
+              <span style="display: none" id="dt_COMPANYNAME">1,false,1,Company Name,2</span>
             </form>
           </div>
         </div>
