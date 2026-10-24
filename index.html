@@ -3,6 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Cookie consent: must load before Google Tag Manager. Sets every optional
+     category to "denied" until the visitor chooses (see assets/js/consent.js). -->
+<script src="/assets/js/consent.js"></script>
+<link rel="stylesheet" href="/assets/css/consent.css">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WRD3V23L');</script>
+<!-- End Google Tag Manager -->
 <title>Poof Books — Opening soon</title>
 <meta name="description" content="Poof Books is an online bookshop of M2M books for gay men, opening soon in Melbourne, Australia.">
 <meta name="theme-color" content="#18122B">
@@ -78,6 +89,8 @@
     line-height: 1.6;
     color: var(--muted);
   }
+  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  footer a:hover { color: var(--pink); }
   .lede span { display: block; }
   /* Reading statues as bookends: each emerges from its outer edge of the window,
      vertically centred so the gap above equals the gap to the footer line */
@@ -126,6 +139,10 @@
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <main>
   <img class="figure figure-left" src="assets/thinker.svg" alt="" aria-hidden="true">
   <img class="figure figure-right" src="assets/david.svg" alt="" aria-hidden="true">
@@ -137,6 +154,8 @@
 <footer>
   <span>poofbooks.com.au</span>
   <span>Melbourne, Australia</span>
+  <a href="/privacy/">Privacy</a>
+  <a href="/privacy/#cookies" data-cookie-settings>Cookie&nbsp;settings</a>
 </footer>
 </body>
 </html>

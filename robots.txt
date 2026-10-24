@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://poofbooks.com.au/sitemap.xml
