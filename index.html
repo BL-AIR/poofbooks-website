@@ -41,6 +41,7 @@
     min-height: 100svh;
   }
   main {
+    position: relative;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -77,6 +78,36 @@
     line-height: 1.6;
     color: var(--muted);
   }
+  .lede span { display: block; }
+  /* Reading statues as bookends: each emerges from its outer edge of the window,
+     vertically centred so the gap above equals the gap to the footer line */
+  main { overflow: hidden; }
+  .figure {
+    position: absolute;
+    top: 50%;
+    width: auto;
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* Thinker: frame line falls at the inner point of the rock's indent (10.8% of his width) */
+  .figure-left {
+    left: 0;
+    height: min(78%, calc((50vw - 380px) / 0.57));
+    transform: translate(-10.8%, -50%);
+  }
+  /* David: zoomed in so his head matches the Thinker's; head aligned with the Thinker's,
+     legs run off the bottom of the frame */
+  .figure-right {
+    right: 0;
+    top: 11%;
+    height: min(100%, calc((50vw - 380px) / 0.36));
+    transform: translateX(8%);
+  }
+  .logo, .eyebrow, h1, .lede { position: relative; z-index: 1; }
+  @media (max-width: 1100px) {
+    .figure-left, .figure-right { height: 70%; opacity: 0.14; }
+    .figure-right { top: 50%; transform: translate(8%, -50%); }
+  }
   footer {
     padding: 24px;
     border-top: 1px solid #2E2546;
@@ -96,10 +127,12 @@
 </head>
 <body>
 <main>
+  <img class="figure figure-left" src="assets/thinker.svg" alt="" aria-hidden="true">
+  <img class="figure figure-right" src="assets/david.svg" alt="" aria-hidden="true">
   <img class="logo" src="assets/logo.svg" width="662" height="170" alt="Poof Books">
   <p class="eyebrow">OPENING SOON</p>
   <h1>M2M books. Nothing else.</h1>
-  <p class="lede">An online bookshop for gay men, curated in Melbourne. The shelves are being stocked.</p>
+  <p class="lede"><span>An online bookshop for gay men, curated in Melbourne.</span><span>The shelves are being stocked.</span></p>
 </main>
 <footer>
   <span>poofbooks.com.au</span>
