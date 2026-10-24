@@ -228,7 +228,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        embedding Zoho's iframe, so the form takes the site's own look. The hidden
        fields identify the "Looker List signup - website" form in the Poof Books
        Zoho Campaigns organisation (org 7007794325), which feeds the "Looker List"
-       list (double opt-in, sent from Poof Books <BigDaddy@poofbooks.com.au>).
+       list (double opt-in, sent from Poof Books <BigDaddy@poofbooks.com.au>) and pushes
+       new contacts to the Poof Books Zoho CRM (org 7007792676) as Leads.
        If that form is edited in Zoho, re-check zcld / zctd / zc_formIx, and make sure
        CAPTCHA hasn't been switched on (it rejects hand-built forms like this one). -->
   <section class="signup" aria-labelledby="signup-heading">
@@ -246,6 +247,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input type="hidden" name="zcvers" value="2.0">
       <input type="hidden" name="oldListIds" value="">
       <input type="hidden" name="mode" value="OptinCreateView">
+      <!-- Zoho CRM needs a last name on every Lead; the form only asks for a first name -->
+      <input type="hidden" name="LASTNAME" value="Looker List">
 
       <div class="signup-fields">
         <label class="visually-hidden" for="ml-first">First name</label>
