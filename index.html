@@ -53,7 +53,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   main {
     position: relative;
-    flex: 1;
+    flex: 1 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -116,7 +116,80 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     height: min(100%, calc((50vw - 380px) / 0.36));
     transform: translateX(8%);
   }
-  .logo, .eyebrow, h1, .lede { position: relative; z-index: 1; }
+  .logo, .eyebrow, h1, .lede, .signup { position: relative; z-index: 1; }
+  /* Looker List signup */
+  .signup {
+    margin: 44px auto 0;
+    width: min(620px, 100%);
+    padding-top: 32px;
+    border-top: 1px solid #2E2546;
+  }
+  .signup h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--lilac);
+  }
+  .signup-promise {
+    margin: 8px auto 0;
+    max-width: 30em;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .signup-fields {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  .signup-fields input {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: 16px;
+    color: var(--cream);
+    background: #231B3B;
+    border: 1px solid #3A2F57;
+    border-radius: 10px;
+  }
+  .signup-fields input:first-of-type { flex-grow: 0.75; }
+  .signup-fields input::placeholder { color: #8E84AE; }
+  .signup-fields input:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255, 95, 162, 0.25); }
+  .signup-fields button {
+    flex: 0 0 auto;
+    padding: 12px 20px;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--night);
+    background: var(--pink);
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .signup-fields button:hover { background: var(--lilac); }
+  .signup-fields button:focus-visible { outline: 3px solid var(--lilac); outline-offset: 2px; }
+  .signup-fine {
+    margin: 14px auto 0;
+    max-width: 34em;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #A79DC6;
+  }
+  .signup-fine a { color: var(--muted); text-underline-offset: 3px; }
+  .signup-fine a:hover { color: var(--pink); }
+  .visually-hidden, .hp-field {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .hp-field { left: -9999px; }
+  @media (max-width: 560px) {
+    .signup-fields { flex-direction: column; }
+  }
   @media (max-width: 1100px) {
     .figure-left, .figure-right { height: 70%; opacity: 0.14; }
     .figure-right { top: 50%; transform: translate(8%, -50%); }
@@ -133,7 +206,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   @media (prefers-reduced-motion: no-preference) {
     .logo { animation: appear 900ms cubic-bezier(.2,.7,.2,1) both; }
-    .eyebrow, h1, .lede { animation: appear 900ms 250ms cubic-bezier(.2,.7,.2,1) both; }
+    .eyebrow, h1, .lede, .signup { animation: appear 900ms 250ms cubic-bezier(.2,.7,.2,1) both; }
     @keyframes appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   }
 </style>
@@ -150,6 +223,61 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p class="eyebrow">OPENING SOON</p>
   <h1>M2M books. Nothing else.</h1>
   <p class="lede"><span>An online bookshop for gay men, curated in Melbourne.</span><span>The shelves are being stocked.</span></p>
+
+  <!-- Mailing list: posts straight to Zoho Campaigns (AU data centre) rather than
+       embedding Zoho's iframe, so the form takes the site's own look. The hidden
+       fields identify the "Looker List signup - website" form, which feeds the
+       "Poof Books" list (double opt-in) and pushes new contacts to Zoho CRM as Leads.
+       If that form is edited in Zoho, re-check zcld / zctd / zc_formIx, and make sure
+       CAPTCHA hasn't been switched on (it rejects hand-built forms like this one). -->
+  <section class="signup" aria-labelledby="signup-heading">
+    <h2 id="signup-heading">The Poof Books Looker List</h2>
+    <p class="signup-promise">Be first through the door when the shop opens, with the odd early look at what's going on the shelves. Nothing else.</p>
+    <form class="signup-form" action="https://zcmp-user.maillist-manage.com.au/weboptin.zc" method="POST" target="_blank" accept-charset="UTF-8">
+      <input type="hidden" name="zc_trackCode" value="ZCFORMVIEW">
+      <input type="hidden" name="viewFrom" value="URL_ACTION">
+      <input type="hidden" name="submitType" value="optinCustomView">
+      <input type="hidden" name="lD" value="1b2edca8979def9">
+      <input type="hidden" name="zcld" value="1b2edca8979def9">
+      <input type="hidden" name="zctd" value="1b2edca8977f6b9">
+      <input type="hidden" name="zx" value="11a1a2060d">
+      <input type="hidden" name="zc_formIx" value="3z82a2f6c97d5e4f10e5016eb06963ed2418d22b1a0546468cd433e6b125ec9219">
+      <input type="hidden" name="zcvers" value="2.0">
+      <input type="hidden" name="oldListIds" value="">
+      <input type="hidden" name="mode" value="OptinCreateView">
+      <!-- Zoho CRM needs a last name on every Lead; the form only asks for a first name -->
+      <input type="hidden" name="LASTNAME" value="Looker List">
+
+      <div class="signup-fields">
+        <label class="visually-hidden" for="ml-first">First name</label>
+        <input type="text" id="ml-first" name="FIRSTNAME" placeholder="First name" required autocomplete="given-name">
+        <label class="visually-hidden" for="ml-email">Email address</label>
+        <input type="email" id="ml-email" name="CONTACT_EMAIL" placeholder="Email address" required autocomplete="email">
+        <button type="submit">Join the list</button>
+      </div>
+
+      <!-- Honeypot: bots fill it, people never see it -->
+      <div class="hp-field" aria-hidden="true">
+        <label for="ml-website">Leave this field empty</label>
+        <input type="text" id="ml-website" name="zc_website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <p class="signup-fine">A confirmation email comes first; you're not on the list until you click the link in it (check your spam folder if it doesn't arrive). Unsubscribe from the foot of any email. <a href="/privacy/#mailing-list">Privacy</a>.</p>
+    </form>
+  </section>
+  <script>
+    /* Drops honeypot submissions and tells GTM about real ones. */
+    (function () {
+      var form = document.querySelector('.signup-form');
+      if (!form) return;
+      form.addEventListener('submit', function (e) {
+        var hp = form.querySelector('[name="zc_website"]');
+        if (hp && hp.value !== '') { e.preventDefault(); return; }
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'newsletter_signup', list_name: 'Poof Books', form_location: 'poofbooks.com.au' });
+      });
+    })();
+  </script>
 </main>
 <footer>
   <span>poofbooks.com.au</span>
