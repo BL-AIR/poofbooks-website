@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Poof Books — Opening soon</title>
+<meta name="description" content="Poof Books is an online bookshop of M2M books for gay men, opening soon in Melbourne, Australia.">
+<meta name="theme-color" content="#18122B">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://poofbooks.com.au/">
+<meta property="og:title" content="Poof Books — Opening soon">
+<meta property="og:description" content="M2M books for gay men. Opening soon.">
+<meta property="og:image" content="https://poofbooks.com.au/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,800&display=swap">
+<style>
+  :root {
+    --night: #18122B;
+    --pink: #FF5FA2;
+    --lilac: #B9A3FF;
+    --cream: #F4EFE6;
+    --muted: #CFC6E8;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--night);
+    color: var(--cream);
+    font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 64px 24px 40px;
+  }
+  .logo {
+    display: block;
+    width: min(680px, 88vw);
+    height: auto;
+  }
+  .eyebrow {
+    margin: 56px 0 0;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.32em;
+    padding-left: 0.32em;
+    color: var(--lilac);
+  }
+  h1 {
+    margin: 14px 0 0;
+    font-weight: 800;
+    font-size: clamp(28px, 4.4vw, 44px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--pink);
+  }
+  .lede {
+    margin: 18px auto 0;
+    max-width: 34em;
+    font-size: clamp(16px, 1.6vw, 18px);
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  footer {
+    padding: 24px;
+    border-top: 1px solid #2E2546;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .logo { animation: appear 900ms cubic-bezier(.2,.7,.2,1) both; }
+    .eyebrow, h1, .lede { animation: appear 900ms 250ms cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+<main>
+  <img class="logo" src="assets/logo.svg" width="662" height="170" alt="Poof Books">
+  <p class="eyebrow">OPENING SOON</p>
+  <h1>M2M books. Nothing else.</h1>
+  <p class="lede">An online bookshop for gay men, curated in Melbourne. The shelves are being stocked.</p>
+</main>
+<footer>
+  <span>poofbooks.com.au</span>
+  <span>Melbourne, Australia</span>
+</footer>
+</body>
+</html>

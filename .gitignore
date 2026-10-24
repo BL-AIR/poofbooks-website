@@ -1,0 +1,38 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+
+# iCloud Drive placeholders
+*.icloud
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node / tooling (in case a build step is added later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+dist/
+.cache/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and temp
+*.log
+tmp/
+temp/
