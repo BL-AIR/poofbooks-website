@@ -226,8 +226,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- Mailing list: posts straight to Zoho Campaigns (AU data centre) rather than
        embedding Zoho's iframe, so the form takes the site's own look. The hidden
-       fields identify the "Looker List signup - website" form, which feeds the
-       "Poof Books" list (double opt-in) and pushes new contacts to Zoho CRM as Leads.
+       fields identify the "Looker List signup - website" form in the Poof Books
+       Zoho Campaigns organisation (org 7007794325), which feeds the "Looker List"
+       list (double opt-in, sent from Poof Books <BigDaddy@poofbooks.com.au>).
        If that form is edited in Zoho, re-check zcld / zctd / zc_formIx, and make sure
        CAPTCHA hasn't been switched on (it rejects hand-built forms like this one). -->
   <section class="signup" aria-labelledby="signup-heading">
@@ -237,16 +238,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input type="hidden" name="zc_trackCode" value="ZCFORMVIEW">
       <input type="hidden" name="viewFrom" value="URL_ACTION">
       <input type="hidden" name="submitType" value="optinCustomView">
-      <input type="hidden" name="lD" value="1b2edca8979def9">
-      <input type="hidden" name="zcld" value="1b2edca8979def9">
-      <input type="hidden" name="zctd" value="1b2edca8977f6b9">
-      <input type="hidden" name="zx" value="11a1a2060d">
-      <input type="hidden" name="zc_formIx" value="3z82a2f6c97d5e4f10e5016eb06963ed2418d22b1a0546468cd433e6b125ec9219">
+      <input type="hidden" name="lD" value="1bb1c5b8262e7d2">
+      <input type="hidden" name="zcld" value="1bb1c5b8262e7d2">
+      <input type="hidden" name="zctd" value="">
+      <input type="hidden" name="zx" value="11a1b275ac">
+      <input type="hidden" name="zc_formIx" value="3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638">
       <input type="hidden" name="zcvers" value="2.0">
       <input type="hidden" name="oldListIds" value="">
       <input type="hidden" name="mode" value="OptinCreateView">
-      <!-- Zoho CRM needs a last name on every Lead; the form only asks for a first name -->
-      <input type="hidden" name="LASTNAME" value="Looker List">
 
       <div class="signup-fields">
         <label class="visually-hidden" for="ml-first">First name</label>
