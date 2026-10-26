@@ -199,3 +199,16 @@ a.book:hover .t { color: var(--pink); }
 @media (min-width: 761px) { .sections { gap: 2px 17px; } .sections a { font-size: 14px; } }
 @media (min-width: 761px) { .sections { gap: 2px 15px; } .sections a { font-size: 13.5px; } .nav-sep { margin: 0 2px; } }
 .say[hidden], .hear[hidden] { display: none !important; }
+
+/* Content notice for the explicit shelf (self-declaration). Hidden once accepted on this device. */
+.gate { display: none; }
+html.gate-open .gate { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: var(--gutter); background: rgba(24,18,43,.97); }
+html.gate-pass .gate { display: none !important; }
+html.gate-open body { overflow: hidden; }
+.gate-card { width: min(480px, 100%); background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: clamp(24px, 5vw, 36px); box-shadow: 0 24px 60px rgba(0,0,0,.5); }
+.gate-card h2 { margin: 0; font-size: clamp(26px, 4vw, 32px); font-weight: 800; color: var(--pink); }
+.gate-card #gate-p { margin: 14px 0 0; font-size: 17px; line-height: 1.6; }
+.gate-btns { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; }
+.gate-btns .btn { border: 0; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+.gate-btns .btn-ghost { border: 1.5px solid var(--line); }
+.gate-note { margin: 18px 0 0; font-size: 13px; color: var(--muted); }
