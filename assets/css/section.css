@@ -193,3 +193,4 @@ a.book:hover .t { color: var(--pink); }
 .sections::-webkit-scrollbar { display: none; }
 @media (min-width: 761px) { .sections { gap: 2px 17px; } .sections a { font-size: 14px; } }
 @media (min-width: 761px) { .sections { gap: 2px 15px; } .sections a { font-size: 13.5px; } .nav-sep { margin: 0 2px; } }
+.say[hidden], .hear[hidden] { display: none !important; }
