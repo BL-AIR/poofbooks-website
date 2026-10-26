@@ -24,21 +24,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
-<link rel="stylesheet" href="/assets/css/section.css">
-<script src="/assets/js/view-settings.js" defer></script>
-<script>try{document.documentElement.classList.add(localStorage.getItem('poof-adult')==='yes'?'gate-pass':'gate-open')}catch(e){document.documentElement.classList.add('gate-open')}</script>
-<script src="/assets/js/gate.js" defer></script>
+<link rel="stylesheet" href="/assets/css/section.css?v=202610261617">
+<script src="/assets/js/view-settings.js?v=202610261617" defer></script>
+<script src="/assets/js/gate.js?v=202610261617" defer></script>
+<script>(function(d){var ok=false;try{ok=localStorage.getItem('poof-adult')==='yes'}catch(e){}d.classList.add('gate-page',ok?'gate-pass':'gate-open')})(document.documentElement)</script>
 </head>
 <body>
-<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-h" aria-describedby="gate-p">
-  <div class="gate-card">
-    <p class="eyebrow">Exquisite Erotica</p>
-    <h2 id="gate-h">Before you come in</h2>
-    <p id="gate-p">The books on this shelf contain explicit sex, written for adults.</p>
-    <div class="gate-btns"><button class="btn btn-primary" type="button" data-gate="yes">I'm an adult, come in</button><a class="btn btn-ghost" href="/the-cabin/" data-gate="no">Take me back</a></div>
-    <p class="gate-note">We'll remember your answer on this device.</p>
-  </div>
-</div>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header class="site-header">
   <div class="wrap">
@@ -72,7 +63,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="room-shade" aria-hidden="true"></div>
     <div class="room-glow" aria-hidden="true"></div>
     <div class="wrap">
-      <div class="figure"><img class="fig" src="/assets/curators/cutouts/Eric.webp" width="645" height="1210" alt="Eric the Erotic, curator of Exquisite Erotica, posed on a stone plinth with a paperback"></div>
+      <div class="figure"><img class="fig" src="/assets/curators/cutouts/Eric.webp" width="645" height="1210" alt="Eric the Erotic, curator of Exquisite Erotica, posed on a stone plinth with a paperback"><div class="gate-band" role="group" aria-labelledby="gate-h">
+          <p class="eyebrow">Before you come in</p>
+          <p class="gate-h" id="gate-h">The books on this shelf contain explicit sex, written for adults.</p>
+          <div class="gate-btns"><button class="btn btn-primary" type="button" data-gate="yes">I'm an adult, come in</button><a class="btn btn-ghost" href="/the-cabin/" data-gate="no">Stay in the Cabin</a></div>
+          <p class="gate-note">We'll remember your answer on this device.</p>
+        </div></div>
       <div class="welcome">
         <p class="eyebrow">The Boudoir · Eric's Reading Room</p>
         <h1>Exquisite Erotica</h1>
@@ -89,7 +85,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="wrap">
       <p class="eyebrow">Erotica · explicit</p>
       <h1>Exquisite Erotica</h1>
-      <hr>
+      <hr><div class="gate-band" role="group" aria-labelledby="gate-h2">
+          <p class="eyebrow">Before you come in</p>
+          <p class="gate-h" id="gate-h2">The books on this shelf contain explicit sex, written for adults.</p>
+          <div class="gate-btns"><button class="btn btn-primary" type="button" data-gate="yes">I'm an adult, come in</button><a class="btn btn-ghost" href="/the-cabin/" data-gate="no">Stay in the Cabin</a></div>
+          <p class="gate-note">We'll remember your answer on this device.</p>
+        </div>
     </div>
   </section>
 
