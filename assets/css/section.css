@@ -326,3 +326,38 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
   .glass-arrow.next { right: calc(50% - 56px); }
   .mini-books { grid-template-columns: repeat(2, 1fr); gap: 18px; }
 }
+
+/* Sign-up: "Keep me posted" on each shelf, Looker List in the Cabin (Zoho Campaigns form) */
+.posted { padding-top: 56px; padding-bottom: 72px; }
+.looker-band.posted-band, .posted-band { display: block; max-width: 880px; margin: 0 auto; padding: 28px 32px; border-radius: 22px; background: var(--surface-raised); border: 1px solid var(--line-subtle); }
+.posted-text { display: flex; align-items: center; gap: 20px; }
+.posted-face { flex: 0 0 auto; width: 84px; height: 84px; object-fit: cover; object-position: top center; border-radius: 50%; background: var(--surface); border: 1px solid var(--line-subtle); }
+.posted-band h2 { margin: 0; font-size: 22px; font-weight: 800; color: var(--lilac); }
+.posted-band .posted-text p { margin: 6px 0 0; font-size: 16px; line-height: 1.55; color: var(--cream); max-width: 600px; }
+.zform .signup-fields { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+.zform .signup-field { flex: .75 1 160px; min-width: 0; display: flex; }
+.zform .signup-field-email { flex: 1 1 220px; }
+.zform .signup-button { flex: 0 0 auto; display: flex; }
+.zform input[type="text"], .zform input[type="email"] { width: 100%; padding: 12px 14px; font: inherit; font-size: 16px; color: var(--cream); background: var(--night); border: 1px solid var(--line); border-radius: 10px; }
+.zform input::placeholder { color: #8E84AE; }
+.zform input[type="text"]:focus, .zform input[type="email"]:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255,95,162,.25); }
+.zform input[type="button"] { padding: 12px 22px; font: inherit; font-size: 16px; font-weight: 800; color: var(--on-pink); background: var(--pink); border: 0; border-radius: 10px; cursor: pointer; -webkit-appearance: none; appearance: none; }
+.zform input[type="button"]:hover { background: var(--lilac); }
+.zform input[type="button"]:focus-visible { outline: 3px solid var(--lilac); outline-offset: 2px; }
+.zform #errorMsgDiv { display: none; font-size: 14px; color: var(--pink); margin-top: 10px; }
+.zform #zcOptinOverLay, .zform #zcOptinSuccessPopup { display: none; }
+.signup-shelves { margin: 20px 0 0; padding: 0; border: 0; }
+.signup-shelves legend { padding: 0; margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--cream); }
+.signup-shelves legend span { font-weight: 400; color: var(--muted); margin-left: 6px; }
+.shelf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.shelf-chip { position: relative; display: inline-flex; cursor: pointer; }
+.shelf-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.shelf-chip span { display: inline-flex; align-items: center; min-height: 36px; padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--line); color: var(--cream); font-size: 14px; transition: background-color .15s, border-color .15s; }
+.shelf-chip small { margin-left: .4em; font-size: inherit; color: var(--muted); }
+.shelf-chip:hover span { border-color: var(--lilac); }
+.shelf-chip input:checked + span, .shelf-chip input:checked + span small { background: var(--lilac); border-color: var(--lilac); color: var(--on-pink); font-weight: 600; }
+.shelf-chip input:checked + span small { background: none; }
+.shelf-chip input:focus-visible + span { outline: 2px solid var(--cream); outline-offset: 2px; }
+.posted-band .signup-fine { margin: 14px 0 0; font-size: 13px; line-height: 1.55; color: var(--muted); opacity: .85; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 560px) { .posted-band { padding: 22px 18px; } .posted-face { width: 64px; height: 64px; } .zform .signup-button, .zform .signup-button input { width: 100%; } }

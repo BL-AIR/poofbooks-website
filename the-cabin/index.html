@@ -24,11 +24,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
-<link rel="stylesheet" href="/assets/css/section.css?v=202610261845">
-<script src="/assets/js/view-settings.js?v=202610261845" defer></script>
-<script src="/assets/js/gate.js?v=202610261845" defer></script>
-<script src="/assets/js/shelf.js?v=202610261845" defer></script>
-<script src="/assets/js/showcase.js?v=202610261845" defer></script>
+<link rel="stylesheet" href="/assets/css/section.css?v=202610262119">
+<script src="/assets/js/view-settings.js?v=202610262119" defer></script>
+<script src="/assets/js/gate.js?v=202610262119" defer></script>
+<script src="/assets/js/shelf.js?v=202610262119" defer></script>
+<script src="/assets/js/showcase.js?v=202610262119" defer></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -44,7 +44,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <a href="/luminous-literature/">Luminous Literature</a>
         <a href="/supernova-adventures/">Supernova Adventures</a>
         <span class="nav-sep" aria-hidden="true"></span>
-        <a href="/no-nonsense-non-fiction/">No Nonsense Non-Fiction</a>
+        <a href="/no-nonsense-non-fiction/">No Nonsense <span style="white-space:nowrap">Non-Fiction</span></a>
     </nav>
     <button class="gear" type="button" aria-label="View settings" title="View settings" aria-expanded="false" aria-controls="view-settings"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
   </div>
@@ -170,8 +170,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <a class="card" href="/no-nonsense-non-fiction/">
           <div class="card-stage c-on"><img class="bg" src="/assets/rooms/lecturehall.webp" width="1280" height="720" alt="" loading="lazy"><div class="shade"></div><img class="who" src="/assets/curators/cutouts/Pansy.webp" alt="" loading="lazy"></div>
           <div class="card-text">
-            <p class="eyebrow c-on">The Lecture Hall</p><p class="eyebrow c-off">Non-fiction</p>
-            <h3>No Nonsense Non-Fiction</h3>
+            <p class="eyebrow c-on">The Lecture Hall</p><p class="eyebrow c-off"><span style="white-space:nowrap">Non-fiction</span></p>
+            <h3>No Nonsense <span style="white-space:nowrap">Non-Fiction</span></h3>
             <p class="who-name c-on">with Professor Pansy</p>
             <p class="teaser">True stories, told straight.</p>
             <span class="go"><span class="c-on">Visit Pansy →</span><span class="c-off">Browse the shelf →</span></span>
@@ -181,9 +181,101 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </section>
 
   <section class="wrap looker" aria-labelledby="looker">
-    <div class="looker-band">
-      <div><h2 id="looker">The Poof Books Looker List</h2><p>Be first through the door when the shop opens, with the odd early look at what's going on the shelves. Nothing else.</p></div>
-      <a class="btn btn-primary" href="/#signup-heading">Join the Looker List</a>
+    <div class="looker-band posted-band">
+      <div class="posted-text">
+        <div><h2 id="looker">The Poof Books Looker List</h2><p>Be first through the door when the shop opens, with the odd early look at what's going on the shelves. Tick the shelves you fancy and the crew will keep you posted. Nothing else.</p></div>
+      </div>
+      <div name="signupFormContainer" class="zform">
+      <input type="hidden" id="signupTmplName" value="large_form_1">
+      <input type="hidden" value="0" id="recapThemeOptin">
+      <input type="hidden" id="orgNameFull" value="Poof Books">
+      <div id="sf3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638" data-type="signupform">
+        <div id="customForm">
+          <input type="hidden" id="recapTheme" value="0">
+          <input type="hidden" id="isRecapIntegDone" value="false">
+          <input type="hidden" id="signupFormMode" value="">
+          <input type="hidden" id="signupFormType" value="LargeForm_Vertical">
+          <input type="hidden" id="recapModeTheme" value="">
+          <div name="SIGNUP_PAGE" id="SIGNUP_PAGE">
+            <div id="signupMainDiv" name="SIGNUPFORM">
+              <div id="Zc_SignupSuccess" style="display:none"><span id="signupSuccessMsg">Thank you for signing up.</span></div>
+              <form method="POST" id="zcampaignOptinForm" action="https://zcmp-user.maillist-manage.com.au/weboptin.zc" target="_zcSignup">
+              <div id="SIGNUP_BODY_ALL" name="SIGNUP_BODY_ALL">
+              <div id="SIGNUP_BODY" name="SIGNUP_BODY">
+              <div id="errorMsgDiv">Please check the marked field(s).</div>
+              <fieldset class="signup-shelves">
+                <legend>Which shelves interest you? <span>Optional. Tick any.</span></legend>
+                <div class="shelf-chips">
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Faghetti Westerns" value="52667000000030005" id="52667000000030005" data-shelf="Faghetti Westerns"><span>Faghetti Westerns<small class="c-on">· Curtis</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Rollicking Romances" value="52667000000030007" id="52667000000030007" data-shelf="Rollicking Romances"><span>Rollicking Romances<small class="c-on">· Rumi</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Conniving Crimes" value="52667000000030009" id="52667000000030009" data-shelf="Conniving Crimes"><span>Conniving Crimes<small class="c-on">· Dick</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Exquisite Erotica" value="52667000000030011" id="52667000000030011" data-shelf="Exquisite Erotica"><span>Exquisite Erotica<small class="c-on">· Eric</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Fabulous Fables" value="52667000000030013" id="52667000000030013" data-shelf="Fabulous Fables"><span>Fabulous Fables<small class="c-on">· Frank</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Luminous Literature" value="52667000000030015" id="52667000000030015" data-shelf="Luminous Literature"><span>Luminous Literature<small class="c-on">· Larry</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Supernova Adventures" value="52667000000030017" id="52667000000030017" data-shelf="Supernova Adventures"><span>Supernova Adventures<small class="c-on">· Sam</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="No Nonsense Non-Fiction" value="52667000000030019" id="52667000000030019" data-shelf="No Nonsense Non-Fiction"><span>No Nonsense <span style="white-space:nowrap">Non-Fiction</span><small class="c-on">· Pansy</small></span></label>
+                </div>
+                <select name="CONTACT_CF1" changeitem="SIGNUP_FORM_FIELD" multiple hidden aria-hidden="true" tabindex="-1"><option value="Faghetti Westerns">Faghetti Westerns</option><option value="Rollicking Romances">Rollicking Romances</option><option value="Conniving Crimes">Conniving Crimes</option><option value="Exquisite Erotica">Exquisite Erotica</option><option value="Fabulous Fables">Fabulous Fables</option><option value="Luminous Literature">Luminous Literature</option><option value="Supernova Adventures">Supernova Adventures</option><option value="No Nonsense Non-Fiction">No Nonsense Non-Fiction</option></select>
+                <span style="display:none" id="dt_CONTACT_CF1">1,false,21,Shelves,2</span>
+              </fieldset>
+              <div name="fieldsdivSf" class="zcsffieldsdiv signup-fields">
+                <div class="signup-field">
+                  <label class="visually-hidden" for="ml-first">First name</label>
+                  <input id="ml-first" name="FIRSTNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="text" placeholder="First name" autocomplete="given-name">
+                  <span style="display:none" id="dt_FIRSTNAME">1,false,1,First Name,2</span>
+                </div>
+                <div class="signup-field signup-field-email">
+                  <label class="visually-hidden" for="ml-email">Email address</label>
+                  <input id="ml-email" name="CONTACT_EMAIL" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="email" placeholder="Email address" autocomplete="email">
+                  <span style="display:none" id="dt_CONTACT_EMAIL">1,true,6,Contact Email,2</span>
+                </div>
+                <input name="LASTNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="50" type="hidden" value="Looker List">
+                <span style="display:none" id="dt_LASTNAME">1,false,1,Last Name,2</span>
+                <input name="COMPANYNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="hidden" value="Looker List">
+                <span style="display:none" id="dt_COMPANYNAME">1,false,1,Company Name,2</span>
+                <div class="signup-button">
+                  <input type="button" action="Save" id="zcWebOptin" name="SIGNUP_SUBMIT_BUTTON" value="Join the list">
+                </div>
+              </div>
+              </div>
+              <input type="hidden" id="fieldBorder" value="rgb(222, 222, 222)">
+              <input type="hidden" name="zc_trackCode" id="zc_trackCode" value="">
+              <input type="hidden" name="viewFrom" id="viewFrom" value="URL_ACTION">
+              <input type="hidden" id="submitType" name="submitType" value="optinCustomView">
+              <input type="hidden" id="lD" name="lD" value="1bb1c5b8262e7d2">
+              <input type="hidden" name="emailReportId" id="emailReportId" value="">
+              <input type="hidden" name="zx" id="cmpZuid" value="11a1b275ac">
+              <input type="hidden" name="zcvers" value="2.0">
+              <input type="hidden" name="oldListIds" id="allCheckedListIds" value="">
+              <input type="hidden" id="mode" name="mode" value="OptinCreateView">
+              <input type="hidden" id="zcld" name="zcld" value="1bb1c5b8262e7d2">
+              <input type="hidden" id="zctd" name="zctd" value="">
+              <input type="hidden" id="document_domain" value="campaigns.zoho.com.au">
+              <input type="hidden" id="zc_Url" value="zcmp-user.maillist-manage.com.au">
+              <input type="hidden" id="new_optin_response_in" value="1">
+              <input type="hidden" id="duplicate_optin_response_in" value="0">
+              <input type="hidden" id="zc_formIx" name="zc_formIx" value="3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638">
+              </div>
+              </form>
+            </div>
+          </div>
+          <input type="hidden" id="isCaptchaNeeded" value="false">
+          <input type="hidden" id="superAdminCap" value="0">
+          <img src="https://zcmp-user.maillist-manage.com.au/images/spacer.gif" id="refImage" style="display:none;" alt="">
+        </div>
+      </div>
+      <div id="zcOptinOverLay" oncontextmenu="return false" style="display:none"></div>
+      <div id="zcOptinSuccessPopup" style="display:none"><span id="closeSuccess" onclick="closeSuccessPopup()">×</span><div id="zcOptinSuccessPanel"></div></div>
+    </div>
+    <script>
+    function runOnFormSubmit_sf3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638(th) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'newsletter_signup', list_name: 'Poof Books', form_location: 'the-cabin' });
+    }
+    </script>
+    <script src="/assets/js/signup.js" defer></script>
+    <script src="https://ma.zoho.com.au/js/optin.min.js" defer onload="setupSF('sf3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638','ZCFORMVIEW',false,'light',false,'0'); if (window.referenceSetter) referenceSetter(document.getElementById('refImage'));"></script>
+      <p class="signup-fine">A confirmation email comes first; you're not on the list until you click the link in it (check your spam folder if it doesn't arrive). Unsubscribe from the foot of any email. <a href="/privacy/#mailing-list">Privacy</a>.</p>
     </div>
   </section>
 </main>
