@@ -175,6 +175,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .signup-fields input[type="button"]:focus-visible { outline: 3px solid var(--lilac); outline-offset: 2px; }
   #errorMsgDiv { display: none; order: 10; flex-basis: 100%; font-size: 14px; color: var(--pink); }
   #zcOptinOverLay, #zcOptinSuccessPopup { display: none; }
+  .signup-shelves { margin: 22px 0 20px; padding: 0; border: 0; text-align: center; }
+  .signup-shelves legend { padding: 0; margin: 0 auto 10px; font-size: 14px; font-weight: 600; color: var(--cream); }
+  .signup-shelves legend span { font-weight: 400; color: var(--muted); margin-left: 6px; }
+  .shelf-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .shelf-chip { position: relative; display: inline-flex; cursor: pointer; }
+  .shelf-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .shelf-chip span { display: inline-flex; align-items: center; min-height: 36px; padding: 6px 14px; border-radius: 999px; border: 1.5px solid #4A3D6E; color: var(--cream); font-size: 14px; transition: background-color .15s, border-color .15s; }
+  .shelf-chip:hover span { border-color: var(--lilac); }
+  .shelf-chip input:checked + span { background: var(--lilac); border-color: var(--lilac); color: #18122B; font-weight: 600; }
+  .shelf-chip input:focus-visible + span { outline: 2px solid var(--cream); outline-offset: 2px; }
   .signup-fine {
     margin: 14px auto 0;
     max-width: 34em;
@@ -261,6 +271,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div id="SIGNUP_BODY_ALL" name="SIGNUP_BODY_ALL">
                   <div id="SIGNUP_BODY" name="SIGNUP_BODY">
                     <div id="errorMsgDiv">Please check the marked field(s).</div>
+                    <fieldset class="signup-shelves">
+                      <legend>Which shelves interest you? <span>Optional. Tick any.</span></legend>
+                      <div class="shelf-chips">
+                        <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Faghetti Westerns" value="52667000000030005" id="52667000000030005" data-shelf="Faghetti Westerns"><span>Faghetti Westerns</span></label>
+                        <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Rollicking Romances" value="52667000000030007" id="52667000000030007" data-shelf="Rollicking Romances"><span>Rollicking Romances</span></label>
+                        <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Conniving Crimes" value="52667000000030009" id="52667000000030009" data-shelf="Conniving Crimes"><span>Conniving Crimes</span></label>
+                        <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Exquisite Erotica" value="52667000000030011" id="52667000000030011" data-shelf="Exquisite Erotica"><span>Exquisite Erotica</span></label>
+                        <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Fabulous Fables" value="52667000000030013" id="52667000000030013" data-shelf="Fabulous Fables"><span>Fabulous Fables</span></label>
+                        <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Luminous Literature" value="52667000000030015" id="52667000000030015" data-shelf="Luminous Literature"><span>Luminous Literature</span></label>
+                        <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Supernova Adventures" value="52667000000030017" id="52667000000030017" data-shelf="Supernova Adventures"><span>Supernova Adventures</span></label>
+                        <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="No Nonsense Non-Fiction" value="52667000000030019" id="52667000000030019" data-shelf="No Nonsense Non-Fiction"><span>No Nonsense Non-Fiction</span></label>
+                      </div>
+                      <!-- Mirrors the ticks into the Campaigns "Shelves" field so they reach the CRM Lead (filled by the script below) -->
+                      <select name="CONTACT_CF1" changeitem="SIGNUP_FORM_FIELD" multiple hidden aria-hidden="true" tabindex="-1"><option value="Faghetti Westerns">Faghetti Westerns</option><option value="Rollicking Romances">Rollicking Romances</option><option value="Conniving Crimes">Conniving Crimes</option><option value="Exquisite Erotica">Exquisite Erotica</option><option value="Fabulous Fables">Fabulous Fables</option><option value="Luminous Literature">Luminous Literature</option><option value="Supernova Adventures">Supernova Adventures</option><option value="No Nonsense Non-Fiction">No Nonsense Non-Fiction</option></select>
+                      <span style="display:none" id="dt_CONTACT_CF1">1,false,21,Shelves,2</span>
+                    </fieldset>
                     <div name="fieldsdivSf" class="zcsffieldsdiv signup-fields">
                       <div class="signup-field">
                         <label class="visually-hidden" for="ml-first">First name</label>
@@ -335,6 +361,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
       });
     })();
+  </script>
+  <script>
+  /* Shelf ticks: each box is a Campaigns Topic (listCheckBox); the same choice is mirrored into
+     the hidden "Shelves" field (CONTACT_CF1) so it is pushed to the Lead in Zoho CRM. */
+  (function () {
+    var sel = document.querySelector('select[name="CONTACT_CF1"]');
+    if (!sel) return;
+    document.querySelectorAll('.shelf-chip input').forEach(function (cb) {
+      cb.addEventListener('change', function () {
+        Array.prototype.forEach.call(sel.options, function (o) { if (o.value === cb.dataset.shelf) o.selected = cb.checked; });
+      });
+    });
+  })();
   </script>
   <script src="https://ma.zoho.com.au/js/optin.min.js" onload="setupSF('sf3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638','ZCFORMVIEW',false,'light',false,'0'); if (window.referenceSetter) referenceSetter(document.getElementById('refImage'));"></script>
 </main>
