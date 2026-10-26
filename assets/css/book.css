@@ -1,0 +1,110 @@
+/* Poof Books: book page. Loaded after section.css. */
+
+.crumbs { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 22px; font-size: 14px; color: var(--muted); }
+.crumbs a { color: var(--lilac); text-decoration: none; }
+.crumbs a:hover { color: var(--cream); }
+.crumbs [aria-current] { color: var(--muted); }
+
+/* Hero: covers + key facts */
+.bhero { display: flex; flex-wrap: wrap; gap: 36px 56px; align-items: flex-start; padding-top: 28px; padding-bottom: 40px; }
+.covers { flex: 0 0 auto; width: min(380px, 100%); display: flex; flex-direction: column; gap: 14px; }
+.cover-frame { position: relative; aspect-ratio: 2 / 3; perspective: 1600px; }
+.cover-frame .face { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom center; border-radius: 6px; filter: drop-shadow(0 22px 34px rgba(0,0,0,.5)); backface-visibility: hidden; }
+.cover-frame .back { transform: rotateY(180deg); }
+.motion-on .cover-frame .face { transition: transform .6s ease; }
+.cover-frame[data-face="back"] .front { transform: rotateY(-180deg); }
+.cover-frame[data-face="back"] .back { transform: rotateY(0); }
+.cover-flip { display: inline-flex; align-self: center; border: 1.5px solid var(--line); border-radius: 999px; padding: 3px; }
+.cover-flip button { min-height: 38px; padding: 6px 18px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.cover-flip button[aria-pressed="true"] { background: var(--surface-raised); color: var(--cream); }
+
+.binfo { flex: 1 1 420px; min-width: 0; }
+.binfo h1 { color: var(--cream); font-size: clamp(36px, 5vw, 60px); }
+.binfo .subtitle { margin: 10px 0 0; font-size: 20px; color: var(--muted); }
+.binfo .by { margin: 12px 0 0; font-size: 20px; color: var(--muted); }
+.binfo .by a { color: var(--lilac); text-decoration: none; font-weight: 600; }
+.binfo .by a:hover { color: var(--cream); }
+.hook { margin: 24px 0 0; max-width: 620px; font-size: 21px; line-height: 1.55; font-weight: 500; color: var(--cream); }
+.facts { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.facts li { padding: 6px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--rule); font-size: 14px; color: var(--muted); }
+.price-from { font-size: 22px; font-weight: 800; color: var(--pink); }
+.pick .listen { margin-top: 12px; }
+.pick .hear { min-height: 40px; padding: 8px 16px; }
+.script { margin-top: 10px; max-width: 640px; font-size: 14.5px; color: var(--muted); }
+.script summary { cursor: pointer; color: var(--lilac); font-weight: 600; padding: 6px 0; }
+.script p { margin: 6px 0 0; line-height: 1.65; }
+html:not(.sound-on) .script { display: none; }
+
+/* In-page jump links */
+.jump { position: sticky; top: 0; z-index: 5; display: flex; gap: 6px 22px; overflow-x: auto; scrollbar-width: none; padding-top: 12px; padding-bottom: 12px; background: var(--night); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.jump::-webkit-scrollbar { display: none; }
+.jump a { white-space: nowrap; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 0; }
+.jump a:hover { color: var(--pink); }
+
+/* Sections */
+.bsec { padding-top: 56px; padding-bottom: 8px; scroll-margin-top: 64px; }
+.bsec h2 { margin: 0 0 22px; font-size: clamp(26px, 3vw, 34px); font-weight: 800; }
+.bsec:last-of-type { padding-bottom: 80px; }
+.prose { max-width: 720px; }
+.prose p { margin: 0 0 18px; font-size: 18px; line-height: 1.75; }
+
+/* First page: a page of the book */
+.page-card { max-width: 680px; padding: clamp(28px, 5vw, 56px); background: var(--cream); color: #2A2238; border-radius: 4px; box-shadow: 0 18px 40px rgba(0,0,0,.4); }
+.page-text { font-family: 'Literata', Georgia, serif; font-size: 18px; line-height: 1.8; }
+.page-text p { margin: 0; text-indent: 1.5em; }
+.page-text p:first-child { text-indent: 0; }
+.page-src { margin: 24px 0 0; font-size: 13px; color: #6B6280; }
+
+/* Author */
+.author { display: flex; flex-wrap: wrap; gap: 20px 28px; align-items: flex-start; max-width: 860px; }
+.author + .author { margin-top: 32px; }
+.author-photo { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; background: var(--surface); }
+.author h3 { margin: 0 0 10px; font-size: 22px; }
+.author > div { flex: 1 1 360px; min-width: 0; }
+.author p { margin: 0 0 14px; font-size: 17px; line-height: 1.7; }
+.author .gap-photo { flex: 0 0 160px; height: 160px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; }
+
+/* Reviews and awards */
+.reviews { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.review { margin: 0; padding: 22px 24px; background: var(--surface); border: 1px solid var(--rule); border-radius: 18px; }
+.review blockquote { margin: 0; font-size: 17px; line-height: 1.6; }
+.review figcaption { margin-top: 12px; font-size: 14px; color: var(--lilac); font-weight: 600; }
+.awards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 10px; }
+.award-name { font-weight: 600; }
+.award-meta { color: var(--muted); }
+.later { margin: 18px 0 0; font-size: 14px; color: var(--muted); }
+
+/* Reading time */
+.speeds { list-style: none; margin: 0; padding: 0; max-width: 640px; display: grid; gap: 14px; }
+.speeds li { display: grid; grid-template-columns: 120px 1fr auto; align-items: center; gap: 16px; font-size: 16px; }
+.speeds .bar { height: 10px; border-radius: 999px; background: var(--surface-raised); overflow: hidden; }
+.speeds .bar span { display: block; height: 100%; border-radius: 999px; background: var(--lilac); }
+.speeds li:nth-child(2) .bar span { background: var(--pink); }
+.speeds .hrs { font-weight: 700; min-width: 90px; text-align: right; }
+.note { margin: 16px 0 0; font-size: 14px; color: var(--muted); max-width: 640px; }
+@media (max-width: 520px) { .speeds li { grid-template-columns: 1fr auto; } .speeds .bar { grid-column: 1 / -1; grid-row: 2; } }
+
+/* Formats */
+.table-wrap { overflow-x: auto; max-width: 860px; }
+.formats { width: 100%; border-collapse: collapse; font-size: 15.5px; }
+.formats th, .formats td { text-align: left; padding: 14px 16px 14px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.formats thead th { font-size: 12.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.formats tbody th { font-weight: 600; }
+.formats tbody th span { display: block; font-weight: 400; font-size: 13.5px; color: var(--muted); }
+.formats .isbn { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Details */
+.details { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px 32px; max-width: 860px; }
+.details dt { font-size: 12.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.details dd { margin: 4px 0 0; font-size: 17px; }
+
+/* Draft-only: labelled gaps where the feed hasn't supplied data yet */
+.gap { padding: 16px 18px; border: 1.5px dashed var(--line); border-radius: 12px; color: var(--muted); font-size: 14px; max-width: 640px; }
+.gap + .gap { margin-top: 12px; }
+.covers .gap { text-align: center; }
+.gap-inline { color: var(--muted); font-size: 13px; border: 1px dashed var(--line); border-radius: 6px; padding: 2px 8px; }
+
+@media (max-width: 760px) {
+  .covers { width: min(300px, 78vw); margin: 0 auto; }
+  .bhero { padding-top: 18px; }
+}
