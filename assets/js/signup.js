@@ -12,11 +12,20 @@
       document.getElementById('zcWebOptin').click();
     }
   });
+  // Zoho reads the chosen Topics from the hidden "oldListIds" field (#allCheckedListIds), which its
+  // own script only fills for boxes inside table#listRelTable. Ours aren't, so keep it filled here.
+  var ids = form.querySelector('#allCheckedListIds');
   var sel = form.querySelector('select[name="CONTACT_CF1"]');
-  if (!sel) return;
-  form.querySelectorAll('.shelf-chip input').forEach(function (cb) {
-    cb.addEventListener('change', function () {
-      Array.prototype.forEach.call(sel.options, function (o) { if (o.value === cb.dataset.shelf) o.selected = cb.checked; });
+  var boxes = form.querySelectorAll('input[name="listCheckBox"]');
+  function sync() {
+    var on = [];
+    boxes.forEach(function (cb) {
+      if (cb.checked) on.push(cb.value);
+      if (sel) Array.prototype.forEach.call(sel.options, function (o) { if (o.value === cb.dataset.shelf) o.selected = cb.checked; });
     });
-  });
+    if (ids) ids.value = on.join(',');
+  }
+  boxes.forEach(function (cb) { cb.addEventListener('change', sync); });
+  document.getElementById('zcWebOptin').addEventListener('click', sync, true);
+  sync();
 })();
