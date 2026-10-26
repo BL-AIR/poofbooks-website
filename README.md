@@ -1,6 +1,6 @@
 # poofbooks-website
 
-The website for **Poof Books**, an online bookshop of M2M books for gay men: https://poofbooks.com.au
+The website for **Poof Books**, an online bookshop of M2M books for gay men: https://poofbooks.com
 
 Currently a single static coming-soon page. No build step: the files are served exactly as they are.
 
@@ -13,6 +13,6 @@ Currently a single static coming-soon page. No build step: the files are served 
 - `privacy/index.html`: privacy statement and cookie table
 - `assets/js/consent.js`, `assets/css/consent.css`: cookie banner (shared with the other sites)
 - `sitemap.xml`, `robots.txt`: for search engines. Add each new page to the sitemap.
-- `CNAME`: tells GitHub Pages to serve the site on poofbooks.com.au
+- `CNAME`: tells GitHub Pages to serve the site on poofbooks.com (poofbooks.com.au forwards here; email stays on poofbooks.com.au)
 
 Master logo files live in the `Logos` folder alongside this repo.

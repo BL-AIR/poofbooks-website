@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://poofbooks.com.au/sitemap.xml
+Sitemap: https://poofbooks.com/sitemap.xml

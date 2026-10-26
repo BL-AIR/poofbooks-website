@@ -36,3 +36,6 @@ dist/
 *.log
 tmp/
 temp/
+
+# Temporary files left by remote editing
+.fuse_hidden*
