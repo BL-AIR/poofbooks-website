@@ -252,7 +252,14 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .chip[aria-pressed="false"] span { text-decoration: line-through; text-decoration-thickness: 1.5px; }
 .chip-all { float: right; margin-left: 12px; padding: 0; background: none; border: 0; color: var(--lilac); font: inherit; font-size: 12px; letter-spacing: .06em; text-transform: none; text-decoration: underline; cursor: pointer; }
 .f-group legend { width: 100%; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; }
+/* Long lists (Set in, Subject matter) scroll after about four rows of chips. The styled scrollbar
+   stays visible on Mac and iPhone too, so readers can see there's more. */
+.chips { max-height: 176px; overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.chips::-webkit-scrollbar { width: 8px; }
+.chips::-webkit-scrollbar-track { background: var(--rule); border-radius: 4px; }
+.chips::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+.chips::-webkit-scrollbar-thumb:hover { background: var(--lilac); }
 .f-group:has(.tip) { position: relative; }
 .tip { display: inline-block; margin-left: 6px; vertical-align: 1px; text-transform: none; letter-spacing: 0; }
 .tip-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; padding: 0; border-radius: 50%; border: 1.5px solid var(--muted); background: transparent; color: var(--muted); font: italic 700 11px/1 Georgia, serif; cursor: pointer; }
