@@ -265,3 +265,63 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .no-match { margin: 8px 0 0; color: var(--muted); }
 .no-match[hidden] { display: none; }
 .linklike { background: none; border: 0; padding: 0; color: var(--lilac); font: inherit; text-decoration: underline; cursor: pointer; }
+
+/* Showcase: Book of the Month · Out this month · Coming soon */
+.showcase-wrap { padding-top: 48px; padding-bottom: 48px; }
+.showcase { position: relative; background: var(--surface); border: 1px solid var(--rule); border-radius: 22px; padding: 18px 0 0; overflow: hidden; }
+.sc-tabs { display: flex; gap: 4px; padding: 0 clamp(20px, 4vw, 36px); overflow-x: auto; scrollbar-width: none; }
+.sc-tabs::-webkit-scrollbar { display: none; }
+.sc-tabs [role="tab"] { flex: 0 0 auto; min-height: 40px; padding: 8px 16px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-size: 14.5px; font-weight: 600; cursor: pointer; }
+.sc-tabs [role="tab"]:hover { color: var(--cream); }
+.sc-tabs [role="tab"][aria-selected="true"] { background: var(--surface-raised); color: var(--pink); }
+.sc-viewport { position: relative; }
+.sc-track { display: flex; align-items: flex-start; transition: height .35s ease; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.sc-track::-webkit-scrollbar { display: none; }
+.slide { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; padding: 22px clamp(20px, 4vw, 36px) clamp(24px, 4vw, 36px); box-sizing: border-box; }
+.sc-frame { position: relative; padding: 0 76px; }
+.slide > .eyebrow { margin-bottom: 16px; }
+.slide .feature { background: none; border: 0; padding: 0; border-radius: 0; }
+.slide .feature h3 { margin: 0; font-size: clamp(30px, 4vw, 40px); line-height: 1.1; font-weight: 800; }
+.slide .feature h3 a { color: inherit; text-decoration: none; }
+.slide .feature h3 a:hover { color: var(--pink); }
+.slide-empty { margin: 8px 0 12px; padding: 28px; border: 1px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: 16px; line-height: 1.6; max-width: 640px; }
+.mini-books { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 24px; }
+.mini-books .book .w { color: var(--pink); font-weight: 600; }
+
+/* Glass arrows, in the spirit of Apple's Liquid Glass: translucent, blurred, lit from above */
+.glass-arrow {
+  position: absolute; top: 50%; z-index: 3; transform: translateY(-50%);
+  width: 52px; height: 52px; padding: 0; border-radius: 50%; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--cream);
+  background:
+    radial-gradient(120% 90% at 30% 15%, rgba(255,255,255,.38) 0%, rgba(255,255,255,.10) 38%, rgba(255,255,255,0) 60%),
+    linear-gradient(160deg, rgba(185,163,255,.22) 0%, rgba(255,95,162,.14) 100%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.30);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.55),
+    inset 0 -2px 6px rgba(24,18,43,.35),
+    inset 0 0 0 1px rgba(255,255,255,.06),
+    0 10px 30px rgba(0,0,0,.40);
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+.glass-arrow::after { content: ""; position: absolute; inset: 1px; border-radius: 50%; background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,0) 45%); pointer-events: none; }
+.glass-arrow:hover { transform: translateY(-50%) scale(1.06); box-shadow: inset 0 1px 1px rgba(255,255,255,.65), inset 0 -2px 6px rgba(24,18,43,.35), 0 14px 36px rgba(0,0,0,.45), 0 0 0 4px rgba(255,95,162,.12); }
+.glass-arrow:active { transform: translateY(-50%) scale(.96); }
+.glass-arrow:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
+.glass-arrow svg { position: relative; z-index: 1; filter: drop-shadow(0 1px 1px rgba(0,0,0,.35)); }
+.glass-arrow.prev { left: 0; }
+.glass-arrow.next { right: 0; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .glass-arrow { background-color: rgba(42,33,72,.9); } }
+@media (prefers-reduced-motion: reduce) { .glass-arrow, .sc-track { transition: none; } }
+@media (max-width: 760px) {
+  .slide { padding: 16px 20px 24px; }
+  .sc-frame { padding: 0 0 66px; }
+  .glass-arrow { top: auto; bottom: 0; transform: none; width: 48px; height: 48px; }
+  .glass-arrow:hover, .glass-arrow:active { transform: none; }
+  .glass-arrow.prev { left: calc(50% - 56px); }
+  .glass-arrow.next { right: calc(50% - 56px); }
+  .mini-books { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+}
