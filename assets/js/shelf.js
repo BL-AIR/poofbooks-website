@@ -27,28 +27,33 @@
       c._year = c._date ? +c._date.slice(0, 4) : null;
       c._places = c.dataset.places ? c.dataset.places.split('|') : [];
       c._formats = c.dataset.formats ? c.dataset.formats.split('|') : [];
+      // Author's pronouns: He, She, They (anthologies list each, e.g. "He|She"). Blank = Not stated.
+      c._pronouns = c.dataset.pronouns ? c.dataset.pronouns.split('|') : ['Not stated'];
       c._price = c.dataset.price ? parseFloat(c.dataset.price) : Infinity;
       c._pick = c.dataset.pick === '1';
     });
 
     // Build chips from what's actually on the shelf, most common first.
-    function buildChips(key, name) {
+    // A fixed list (e.g. pronouns) is always shown in that order, even where a value has no books yet.
+    function buildChips(key, name, fixed) {
       var box = form.querySelector('[data-chips="' + key + '"]');
+      if (!box) return;
       var tally = {};
       cards.forEach(function (c) { c['_' + key].forEach(function (v) { tally[v] = (tally[v] || 0) + 1; }); });
-      var vals = Object.keys(tally).sort(function (a, b) { return tally[b] - tally[a] || a.localeCompare(b); });
+      var vals = fixed || Object.keys(tally).sort(function (a, b) { return tally[b] - tally[a] || a.localeCompare(b); });
       if (!vals.length) { box.closest('fieldset').hidden = true; return; }
       vals.forEach(function (v) {
         var b = document.createElement('button');
         b.type = 'button'; b.className = 'chip'; b.setAttribute('aria-pressed', 'false');
         b.dataset.key = name; b.dataset.val = v;
         b.innerHTML = '<span></span><small></small>';
-        b.firstChild.textContent = v; b.lastChild.textContent = tally[v];
+        b.firstChild.textContent = v; b.lastChild.textContent = tally[v] || 0;
         box.appendChild(b);
       });
     }
     buildChips('places', 'set');
     buildChips('formats', 'fmt');
+    buildChips('pronouns', 'pr', ['He', 'She', 'They', 'Not stated']);
 
     function chosen(name) {
       return Array.prototype.map.call(form.querySelectorAll('.chip[data-key="' + name + '"][aria-pressed="true"]'), function (b) { return b.dataset.val; });
@@ -69,14 +74,15 @@
     function apply(push) {
       var q = form.elements.q.value.trim().toLowerCase();
       var lo = +from.value, hi = +to.value;
-      var places = chosen('set'), fmts = chosen('fmt');
+      var places = chosen('set'), fmts = chosen('fmt'), prons = chosen('pr');
       var dateOn = lo > MIN || hi < MAX;
       var shown = 0;
       cards.forEach(function (c) {
         var ok = (!q || c._title.indexOf(q) > -1 || c._author.indexOf(q) > -1) &&
           (!dateOn || (c._year !== null && c._year >= lo && c._year <= hi)) &&
           (!places.length || places.some(function (p) { return c._places.indexOf(p) > -1; })) &&
-          (!fmts.length || fmts.some(function (f) { return c._formats.indexOf(f) > -1; }));
+          (!fmts.length || fmts.some(function (f) { return c._formats.indexOf(f) > -1; })) &&
+          (!prons.length || prons.some(function (x) { return c._pronouns.indexOf(x) > -1; }));
         c.hidden = !ok;
         if (ok) shown++;
       });
@@ -91,7 +97,7 @@
       }[sort] || null;
       cards.slice().sort(by).forEach(function (c) { grid.appendChild(c); });
 
-      var active = (dateOn ? 1 : 0) + places.length + fmts.length;
+      var active = (dateOn ? 1 : 0) + places.length + fmts.length + prons.length;
       badge.hidden = !active; badge.textContent = active;
       countEl.textContent = shown === cards.length ? cards.length + (cards.length === 1 ? ' book' : ' books')
         : shown + ' of ' + cards.length + ' books';
@@ -105,6 +111,7 @@
         if (hi < MAX) p.set('to', hi);
         if (places.length) p.set('set', places.join(','));
         if (fmts.length) p.set('fmt', fmts.join(','));
+        if (prons.length) p.set('pr', prons.join(','));
         var qs = p.toString();
         history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
       }
@@ -116,13 +123,13 @@
     if (p.get('sort')) form.elements.sort.value = p.get('sort');
     if (p.get('from')) from.value = Math.max(MIN, Math.min(MAX, +p.get('from')));
     if (p.get('to')) to.value = Math.max(MIN, Math.min(MAX, +p.get('to')));
-    ['set', 'fmt'].forEach(function (k) {
+    ['set', 'fmt', 'pr'].forEach(function (k) {
       (p.get(k) || '').split(',').filter(Boolean).forEach(function (v) {
         var b = form.querySelector('.chip[data-key="' + k + '"][data-val="' + CSS.escape(v) + '"]');
         if (b) b.setAttribute('aria-pressed', 'true');
       });
     });
-    if (p.get('from') || p.get('to') || p.get('set') || p.get('fmt')) { panel.hidden = false; toggle.setAttribute('aria-expanded', 'true'); }
+    if (p.get('from') || p.get('to') || p.get('set') || p.get('fmt') || p.get('pr')) { panel.hidden = false; toggle.setAttribute('aria-expanded', 'true'); }
 
     toggle.addEventListener('click', function () {
       panel.hidden = !panel.hidden;
@@ -140,6 +147,17 @@
         to.value = MAX;
         paintRange(); apply(true);
       });
+    });
+    // The little (i): opens on hover or focus on a computer, on tap on a phone, and stays put
+    // while the pointer is over the note so the email link can be clicked.
+    form.querySelectorAll('.tip').forEach(function (box) {
+      var btn = box.querySelector('.tip-btn');
+      function set(open) { box.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+      btn.addEventListener('click', function (ev) { set(ev.pointerType === 'mouse' || !box.classList.contains('open')); });
+      box.addEventListener('pointerenter', function (ev) { if (ev.pointerType === 'mouse') set(true); });
+      box.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse') set(false); });
+      document.addEventListener('click', function (ev) { if (!box.contains(ev.target)) set(false); });
+      box.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') { set(false); btn.focus(); } });
     });
     form.addEventListener('click', function (ev) {
       var chip = ev.target.closest('.chip');
