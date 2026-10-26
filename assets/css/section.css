@@ -248,6 +248,10 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .presets button, .chip { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: transparent; color: var(--cream); font: inherit; font-size: 14px; cursor: pointer; }
 .presets button[aria-pressed="true"], .chip[aria-pressed="true"] { background: var(--lilac); border-color: var(--lilac); color: var(--on-pink); font-weight: 600; }
 .chip small { font-size: 12px; opacity: .7; }
+.chip[aria-pressed="false"] { color: var(--muted); border-style: dashed; }
+.chip[aria-pressed="false"] span { text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.chip-all { float: right; margin-left: 12px; padding: 0; background: none; border: 0; color: var(--lilac); font: inherit; font-size: 12px; letter-spacing: .06em; text-transform: none; text-decoration: underline; cursor: pointer; }
+.f-group legend { width: 100%; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .f-group:has(.tip) { position: relative; }
 .tip { display: inline-block; margin-left: 6px; vertical-align: 1px; text-transform: none; letter-spacing: 0; }
@@ -257,6 +261,7 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .tip-btn:focus-visible { outline: 2px solid var(--lilac); outline-offset: 2px; }
 .tip-note { display: none; position: absolute; z-index: 20; left: -8px; right: -8px; top: 14px; max-width: 360px; padding: 12px 14px; border: 8px solid transparent; border-top-width: 14px; background: var(--surface-raised); background-clip: padding-box; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.4); color: var(--cream); font-size: 14px; font-weight: 400; line-height: 1.45; }
 .tip.open .tip-note { display: block; }
+.tip-note strong { color: var(--lilac); }
 .tip-note a { color: var(--pink); font-weight: 600; overflow-wrap: anywhere; }
 .range { position: relative; height: 28px; }
 .range .track { position: absolute; left: 11px; right: 11px; top: 12px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--line) var(--lo), var(--pink) var(--lo), var(--pink) var(--hi), var(--line) var(--hi)); }
