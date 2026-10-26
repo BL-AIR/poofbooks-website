@@ -178,3 +178,18 @@ a.book:hover .t { color: var(--pink); }
   .card-text .go { font-size: 13px; margin-top: 10px; }
   .looker-band { padding: 22px 20px; }
 }
+
+/* Eight sections: menu on its own row under the logo and gear; divider before Non-Fiction */
+.site-header .wrap { row-gap: 10px; }
+.sections { order: 3; flex: 1 1 100%; align-items: center; }
+.nav-sep { width: 1px; height: 18px; background: var(--line); margin: 0 4px; flex: 0 0 auto; }
+@media (min-width: 761px) {
+  .site-header .wrap { padding-bottom: 10px; }
+  .sections { gap: 2px 22px; }
+  .sections a { font-size: 14px; }
+  .home img { width: 168px; }
+}
+.sections { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.sections::-webkit-scrollbar { display: none; }
+@media (min-width: 761px) { .sections { gap: 2px 17px; } .sections a { font-size: 14px; } }
+@media (min-width: 761px) { .sections { gap: 2px 15px; } .sections a { font-size: 13.5px; } .nav-sep { margin: 0 2px; } }
