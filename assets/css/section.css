@@ -278,7 +278,7 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .sc-track { display: flex; align-items: flex-start; transition: height .35s ease; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
 .sc-track::-webkit-scrollbar { display: none; }
 .slide { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; padding: 22px clamp(20px, 4vw, 36px) clamp(24px, 4vw, 36px); box-sizing: border-box; }
-.sc-frame { position: relative; padding: 0 76px; }
+.sc-frame { position: relative; }
 .slide > .eyebrow { margin-bottom: 16px; }
 .slide .feature { background: none; border: 0; padding: 0; border-radius: 0; }
 .slide .feature h3 { margin: 0; font-size: clamp(30px, 4vw, 40px); line-height: 1.1; font-weight: 800; }
@@ -312,8 +312,9 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .glass-arrow:active { transform: translateY(-50%) scale(.96); }
 .glass-arrow:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
 .glass-arrow svg { position: relative; z-index: 1; filter: drop-shadow(0 1px 1px rgba(0,0,0,.35)); }
-.glass-arrow.prev { left: 0; }
-.glass-arrow.next { right: 0; }
+/* Arrows sit in the page margin, centred in the space beside the box (half-overlapping only on narrow screens) */
+.glass-arrow.prev { left: max(-90px, calc((100% - 100vw) / 4 - 26px), calc((100% - 100vw) / 2 + 6px)); }
+.glass-arrow.next { right: max(-90px, calc((100% - 100vw) / 4 - 26px), calc((100% - 100vw) / 2 + 6px)); }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .glass-arrow { background-color: rgba(42,33,72,.9); } }
 @media (prefers-reduced-motion: reduce) { .glass-arrow, .sc-track { transition: none; } }
 @media (max-width: 760px) {
