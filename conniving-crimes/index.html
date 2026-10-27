@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Section page: draft. Not in sitemap, noindex. -->
-<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,c=s.curators!==false,m=typeof s.motion==='boolean'?s.motion:!r;if(!c)d.classList.add('no-curators');if(c&&s.sound===true)d.classList.add('sound-on');if(c&&m)d.classList.add('motion-on')})();</script>
+<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,c=s.curators!==false,m=typeof s.motion==='boolean'?s.motion:!r;if(!c)d.classList.add('no-curators');if(c&&s.sound!==false)d.classList.add('sound-on');if(c&&m)d.classList.add('motion-on')})();</script>
 <script src="/assets/js/consent.js"></script>
 <link rel="stylesheet" href="/assets/css/consent.css">
 <!-- Google Tag Manager -->
@@ -24,8 +24,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
-<link rel="stylesheet" href="/assets/css/section.css?v=202610271305">
-<script src="/assets/js/view-settings.js?v=202610262132" defer></script>
+<link rel="stylesheet" href="/assets/css/section.css?v=202610271530">
+<script src="/assets/js/view-settings.js?v=202610271530" defer></script>
 <script src="/assets/js/currency.js?v=202610271230" defer></script>
 <script src="/assets/js/gate.js?v=202610262132" defer></script>
 <script src="/assets/js/shelf.js?v=202610262132" defer></script>
@@ -86,9 +86,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
   </section>
 
-  <section class="wrap about" aria-label="About this shelf">
-    <p>Crime, mystery and thrillers with gay detectives, gay suspects and the occasional glamorous villain.</p>
-  </section>
+
+    <section class="wrap about" aria-label="About this shelf">
+      <div class="c-on">
+        <p>Crime. Mysteries. Thrillers. Gay detectives, gay suspects, and now and then a villain with very good taste. You want to know what this shelf&#x2019;s about? Meet Tom Ripley. Patricia Highsmith put him in <em>The Talented Mr Ripley</em>, a charmer who wanted another man&#x2019;s life so bad he took it. Smooth, sharp, dangerous. Most of the books here are like that. Keep your eyes on the hands.</p>
+        <p class="sound-only about-hear"><button class="hear" type="button" data-audio="/assets/audio/Dick-shelf.mp3?v=20261027" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg>What&#x2019;s on my shelf</button></p>
+      </div>
+      <div class="c-off">
+        <p>Crime, mystery and thrillers with gay detectives, gay suspects and the occasional glamorous villain. The patron saint of this shelf is Tom Ripley, Patricia Highsmith&#x2019;s charming killer in <em>The Talented Mr Ripley</em>, who wants another man&#x2019;s life so badly he takes it. Expect the same mix of menace, desire and good tailoring.</p>
+      </div>
+    </section>
 
     <section class="wrap shelf" aria-labelledby="shelf">
       <h2 id="shelf">On the shelf</h2>

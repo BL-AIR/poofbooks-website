@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Section page: draft. Not in sitemap, noindex. -->
-<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,c=s.curators!==false,m=typeof s.motion==='boolean'?s.motion:!r;if(!c)d.classList.add('no-curators');if(c&&s.sound===true)d.classList.add('sound-on');if(c&&m)d.classList.add('motion-on')})();</script>
+<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,c=s.curators!==false,m=typeof s.motion==='boolean'?s.motion:!r;if(!c)d.classList.add('no-curators');if(c&&s.sound!==false)d.classList.add('sound-on');if(c&&m)d.classList.add('motion-on')})();</script>
 <script src="/assets/js/consent.js"></script>
 <link rel="stylesheet" href="/assets/css/consent.css">
 <!-- Google Tag Manager -->
@@ -24,8 +24,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
-<link rel="stylesheet" href="/assets/css/section.css?v=202610271305">
-<script src="/assets/js/view-settings.js?v=202610262132" defer></script>
+<link rel="stylesheet" href="/assets/css/section.css?v=202610271530">
+<script src="/assets/js/view-settings.js?v=202610271530" defer></script>
 <script src="/assets/js/currency.js?v=202610271230" defer></script>
 <script src="/assets/js/gate.js?v=202610262132" defer></script>
 <script src="/assets/js/shelf.js?v=202610262132" defer></script>
@@ -86,9 +86,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
   </section>
 
-  <section class="wrap about" aria-label="About this shelf">
-    <p>Fantasy and paranormal: magic, myth, monsters and men, in worlds where anything can happen and usually does.</p>
-  </section>
+
+    <section class="wrap about" aria-label="About this shelf">
+      <div class="c-on">
+        <p>Oh, you&#x2019;ll love it here! Magic, myth, monsters and men, in worlds where anything can happen, and usually does before breakfast. If you&#x2019;ve never read <em>The House in the Cerulean Sea</em>, stop everything. TJ Klune&#x2019;s buttoned-up caseworker is sent to inspect an island orphanage of magical children, and finds a family, and a love, he never saw coming. That&#x2019;s my favourite kind of spell: the kind that makes you kinder.</p>
+        <p class="sound-only about-hear"><button class="hear" type="button" data-audio="/assets/audio/Frank-shelf.mp3?v=20261027" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg>What&#x2019;s on my shelf</button></p>
+      </div>
+      <div class="c-off">
+        <p>Fantasy and paranormal: magic, myth, monsters and men, in worlds where anything can happen and usually does. For the shelf&#x2019;s warm heart, read TJ Klune&#x2019;s <em>The House in the Cerulean Sea</em>: a buttoned-up caseworker is sent to inspect an island orphanage for magical children, and finds a family, and a love, he never expected.</p>
+      </div>
+    </section>
 
     <section class="wrap shelf" aria-labelledby="shelf">
       <h2 id="shelf">On the shelf</h2>

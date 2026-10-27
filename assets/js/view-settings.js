@@ -12,7 +12,7 @@
     try { s = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { s = {}; }
     return {
       curators: s.curators !== false,
-      sound: s.sound === true,
+      sound: s.sound !== false,   // on by default; nothing plays until a Hear button is pressed
       motion: typeof s.motion === 'boolean' ? s.motion : !reduce
     };
   }
@@ -33,8 +33,11 @@
     if (!(state.curators && state.sound)) stopAudio();
   }
 
-  var audio = null;
-  function stopAudio() { if (audio) { audio.pause(); audio = null; } }
+  var audio = null, playing = null;
+  function stopAudio() {
+    if (audio) { audio.pause(); audio = null; }
+    if (playing) { playing.setAttribute('aria-pressed', 'false'); playing = null; }
+  }
 
   document.addEventListener('DOMContentLoaded', function () {
     var gear = document.querySelector('.gear');
@@ -74,11 +77,13 @@
       if (!src) { b.hidden = true; if (pending) pending.hidden = false; return; }
       if (pending) pending.hidden = true;
       b.addEventListener('click', function () {
-        if (audio) { stopAudio(); b.setAttribute('aria-pressed', 'false'); return; }
-        audio = new Audio(src);
+        var same = playing === b;
+        stopAudio();                     // one voice at a time
+        if (same) return;                // pressing the same button again stops it
+        audio = new Audio(src); playing = b;
         b.setAttribute('aria-pressed', 'true');
-        audio.addEventListener('ended', function () { audio = null; b.setAttribute('aria-pressed', 'false'); });
-        audio.play().catch(function () { audio = null; b.setAttribute('aria-pressed', 'false'); });
+        audio.addEventListener('ended', function () { if (playing === b) stopAudio(); });
+        audio.play().catch(function () { if (playing === b) stopAudio(); });
       });
     });
 

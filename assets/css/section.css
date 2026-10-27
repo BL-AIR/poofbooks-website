@@ -433,3 +433,6 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .qs-text small { display: block; margin-top: 2px; font-size: 12px; color: var(--lilac); }
 .qs-msg { margin: 6px 10px 8px; font-size: 13px; line-height: 1.45; color: var(--muted); }
 .qs-msg:empty { display: none; }
+
+/* "What's on my shelf" button under the curator's shelf description */
+.about .about-hear { margin-top: 4px; }
