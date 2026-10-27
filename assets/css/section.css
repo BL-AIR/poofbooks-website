@@ -408,3 +408,28 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
   .cur-btn { height: 40px; padding: 0 10px; }
   .cur-code { display: none; }
 }
+
+/* Quick search (assets/js/search.js) */
+.welcome.top { align-self: flex-start; padding-top: 4px; }
+.quick-search { position: relative; margin: 24px 0 0; max-width: 420px; }
+.foyer-title .quick-search { margin-bottom: 28px; }
+.qs-label { display: block; margin-bottom: 8px; font-size: 12.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--lilac); }
+.qs-field { position: relative; }
+.qs-icon { position: absolute; left: 17px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.qs-field input { width: 100%; min-height: 52px; padding: 12px 18px 12px 46px; border-radius: 999px; border: 1.5px solid var(--line); background: rgba(34,26,59,.94); color: var(--cream); font: inherit; font-size: 17px; -webkit-appearance: none; appearance: none; }
+.qs-field input::placeholder { color: var(--muted); }
+.qs-field input::-webkit-search-cancel-button { filter: grayscale(1) brightness(1.6); cursor: pointer; }
+.qs-field input:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255,95,162,.25); }
+.qs-panel { position: absolute; left: 0; right: 0; top: calc(100% + 8px); z-index: 40; overflow-y: auto; overscroll-behavior: contain; padding: 6px; background: var(--surface-raised); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 16px 36px rgba(0,0,0,.5); }
+.qs-panel.side { left: calc(100% + 16px); right: auto; top: 0; width: 320px; }
+.qs-panel[hidden] { display: none; }
+.qs-list { list-style: none; margin: 0; padding: 0; }
+.qs-list a { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; color: var(--cream); text-decoration: none; }
+.qs-list li[aria-selected="true"] a { background: var(--surface); box-shadow: inset 3px 0 0 var(--pink); }
+.qs-list img, .qs-nocover { flex: 0 0 40px; display: block; width: 40px; height: 60px; border-radius: 3px; object-fit: cover; background: var(--surface); box-shadow: 0 0 0 1px var(--line); }
+.qs-text { min-width: 0; }
+.qs-text b { display: block; font-size: 15px; line-height: 1.3; }
+.qs-text span { display: block; margin-top: 2px; font-size: 13px; color: var(--muted); }
+.qs-text small { display: block; margin-top: 2px; font-size: 12px; color: var(--lilac); }
+.qs-msg { margin: 6px 10px 8px; font-size: 13px; line-height: 1.45; color: var(--muted); }
+.qs-msg:empty { display: none; }

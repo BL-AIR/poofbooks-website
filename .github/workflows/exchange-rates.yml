@@ -1,5 +1,7 @@
 name: Exchange rates
 
+# Also rebuilds the quick-search index (assets/data/search.json) from the database.
+
 # Daily at 17:30 UTC (about 4:30am Melbourne), after the ECB publishes (around 16:00 CET on working days).
 on:
   schedule:
@@ -25,14 +27,20 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: python .github/scripts/update_fx.py
-      - name: Commit the rates file if it changed
+      - name: Rebuild the quick-search index from the database
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: python .github/scripts/build_search.py
+      - name: Commit the data files if they changed
         run: |
-          if git diff --quiet -- assets/data/fx.json; then
-            echo "No change to commit."
-          else
-            git config user.name  "poofbooks-bot"
-            git config user.email "actions@users.noreply.github.com"
+          git config user.name  "poofbooks-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if ! git diff --quiet -- assets/data/fx.json; then
             git add assets/data/fx.json
             git commit -m "Exchange rates: ECB $(python -c "import json;print(json.load(open('assets/data/fx.json'))['date'])")"
-            git push
           fi
+          if ! git diff --quiet -- assets/data/search.json; then
+            git add assets/data/search.json
+            git commit -m "Search index: rebuilt from the database"
+          fi
+          git push
