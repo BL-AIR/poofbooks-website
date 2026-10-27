@@ -96,6 +96,12 @@ html:not(.sound-on) .script { display: none; }
 .author > div { flex: 1 1 360px; min-width: 0; }
 .author p { margin: 0 0 14px; font-size: 17px; line-height: 1.7; }
 .author .gap-photo { flex: 0 0 160px; height: 160px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; }
+/* Photo with the author's website link underneath */
+.author > .author-pic { flex: 0 0 160px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.author-pic .gap-photo, .author-pic .author-photo { width: 160px; flex: 0 0 160px; }
+.author-site { font-size: 14px; font-weight: 600; color: var(--lilac); text-decoration: underline; text-underline-offset: 3px; text-align: center; }
+.author-site:hover { color: var(--pink); }
+.author-site:focus-visible { outline: 2px solid var(--lilac); outline-offset: 3px; border-radius: 4px; }
 
 /* Reviews and awards */
 .reviews { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
