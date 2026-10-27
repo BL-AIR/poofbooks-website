@@ -373,9 +373,9 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .shelf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .shelf-chip { position: relative; display: inline-flex; cursor: pointer; }
 .shelf-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.shelf-chip span { display: inline-flex; align-items: center; min-height: 36px; padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--line); color: var(--cream); font-size: 14px; transition: background-color .15s, border-color .15s; }
+.shelf-chip > span { display: inline-flex; align-items: center; min-height: 36px; padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--line); color: var(--cream); font-size: 14px; transition: background-color .15s, border-color .15s; }
 .shelf-chip small { margin-left: .4em; font-size: inherit; color: var(--muted); }
-.shelf-chip:hover span { border-color: var(--lilac); }
+.shelf-chip:hover > span { border-color: var(--lilac); }
 .shelf-chip input:checked + span, .shelf-chip input:checked + span small { background: var(--lilac); border-color: var(--lilac); color: var(--on-pink); font-weight: 600; }
 .shelf-chip input:checked + span small { background: none; }
 .shelf-chip input:focus-visible + span { outline: 2px solid var(--cream); outline-offset: 2px; }

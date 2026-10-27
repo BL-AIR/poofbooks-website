@@ -30,6 +30,11 @@
   function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
 
   function fmtAUD(n) { return 'A$' + n.toFixed(2); }
+  function niceDate(d) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || '');
+    if (!m) return d;
+    return (+m[3]) + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m[2] - 1] + ' ' + m[1];
+  }
 
   document.addEventListener('DOMContentLoaded', function () {
     fetch('/assets/data/fx.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (fx) {
@@ -46,7 +51,7 @@
       box.innerHTML = '<button type="button" class="cur-btn" aria-haspopup="true" aria-expanded="false" aria-controls="cur-menu">' +
         '<img alt="" width="22" height="16"><span class="cur-code"></span></button>' +
         '<div class="cur-menu" id="cur-menu" hidden><p class="cur-head">Show prices in</p><ul></ul>' +
-        '<p class="cur-foot">You’re always charged in Australian dollars. Other currencies are a guide, converted at European Central Bank rates (' + fx.date + ').</p></div>';
+        '<p class="cur-foot">You’re always charged in Australian dollars. Other currencies are a guide, converted at European Central Bank rates of ' + niceDate(fx.date) + '.</p></div>';
       var ul = box.querySelector('ul');
       fx.currencies.forEach(function (c) {
         var li = document.createElement('li');
