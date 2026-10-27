@@ -1,4 +1,4 @@
-/* Cookie consent — shared by prahran.press, blairpurvis.com, gwendolen.com.au, matm.com.au and poofbooks.com.au.
+/* Cookie consent for poofbooks.com.
    Load it in <head> WITHOUT async/defer, BEFORE Google Tag Manager:
        <script src="/assets/js/consent.js"></script>
        <link rel="stylesheet" href="/assets/css/consent.css">

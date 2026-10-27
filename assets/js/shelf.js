@@ -131,6 +131,10 @@
 
       if (push) {
         var p = new URLSearchParams();
+        // Keep campaign tags (utm_*, gclid, fbclid) so analytics still sees where the visit came from.
+        new URLSearchParams(location.search).forEach(function (v, k) {
+          if (/^utm_/.test(k) || k === 'gclid' || k === 'fbclid') p.set(k, v);
+        });
         if (q) p.set('q', q);
         if (sort !== 'newest') p.set('sort', sort);
         if (lo > MIN) p.set('from', lo);
