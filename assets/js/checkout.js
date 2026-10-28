@@ -36,8 +36,7 @@
   var EDITIONS = {
     '9781922263988': { book: BOOK, format: 'Paperback, Short & Thick', price: 39.95, stock: 'available' },
     '9781922263971': { book: BOOK, format: 'Paperback, Long & Skinny', price: 39.95, stock: 'available' },
-    '9781922263933': { book: BOOK, format: 'Hardback Special Edition', price: 89.95, stock: 'available' },
-    '9781922263964': { book: BOOK, format: 'eBook (EPUB)', price: 15.95, stock: 'available' }
+    '9781922263933': { book: BOOK, format: 'Hardback Special Edition', price: 89.95, stock: 'available' }
   };
   function line(isbn, qty, stock) {
     var e = EDITIONS[isbn]; if (!e) return null;

@@ -28,7 +28,8 @@ def q(sql):
 
 covers_base = q("SELECT value FROM app_setting WHERE key='covers_base_url'")[0]['value']
 works = q("SELECT work_id, title, subtitle, first_pub_year, slug, shelf FROM work WHERE slug IS NOT NULL ORDER BY sort_title, title")
-isbns = q("SELECT work_id, isbn13 FROM edition WHERE work_id IS NOT NULL ORDER BY isbn13")
+# Printed books only for now (Blair, 29 Oct 2026): ONIX product forms B* (or not yet known). No eBooks or audiobooks.
+isbns = q("SELECT work_id, isbn13 FROM edition WHERE work_id IS NOT NULL AND (product_form IS NULL OR product_form GLOB 'B*') ORDER BY isbn13")
 credits = q("""SELECT DISTINCT e.work_id, a.author_id, a.display_name, MIN(ec.sequence) AS seq
                FROM edition_contributor ec JOIN edition e ON e.isbn13 = ec.isbn13 JOIN author a ON a.author_id = ec.author_id
                WHERE ec.role GLOB 'A[0-9][0-9]' OR ec.role IN ('B01','B02')

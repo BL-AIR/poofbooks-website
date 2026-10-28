@@ -30,7 +30,7 @@ Master logo files live in the `Logos` folder alongside this repo.
 - `data-eras="Far future|Near future"`: **Set during** on Supernova Adventures only, as chips: `<div class="chips" data-chips="eras" data-fixed="Far future|Near future|Present|Past">`. Its **Set in** box gets `data-fixed="Earth|Solar System|Galaxy|Universe|Multiverse"`, and its cards use those values in `data-places`.
 - `data-kinds="Memoir|History"`: **Kind of book** on No Nonsense Non-Fiction: `<div class="chips" data-chips="kinds" data-order="Memoir|Biography|History|Essays|Politics &amp; law|Health &amp; wellbeing|Arts &amp; culture|Guides">`. Non-fiction keeps Subject matter and has no Set in or Set during.
 - A chips box can carry `data-fixed` (always shown in that order, even at 0) or `data-order` (only the values on the shelf, in that order). A book value with no chip never hides the book.
-- `data-formats="Hardback|Paperback|eBook"`: **Format**
+- `data-formats="Hardback|Paperback"`: **Format**
 - `data-pronouns="He"`: **Author's pronouns** (He, She, They, Mixed, Not stated, always shown in that order). For a collaboration, list each author's pronouns, e.g. `He|She`: if they differ the book counts as **Mixed** only; if they match (`He|He`) it counts as that one. Leave blank for **Not stated**. Take pronouns from the author's own published bio; corrections come in to BigDaddy@poofbooks.com via the ⓘ note.
 
 ## Checkout (draft)
