@@ -54,7 +54,7 @@
     a.href = '/checkout/';
     a.innerHTML = TROLLEY + '<span class="cart-count" hidden></span>';
     tools.insertBefore(a, gear);
-    if (location.pathname.indexOf('/checkout/') === 0) a.setAttribute('aria-current', 'page');
+    if (location.pathname === '/checkout/') a.setAttribute('aria-current', 'page');
 
     var badge = a.querySelector('.cart-count');
     function paint() {

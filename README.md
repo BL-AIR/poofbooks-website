@@ -46,3 +46,7 @@ Master logo files live in the `Logos` folder alongside this repo.
 ## Trolley and cart
 
 `assets/js/cart.js` (load it on every page with the header, before `currency.js`) adds the trolley between the currency switcher and the gear, with a pink item count. The cart is kept in localStorage `poof-cart` as `[{isbn, qty}]`; use `PoofCart.add(isbn, qty)`, `PoofCart.items()`, `PoofCart.count()`, `PoofCart.clear()`. Changes fire `poof:cart` on `document`.
+
+## Thank-you page
+
+`checkout/thanks/index.html` + `assets/js/thanks.js`. Reached only after a payment: `checkout.js` stores the order in sessionStorage `poof-last-order` and redirects; without it the page returns to `/checkout/`. Lil Otter's speech matches `assets/audio/lil-otter-thanks.mp3`, with the customer's email in place of "your inbox". `?demo=1` shows a sample order in test mode.
