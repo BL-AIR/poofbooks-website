@@ -144,3 +144,23 @@ html:not(.sound-on) .script { display: none; }
 .covers .gap { text-align: center; }
 .gap-inline { color: var(--muted); font-size: 13px; border: 1px dashed var(--line); border-radius: 6px; padding: 2px 8px; }
 
+
+/* Formats: plain-English size names, an (i) with the measurements, and a price + Buy on each */
+.ib-table th .fmt-sub { position: relative; display: flex !important; flex-wrap: wrap; align-items: center; gap: 6px; opacity: 1; color: rgba(207,198,232,.8); }
+.dim-i { display: inline-grid; place-items: center; width: 18px; height: 18px; padding: 0; border-radius: 50%; border: 1.5px solid var(--lilac); background: transparent; color: var(--lilac); font: italic 700 11px/1 Georgia, serif; cursor: help; }
+.dim-i:hover, .dim-i[aria-expanded="true"] { background: var(--lilac); color: var(--night); }
+.dim-i:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
+.dim-pop { position: absolute; opacity: 1; left: 0; top: calc(100% + 6px); z-index: 20; width: 220px; padding: 10px 12px; border-radius: 12px; background: var(--surface-raised); border: 1px solid var(--line); box-shadow: 0 14px 30px rgba(0,0,0,.45); font-size: 13px; line-height: 1.45; color: var(--cream); }
+.dim-pop[hidden] { display: none; }
+.ib-table th .fmt-sub .dim-pop, .ib-table th .dim-pop span { opacity: 1; font-size: 13px; }
+.dim-pop b { display: block; font-weight: 700; color: var(--pink); }
+.dim-pop span { display: block; color: var(--muted); }
+.dim-pop span + span { color: var(--cream); margin-top: 2px; }
+.ib-table .buy-line { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.ib-table .buy-line .money { font-weight: 700; color: var(--cream); }
+.buy { min-height: 32px; padding: 4px 16px; border: 0; border-radius: 999px; background: var(--pink); color: var(--on-pink); font: inherit; font-size: 13.5px; font-weight: 800; cursor: pointer; }
+.buy:hover { background: var(--cream); }
+.buy:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
+.buy.added { background: var(--lilac); }
+.ib-checkout { margin-top: 6px; font-size: 14px; font-weight: 700; color: var(--pink) !important; text-decoration: none; }
+.ib-checkout[hidden] { display: none; }

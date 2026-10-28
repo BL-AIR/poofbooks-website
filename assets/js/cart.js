@@ -29,6 +29,7 @@
       if (hit) hit.qty = (Number(hit.qty) || 0) + q; else items.push({ isbn: String(isbn), qty: q });
       write(items);
     },
+    remove: function (isbn) { write(read().filter(function (i) { return i.isbn !== String(isbn); })); },
     clear: function () { write([]); }
   };
 

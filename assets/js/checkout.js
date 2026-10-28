@@ -31,19 +31,30 @@
   // Stock wording is always general: never a quantity.
   var STOCK = { available: 'Available with supplier', back: 'On back order with supplier' };
 
+  // Editions the shop sells today. Later this comes from the catalogue API (prices from edition_price).
   var BOOK = { title: 'The Art of Surrender', author: 'Blair Purvis', cover: '/assets/books/art-of-surrender-print.webp', shelf: 'luminous-literature' };
-  var CARTS = {
-    single: [ { book: BOOK, format: 'Paperback, B-format', isbn: '9781922263988', price: 39.95, qty: 1, stock: 'available' } ],
-    three: [
-      { book: BOOK, format: 'Paperback, B-format', isbn: '9781922263988', price: 39.95, qty: 1, stock: 'available' },
-      { book: BOOK, format: 'Paperback, C-format', isbn: '9781922263971', price: 39.95, qty: 1, stock: 'available' },
-      { book: BOOK, format: 'Hardback Special Edition', isbn: '9781922263933', price: 89.95, qty: 1, stock: 'available' }
-    ],
-    backorder: [
-      { book: BOOK, format: 'Paperback, B-format', isbn: '9781922263988', price: 39.95, qty: 1, stock: 'available' },
-      { book: BOOK, format: 'Hardback Special Edition', isbn: '9781922263933', price: 89.95, qty: 1, stock: 'back' }
-    ]
+  var EDITIONS = {
+    '9781922263988': { book: BOOK, format: 'Paperback, Short & Thick', price: 39.95, stock: 'available' },
+    '9781922263971': { book: BOOK, format: 'Paperback, Long & Skinny', price: 39.95, stock: 'available' },
+    '9781922263933': { book: BOOK, format: 'Hardback Special Edition', price: 89.95, stock: 'available' },
+    '9781922263964': { book: BOOK, format: 'eBook (EPUB)', price: 15.95, stock: 'available' }
   };
+  function line(isbn, qty, stock) {
+    var e = EDITIONS[isbn]; if (!e) return null;
+    return { book: e.book, format: e.format, isbn: isbn, price: e.price, qty: qty || 1, stock: stock || e.stock, adult: !!e.adult };
+  }
+  // The reader's own cart (cart.js), skipping anything we no longer sell.
+  function realCart() {
+    if (!window.PoofCart) return [];
+    return PoofCart.items().map(function (i) { return line(i.isbn, Number(i.qty)); }).filter(Boolean);
+  }
+  // Sample orders for the test-mode preview links.
+  var CARTS = {
+    single: [ line('9781922263988', 1) ],
+    three: [ line('9781922263988', 1), line('9781922263971', 1), line('9781922263933', 1) ],
+    backorder: [ line('9781922263988', 1), line('9781922263933', 1, 'back') ]
+  };
+  var usingRealCart = false;
 
   var CARD_STYLE = {
     '.input-container': { borderColor: '#4A3D6E', borderRadius: '12px', borderWidth: '1.5px' },
@@ -113,6 +124,12 @@
       var st = document.createElement('span'); st.className = 'stock' + (l.stock === 'back' ? ' back' : ''); st.textContent = STOCK[l.stock];
       t.append(b, a, f, st);
       var p = money(l.price * l.qty); p.classList.add('line-price');
+      if (usingRealCart) {
+        var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'line-remove'; rm.textContent = 'Remove';
+        rm.setAttribute('aria-label', 'Remove ' + l.book.title + ', ' + l.format);
+        rm.addEventListener('click', function () { PoofCart.remove(l.isbn); location.reload(); });
+        t.appendChild(rm);
+      }
       li.append(img, t, p); ul.appendChild(li);
     });
     $('[data-books-total]').replaceChildren(money(total));
@@ -205,6 +222,7 @@
       if (result.status === 'OK') {
         // Live checkout: send result.token, result.details (address and email) and the cart to the payments Worker.
         $('[data-status]').innerHTML = '';
+        if (usingRealCart) PoofCart.clear();
         showConfirmed(walletEmail(result.details), true);
       } else if (result.status !== 'Cancel') {
         console.warn('[Poof checkout] ' + name + ' not completed', result.status, JSON.stringify(result.errors));
@@ -267,6 +285,7 @@
           // Live checkout: send result.token, the cart and the address to the payments Worker here,
           // and only show the confirmation once the Worker says the payment went through.
           $('[data-status]').innerHTML = '';
+          if (usingRealCart) PoofCart.clear();
           showConfirmed(form.email.value.trim(), true);
         } else {
           console.warn('[Poof checkout] card not accepted', result.status, JSON.stringify(result.errors));
@@ -299,7 +318,14 @@
     }
     if (demo === 'confirmed') { renderCart(CARTS.single); showConfirmed(''); return; }
 
-    var hasBack = renderCart(demo === 'backorder' ? CARTS.backorder : CARTS.single);
+    var mine = demo ? [] : realCart();
+    usingRealCart = mine.length > 0;
+    if (!usingRealCart && !demo) {
+      var note = document.createElement('p'); note.className = 'sum-note sample-note';
+      note.textContent = 'Sample order (test mode). Press Buy on a book\'s page to see your own cart here.';
+      $('.summary h2').after(note);
+    }
+    var hasBack = renderCart(usingRealCart ? mine : (demo === 'backorder' ? CARTS.backorder : CARTS.single));
     say(hasBack ? 'backorder' : 'greeting');
     if (demo === 'problem') showProblem('');
     startSquare(form);

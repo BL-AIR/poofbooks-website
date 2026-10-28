@@ -170,3 +170,7 @@ html.no-curators .co-head h1 { font-size: clamp(44px, 6vw, 72px); }
 .or { display: flex; align-items: center; gap: 14px; margin: 22px 0 0; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .or::before, .or::after { content: ""; flex: 1 1 auto; height: 1px; background: var(--line-subtle); }
 .adult { margin: 0 0 20px !important; }
+
+.line-remove { display: block; margin-top: 6px; padding: 0; border: 0; background: none; color: var(--muted); font: inherit; font-size: 12.5px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.line-remove:hover { color: var(--pink); }
+.sample-note { margin: 0 0 6px; color: var(--lilac); }
