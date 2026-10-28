@@ -5,6 +5,8 @@
 
    Filters a shelf can carry (each is a fieldset in the page; one with no data on the shelf hides itself):
      Published in the last : slider + presets (data-years)            card: data-date="2026-10-15"
+     Reading time          : "up to" slider + presets (data-hours)     card: data-words="101441"
+                             hours = words / the reader's pace (cog setting, view-settings.js) / 60
      Set during            : slider + era presets (fiction)           card: data-during="2010|2026" (years; BC as negative)
      Set during (sci-fi)   : chips  data-chips="eras"                 card: data-eras="Far future|Near future"
      Set in                : chips  data-chips="places"               card: data-places="Morocco|Germany"
@@ -61,6 +63,7 @@
       // Co-authors who share pronouns ("He|He") count as that one. Blank = Not stated.
       var pr = c.dataset.pronouns ? c.dataset.pronouns.split('|').filter(function (v, i, a) { return v && a.indexOf(v) === i; }) : [];
       c._pronouns = !pr.length ? ['Not stated'] : pr.length > 1 ? ['Mixed'] : pr;
+      c._words = c.dataset.words ? +c.dataset.words : null;
       c._price = c.dataset.price ? parseFloat(c.dataset.price) : Infinity;
       c._pick = c.dataset.pick === '1';
     });
@@ -173,6 +176,34 @@
       });
     }
 
+    // Reading time: one "up to" slider in half hours. At its top it means Any length.
+    var P = window.PoofPace || { get: function () { return 'average'; }, hours: function (w) { return w / 240 / 60; },
+      say: function (h) { return Math.round(h * 2) / 2 + ' hours'; } };
+    var rRange = form.querySelector('.range[data-range="reading"]');
+    var rFS = rRange ? rRange.closest('fieldset') : null, rIn = null, RMAX = 1, rCap = Infinity;
+    var rCards = cards.filter(function (c) { return c._words; });
+    if (rRange && !rCards.length) { rFS.hidden = true; rRange = null; }
+    function readingScale() {
+      if (!rRange) return;
+      var longest = Math.max.apply(null, rCards.map(function (c) { return P.hours(c._words); }));
+      RMAX = Math.max(1, Math.ceil(longest));
+      rIn.min = 0.5; rIn.max = RMAX; rIn.step = 0.5;
+      rIn.value = Math.min(rCap, RMAX);
+    }
+    if (rRange) { rIn = rRange.querySelector('[name="hours"]'); readingScale(); }
+    function readOn() { return !!rRange && +rIn.value < RMAX; }
+    function paintReading() {
+      if (!rRange) return;
+      var v = +rIn.value;
+      rRange.style.setProperty('--lo', '0%');
+      rRange.style.setProperty('--hi', ((v - 0.5) / ((RMAX - 0.5) || 1) * 100) + '%');
+      rFS.querySelector('[data-out="hours"]').textContent = v >= RMAX ? 'Any length' : 'Up to ' + P.say(v) + ' at your ' + P.get() + ' pace';
+      rFS.querySelectorAll('.presets button').forEach(function (b) {
+        var h = +b.dataset.hours;
+        b.setAttribute('aria-pressed', (h === 0 ? v >= RMAX : (v === Math.min(h, RMAX) && h < RMAX)) ? 'true' : 'false');
+      });
+    }
+
     function chosen(name) {
       return Array.prototype.map.call(form.querySelectorAll('.chip[data-key="' + name + '"][aria-pressed="true"]'), function (b) { return b.dataset.val; });
     }
@@ -199,11 +230,13 @@
       GROUPS.forEach(function (g) { on[g[0]] = chosen(g[1]); off[g[1]] = unticked(g[1]); offCount += off[g[1]].length; });
       var dateOn = lo > MIN || hi < MAX;
       var durOn = !!dRange && (dlo > DMIN || dhi < DMAX);
+      var rOn = readOn(), rH = rRange ? +rIn.value : 0;
       var shown = 0;
       cards.forEach(function (c) {
         var ok = (!q || c._title.indexOf(q) > -1 || c._author.indexOf(q) > -1) &&
           (!dateOn || (c._year !== null && c._year >= lo && c._year <= hi)) &&
           (!durOn || c._dFrom === null || (c._dFrom <= dhi && c._dTo >= dlo)) &&
+          (!rOn || !c._words || P.hours(c._words) <= rH) &&
           GROUPS.every(function (g) {
             var mine = c['_' + g[0]];
             // Values with no chip on this shelf (e.g. not on a fixed list) never hide a book.
@@ -224,7 +257,7 @@
       }[sort] || null;
       cards.slice().sort(by).forEach(function (c) { grid.appendChild(c); });
 
-      var active = (dateOn ? 1 : 0) + (durOn ? 1 : 0) + offCount;
+      var active = (dateOn ? 1 : 0) + (durOn ? 1 : 0) + (rOn ? 1 : 0) + offCount;
       paintAll();
       badge.hidden = !active; badge.textContent = active;
       countEl.textContent = shown === cards.length ? cards.length + (cards.length === 1 ? ' book' : ' books')
@@ -241,6 +274,7 @@
         if (sort !== 'newest') p.set('sort', sort);
         if (lo > MIN) p.set('from', lo);
         if (hi < MAX) p.set('to', hi);
+        if (rOn) p.set('time', rH);
         if (durOn && dlo > DMIN) p.set('dfrom', dlo);
         if (durOn && dhi < DMAX) p.set('dto', dhi);
         // The address bar records what has been unticked, e.g. ?not-pr=She,Mixed
@@ -256,6 +290,7 @@
     if (p.get('sort')) form.elements.sort.value = p.get('sort');
     if (p.get('from')) from.value = Math.max(MIN, Math.min(MAX, +p.get('from')));
     if (p.get('to')) to.value = Math.max(MIN, Math.min(MAX, +p.get('to')));
+    if (rRange && p.get('time')) { rCap = Math.max(0.5, +p.get('time')); rIn.value = Math.min(rCap, RMAX); }
     if (dRange && (p.get('dfrom') || p.get('dto'))) setDuring(p.get('dfrom') ? +p.get('dfrom') : DMIN, p.get('dto') ? +p.get('dto') : DMAX);
     var restored = false;
     GROUPS.forEach(function (g) {
@@ -264,7 +299,7 @@
         if (b) { b.setAttribute('aria-pressed', 'false'); restored = true; }
       });
     });
-    if (p.get('from') || p.get('to') || p.get('dfrom') || p.get('dto') || restored) { panel.hidden = false; toggle.setAttribute('aria-expanded', 'true'); }
+    if (p.get('from') || p.get('to') || p.get('time') || p.get('dfrom') || p.get('dto') || restored) { panel.hidden = false; toggle.setAttribute('aria-expanded', 'true'); }
 
     toggle.addEventListener('click', function () {
       panel.hidden = !panel.hidden;
@@ -275,6 +310,18 @@
     form.elements.sort.addEventListener('change', function () { apply(true); });
     from.addEventListener('input', function () { if (+from.value > +to.value) from.value = to.value; paintRange(); apply(true); });
     to.addEventListener('input', function () { if (+to.value < +from.value) to.value = from.value; paintRange(); apply(true); });
+    if (rRange) {
+      rIn.addEventListener('input', function () { rCap = +rIn.value >= RMAX ? Infinity : +rIn.value; paintReading(); apply(true); });
+      rFS.querySelectorAll('.presets button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var h = +b.dataset.hours;
+          rCap = h === 0 ? Infinity : h; rIn.value = Math.min(rCap, RMAX);
+          paintReading(); apply(true);
+        });
+      });
+      // The reader changed his pace in the settings gear: same time available, new book lengths.
+      document.addEventListener('poof:pace', function () { readingScale(); paintReading(); apply(true); });
+    }
     if (dRange) {
       dFrom.addEventListener('input', function () { if (+dFrom.value > +dTo.value) dFrom.value = dTo.value; dlo = posToYear(+dFrom.value); if (+dFrom.value === 0) dlo = DMIN; paintDuring(); apply(true); });
       dTo.addEventListener('input', function () { if (+dTo.value < +dFrom.value) dTo.value = dFrom.value; dhi = posToYear(+dTo.value); if (+dTo.value === 1000) dhi = DMAX; paintDuring(); apply(true); });
@@ -321,6 +368,7 @@
       form.elements.q.value = '';
       from.value = MIN; to.value = MAX;
       if (dRange) { setDuring(DMIN, DMAX); paintDuring(); }
+      if (rRange) { rCap = Infinity; rIn.value = RMAX; paintReading(); }
       form.querySelectorAll('.chip').forEach(function (b) { b.setAttribute('aria-pressed', 'true'); });
       paintRange(); apply(true);
     }
@@ -330,6 +378,7 @@
 
     paintRange();
     paintDuring();
+    paintReading();
     apply(false);
   });
 })();

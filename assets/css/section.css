@@ -60,6 +60,11 @@ html:not(.no-curators) .c-off { display: none !important; }
 .switch[disabled] { opacity: .45; cursor: not-allowed; background: var(--line); }
 .switch .knob { position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--cream); box-shadow: 0 1px 3px rgba(0,0,0,.4); transition: left .15s ease; }
 .switch[aria-checked="true"]:not([disabled]) .knob { left: 25px; }
+.vs-row.vs-pace { flex-direction: column; gap: 8px; }
+.pace { display: flex; gap: 6px; flex-wrap: wrap; }
+.pace button { min-height: 34px; padding: 5px 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--cream); font: inherit; font-size: 14px; cursor: pointer; }
+.pace button[aria-pressed="true"] { background: var(--lilac); border-color: var(--lilac); color: var(--night); font-weight: 600; }
+.pace button:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
 .vs-note { margin: 12px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
 html:not(.no-curators) .vs-note { display: none; }
 
