@@ -32,3 +32,12 @@ Master logo files live in the `Logos` folder alongside this repo.
 - A chips box can carry `data-fixed` (always shown in that order, even at 0) or `data-order` (only the values on the shelf, in that order). A book value with no chip never hides the book.
 - `data-formats="Hardback|Paperback|eBook"`: **Format**
 - `data-pronouns="He"`: **Author's pronouns** (He, She, They, Mixed, Not stated, always shown in that order). For a collaboration, list each author's pronouns, e.g. `He|She`: if they differ the book counts as **Mixed** only; if they match (`He|He`) it counts as that one. Leave blank for **Not stated**. Take pronouns from the author's own published bio; corrections come in to BigDaddy@poofbooks.com via the ⓘ note.
+
+## Checkout (draft)
+
+`checkout/index.html` with `assets/css/checkout.css` and `assets/js/checkout.js`. Looked after by Lil Otter (staff, not a curator, not in the section menu) in the Mailroom (`assets/rooms/mailroom.webp`, `assets/curators/cutouts/LilOtter.webp`, greeting `assets/audio/lil-otter-checkout.mp3`).
+
+- Square's Web Payments SDK draws the card fields (sandbox IDs in `checkout.js`; never an access token). The card box is kept under 480px wide so Square stacks the card number above expiry/CVV/postcode. Never build our own card fields.
+- Lil Otter's lines live in `OTTER` in `checkout.js` (normal spelling; the voice adds the lisp; only exception "Yeth, both!"), with plain versions in `PLAIN` for Curators off. A line with `audio` gets the play button.
+- Stock wording is general only (`STOCK`): never quantities.
+- Preview moments: `?demo=cart`, `?demo=backorder`, `?demo=confirmed`, `?demo=problem`. The lilac test band comes off at go-live.
