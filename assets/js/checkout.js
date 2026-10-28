@@ -73,6 +73,7 @@
   var html = document.documentElement;
   var audio = null;
   var cartTotal = 0;
+  var currentCart = [];
 
   function aud(n) { return n.toFixed(2); }
   function money(n) { var s = document.createElement('span'); s.className = 'money'; s.setAttribute('data-aud', aud(n)); s.textContent = 'A$' + aud(n); return s; }
@@ -135,6 +136,7 @@
     $('[data-books-total]').replaceChildren(money(total));
     $('[data-grand-total]').replaceChildren(money(total));
     cartTotal = total;
+    currentCart = cart;
     $('[data-pay-total]').textContent = aud(total);        // the Pay button always shows the AUD charge
     $('[data-adult]').hidden = !adult;
     return cart.some(function (l) { return l.stock === 'back'; });
@@ -155,6 +157,48 @@
   }
 
   /* ---------- Moments ---------- */
+  /* ---------- Hand-over to the thank-you page ----------
+     The order summary goes to /checkout/thanks/ in sessionStorage (this browser tab only), so that page
+     only works straight after a payment. Live checkout: ref becomes Square's receipt number from the Worker. */
+  function makeRef() {
+    var c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', r = '';
+    for (var i = 0; i < 6; i++) r += c[Math.floor(Math.random() * c.length)];
+    return 'TEST-' + r;                       // sandbox only: no real order exists yet
+  }
+  function buildOrder(email, name, address, paidWith) {
+    return {
+      ref: makeRef(), test: true, placedAt: new Date().toISOString(),
+      email: email || '', name: name || '', address: address || [], paidWith: paidWith || '',
+      items: currentCart.map(function (l) { return { title: l.book.title, author: l.book.author, cover: l.book.cover, format: l.format, qty: l.qty, price: l.price, stock: l.stock }; }),
+      booksTotal: cartTotal, delivery: null, total: cartTotal
+    };
+  }
+  function formAddress(form) {
+    var sel = form.country, country = sel.options[sel.selectedIndex].text;
+    return [form.line1.value, form.line2.value, [form.city.value, form.state.value, form.postcode.value].filter(Boolean).join(' '), country]
+      .map(function (x) { return (x || '').trim(); }).filter(Boolean);
+  }
+  function walletAddress(details) {
+    var c = details && details.shipping && details.shipping.contact;
+    if (!c) return { name: '', lines: [] };
+    var lines = (c.addressLines || []).concat([[c.city, c.state, c.postalCode].filter(Boolean).join(' '), c.countryCode || '']);
+    return { name: [c.givenName, c.familyName].filter(Boolean).join(' '), lines: lines.map(function (x) { return (x || '').trim(); }).filter(Boolean) };
+  }
+  function cardLabel(details) {
+    var c = details && details.card;
+    if (!c) return 'Card';
+    var brand = (c.brand || 'Card').replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, function (m) { return m.toUpperCase(); });
+    return brand + (c.last4 ? ' ending ' + c.last4 : '');
+  }
+  function goThanks(order) {
+    try {
+      sessionStorage.setItem('poof-last-order', JSON.stringify(order));
+      location.href = '/checkout/thanks/';
+    } catch (e) {
+      showConfirmed(order.email, true);       // storage blocked: confirm on this page instead
+    }
+  }
+
   function showConfirmed(email, scroll) {
     $('[data-form]').hidden = true;
     $('.co-box').hidden = true;                 // the order is placed: no more "Your order" box
@@ -237,8 +281,10 @@
       if (result.status === 'OK') {
         // Live checkout: send result.token, result.details (address and email) and the cart to the payments Worker.
         $('[data-status]').innerHTML = '';
+        var w = walletAddress(result.details);
+        var order = buildOrder(walletEmail(result.details), w.name, w.lines, name);
         if (usingRealCart) PoofCart.clear();
-        showConfirmed(walletEmail(result.details), true);
+        goThanks(order);
       } else if (result.status !== 'Cancel') {
         console.warn('[Poof checkout] ' + name + ' not completed', result.status, JSON.stringify(result.errors));
         showProblem(name + ' didn\'t go through. You can try again, or pay by card below.');
@@ -300,8 +346,9 @@
           // Live checkout: send result.token, the cart and the address to the payments Worker here,
           // and only show the confirmation once the Worker says the payment went through.
           $('[data-status]').innerHTML = '';
+          var order = buildOrder(form.email.value.trim(), (form.given.value + ' ' + form.family.value).trim(), formAddress(form), cardLabel(result.details));
           if (usingRealCart) PoofCart.clear();
-          showConfirmed(form.email.value.trim(), true);
+          goThanks(order);
         } else {
           console.warn('[Poof checkout] card not accepted', result.status, JSON.stringify(result.errors));
           showProblem('Square didn\'t accept that card. Check the number, expiry and security code, or try another card.');
@@ -331,7 +378,7 @@
       say('cart');
       return;
     }
-    if (demo === 'confirmed') { renderCart(CARTS.single); showConfirmed(''); return; }
+    if (demo === 'confirmed') { location.replace('/checkout/thanks/?demo=1'); return; }
 
     var mine = demo ? [] : realCart();
     usingRealCart = mine.length > 0;
