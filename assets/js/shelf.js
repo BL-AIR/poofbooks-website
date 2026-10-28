@@ -1,7 +1,18 @@
 /* Poof Books: sort and filter "On the shelf".
    Works on the book cards already in the page (data-* attributes), so it needs no server.
    The current choice is kept in the address bar, so a filtered shelf can be bookmarked or shared,
-   e.g. /conniving-crimes/?set=Australia&from=2024 */
+   e.g. /conniving-crimes/?set=Australia&from=2024
+
+   Filters a shelf can carry (each is a fieldset in the page; one with no data on the shelf hides itself):
+     Published in the last : slider + presets (data-years)            card: data-date="2026-10-15"
+     Set during            : slider + era presets (fiction)           card: data-during="2010|2026" (years; BC as negative)
+     Set during (sci-fi)   : chips  data-chips="eras"                 card: data-eras="Far future|Near future"
+     Set in                : chips  data-chips="places"               card: data-places="Morocco|Germany"
+     Kind of book          : chips  data-chips="kinds" (non-fiction)  card: data-kinds="Memoir|History"
+     Subject matter        : chips  data-chips="subjects"             card: data-subjects="AIDS|Activism"
+     Format, Author's pronouns as before.
+   A chips box may carry data-fixed="A|B|C" (always shown in that order, even at 0) or data-order="A|B|C"
+   (only values on the shelf, in that order). Era definitions below must match the database's era table. */
 (function () {
   'use strict';
   document.addEventListener('DOMContentLoaded', function () {
@@ -16,8 +27,20 @@
     var badge = toggle.querySelector('.n');
     var MIN = +form.dataset.min, MAX = +form.dataset.max;
     var from = form.elements.from, to = form.elements.to;
-    var range = form.querySelector('.range');
+    var range = form.querySelector('.range[data-range="published"]') || form.querySelector('.range');
     var thisYear = new Date().getFullYear();
+    // Set during: eras, earliest first. Must match the database (table era).
+    var ERAS = [
+      { label: 'Ancient world', from: -3000, to: 499 },
+      { label: 'Before 1800', from: 500, to: 1799 },
+      { label: '1800s', from: 1800, to: 1899 },
+      { label: '1900\u20131945', from: 1900, to: 1945 },
+      { label: 'Post-war', from: 1945, to: 1969 },
+      { label: 'Stonewall to AIDS', from: 1969, to: 1981 },
+      { label: 'The AIDS years', from: 1981, to: 1996 },
+      { label: '1997 to now', from: 1997, to: thisYear }
+    ];
+    function yr(n) { n = +n; return n < 0 ? (-n) + ' BC' : String(n); }
 
     cards.forEach(function (c, i) {
       c._i = i;
@@ -28,6 +51,11 @@
       c._places = c.dataset.places ? c.dataset.places.split('|') : [];
       c._formats = c.dataset.formats ? c.dataset.formats.split('|') : [];
       c._subjects = c.dataset.subjects ? c.dataset.subjects.split('|') : [];
+      c._eras = c.dataset.eras ? c.dataset.eras.split('|') : [];
+      c._kinds = c.dataset.kinds ? c.dataset.kinds.split('|') : [];
+      var dur = (c.dataset.during || '').split('|');
+      c._dFrom = dur[0] !== '' && dur.length === 2 ? +dur[0] : null;
+      c._dTo = c._dFrom !== null ? Math.min(+dur[1], thisYear) : null;
       // Author's pronouns: He, She or They. A collaboration lists each author's, e.g. "He|She";
       // if they differ the book counts as Mixed only (so ticking He never brings in a co-written-with-a-woman book).
       // Co-authors who share pronouns ("He|He") count as that one. Blank = Not stated.
@@ -41,7 +69,7 @@
     // A book stays on show if any of its values is still ticked (a book with no value for a group is never hidden by it).
     // Chips come from what's actually on the shelf, most common first.
     // A fixed list (e.g. pronouns) is always shown in that order, even where a value has no books yet.
-    var GROUPS = [['places', 'set'], ['formats', 'fmt'], ['subjects', 'sub'], ['pronouns', 'pr']];
+    var GROUPS = [['eras', 'era'], ['places', 'set'], ['kinds', 'kind'], ['formats', 'fmt'], ['subjects', 'sub'], ['pronouns', 'pr']];
     var built = {}; // groups this shelf actually shows; the rest are ignored
     function buildChips(key, name, fixed) {
       var box = form.querySelector('[data-chips="' + key + '"]');
@@ -49,7 +77,13 @@
       built[key] = true;
       var tally = {};
       cards.forEach(function (c) { c['_' + key].forEach(function (v) { tally[v] = (tally[v] || 0) + 1; }); });
-      var vals = fixed || Object.keys(tally).sort(function (a, b) { return tally[b] - tally[a] || a.localeCompare(b); });
+      fixed = fixed || (box.dataset.fixed ? box.dataset.fixed.split('|') : null);
+      var order = box.dataset.order ? box.dataset.order.split('|') : null;
+      var vals = fixed || Object.keys(tally).sort(function (a, b) {
+        if (order) { var ia = order.indexOf(a), ib = order.indexOf(b); ia = ia < 0 ? 999 : ia; ib = ib < 0 ? 999 : ib; if (ia !== ib) return ia - ib; }
+        return tally[b] - tally[a] || a.localeCompare(b);
+      });
+      if (fixed && !cards.some(function (c) { return c['_' + key].length; })) { box.closest('fieldset').hidden = true; return; }
       if (!vals.length) { box.closest('fieldset').hidden = true; return; }
       vals.forEach(function (v) {
         var b = document.createElement('button');
@@ -70,10 +104,74 @@
         a.setAttribute('aria-label', (off ? 'Tick all ' : 'Untick all ') + a.closest('fieldset').querySelector('legend').firstChild.textContent.trim());
       });
     }
+    buildChips('eras', 'era');
     buildChips('places', 'set');
+    buildChips('kinds', 'kind');
     buildChips('formats', 'fmt');
     buildChips('subjects', 'sub');
     buildChips('pronouns', 'pr', ['He', 'She', 'They', 'Mixed', 'Not stated']);
+
+    // Set during (fiction): a second slider over the years books are set in, with era presets.
+    // The slider gives each era an equal share of its length (an ancient-world book would otherwise squeeze
+    // the whole 20th century into a few pixels). The inputs run 0-1000; years are worked out from that.
+    var dRange = form.querySelector('.range[data-range="during"]');
+    var dFS = dRange ? dRange.closest('fieldset') : null;
+    var dFrom = null, dTo = null, DMIN = 0, DMAX = 0, dlo = 0, dhi = 0, SEGS = [];
+    var dCards = cards.filter(function (c) { return c._dFrom !== null; });
+    if (dRange && !dCards.length) { dFS.hidden = true; dRange = null; }
+    if (dRange) {
+      DMIN = Math.min.apply(null, dCards.map(function (c) { return c._dFrom; }));
+      DMAX = Math.max.apply(null, dCards.map(function (c) { return c._dTo; }));
+      if (DMAX === DMIN) DMIN = DMAX - 1;
+      var cuts = [ERAS[0].from].concat(ERAS.slice(1).map(function (e) { return e.from; }), [thisYear + 1]);
+      for (var i = 0; i < cuts.length - 1; i++) {
+        var a = Math.max(cuts[i], DMIN), b = Math.min(cuts[i + 1], DMAX);
+        if (a < b) SEGS.push([a, b]);
+      }
+      if (!SEGS.length) SEGS = [[DMIN, DMAX]];
+      dFrom = dRange.querySelector('[name="dfrom"]'); dTo = dRange.querySelector('[name="dto"]');
+      [dFrom, dTo].forEach(function (inp) { inp.min = 0; inp.max = 1000; inp.step = 1; });
+      dlo = DMIN; dhi = DMAX;
+      var box = dFS.querySelector('.presets');
+      ERAS.forEach(function (e) {
+        // Only eras that some book on the shelf is set in.
+        if (!dCards.some(function (c) { return c._dFrom <= e.to && c._dTo >= e.from; })) return;
+        var bt = document.createElement('button');
+        bt.type = 'button'; bt.textContent = e.label; bt.dataset.efrom = e.from; bt.dataset.eto = e.to;
+        box.appendChild(bt);
+      });
+      var any = document.createElement('button');
+      any.type = 'button'; any.textContent = 'Any time'; any.dataset.efrom = DMIN; any.dataset.eto = DMAX;
+      box.appendChild(any);
+    }
+    function posToYear(p) {
+      var w = 1000 / SEGS.length, i = Math.min(SEGS.length - 1, Math.floor(p / w)), sg = SEGS[i];
+      return Math.round(sg[0] + (p - i * w) / w * (sg[1] - sg[0]));
+    }
+    function yearToPos(y) {
+      var w = 1000 / SEGS.length;
+      for (var i = 0; i < SEGS.length; i++) {
+        var sg = SEGS[i];
+        if (y <= sg[1] || i === SEGS.length - 1) return Math.round(i * w + Math.max(0, Math.min(1, (y - sg[0]) / ((sg[1] - sg[0]) || 1))) * w);
+      }
+      return 1000;
+    }
+    function setDuring(lo, hi) {
+      dlo = Math.max(DMIN, Math.min(DMAX, lo)); dhi = Math.max(dlo, Math.min(DMAX, hi));
+      dFrom.value = yearToPos(dlo); dTo.value = yearToPos(dhi);
+    }
+    if (dRange) setDuring(DMIN, DMAX);
+    function paintDuring() {
+      if (!dRange) return;
+      dRange.style.setProperty('--lo', (+dFrom.value / 10) + '%');
+      dRange.style.setProperty('--hi', (+dTo.value / 10) + '%');
+      dFS.querySelector('[data-out="dfrom"]').textContent = yr(dlo);
+      dFS.querySelector('[data-out="dto"]').textContent = yr(dhi);
+      dFS.querySelectorAll('.presets button').forEach(function (bt) {
+        var lo = Math.max(DMIN, +bt.dataset.efrom), hi = Math.min(DMAX, +bt.dataset.eto);
+        bt.setAttribute('aria-pressed', (dlo === lo && dhi === hi) ? 'true' : 'false');
+      });
+    }
 
     function chosen(name) {
       return Array.prototype.map.call(form.querySelectorAll('.chip[data-key="' + name + '"][aria-pressed="true"]'), function (b) { return b.dataset.val; });
@@ -87,7 +185,7 @@
       range.style.setProperty('--hi', ((+to.value - MIN) / span * 100) + '%');
       form.querySelector('[data-out="from"]').textContent = from.value;
       form.querySelector('[data-out="to"]').textContent = to.value;
-      form.querySelectorAll('.presets button').forEach(function (b) {
+      form.querySelectorAll('.presets button[data-years]').forEach(function (b) {
         var n = +b.dataset.years;
         var on = n === 0 ? (+from.value === MIN && +to.value === MAX) : (+from.value === Math.max(MIN, thisYear - n + 1) && +to.value === MAX);
         b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -100,13 +198,17 @@
       var on = {}, off = {}, offCount = 0;
       GROUPS.forEach(function (g) { on[g[0]] = chosen(g[1]); off[g[1]] = unticked(g[1]); offCount += off[g[1]].length; });
       var dateOn = lo > MIN || hi < MAX;
+      var durOn = !!dRange && (dlo > DMIN || dhi < DMAX);
       var shown = 0;
       cards.forEach(function (c) {
         var ok = (!q || c._title.indexOf(q) > -1 || c._author.indexOf(q) > -1) &&
           (!dateOn || (c._year !== null && c._year >= lo && c._year <= hi)) &&
+          (!durOn || c._dFrom === null || (c._dFrom <= dhi && c._dTo >= dlo)) &&
           GROUPS.every(function (g) {
             var mine = c['_' + g[0]];
-            return !built[g[0]] || !mine.length || mine.some(function (v) { return on[g[0]].indexOf(v) > -1; });
+            // Values with no chip on this shelf (e.g. not on a fixed list) never hide a book.
+            return !built[g[0]] || !mine.length || mine.some(function (v) { return on[g[0]].indexOf(v) > -1; }) ||
+              !mine.some(function (v) { return on[g[0]].indexOf(v) > -1 || off[g[1]].indexOf(v) > -1; });
           });
         c.hidden = !ok;
         if (ok) shown++;
@@ -122,7 +224,7 @@
       }[sort] || null;
       cards.slice().sort(by).forEach(function (c) { grid.appendChild(c); });
 
-      var active = (dateOn ? 1 : 0) + offCount;
+      var active = (dateOn ? 1 : 0) + (durOn ? 1 : 0) + offCount;
       paintAll();
       badge.hidden = !active; badge.textContent = active;
       countEl.textContent = shown === cards.length ? cards.length + (cards.length === 1 ? ' book' : ' books')
@@ -139,6 +241,8 @@
         if (sort !== 'newest') p.set('sort', sort);
         if (lo > MIN) p.set('from', lo);
         if (hi < MAX) p.set('to', hi);
+        if (durOn && dlo > DMIN) p.set('dfrom', dlo);
+        if (durOn && dhi < DMAX) p.set('dto', dhi);
         // The address bar records what has been unticked, e.g. ?not-pr=She,Mixed
         GROUPS.forEach(function (g) { if (off[g[1]].length) p.set('not-' + g[1], off[g[1]].join(',')); });
         var qs = p.toString();
@@ -152,6 +256,7 @@
     if (p.get('sort')) form.elements.sort.value = p.get('sort');
     if (p.get('from')) from.value = Math.max(MIN, Math.min(MAX, +p.get('from')));
     if (p.get('to')) to.value = Math.max(MIN, Math.min(MAX, +p.get('to')));
+    if (dRange && (p.get('dfrom') || p.get('dto'))) setDuring(p.get('dfrom') ? +p.get('dfrom') : DMIN, p.get('dto') ? +p.get('dto') : DMAX);
     var restored = false;
     GROUPS.forEach(function (g) {
       (p.get('not-' + g[1]) || '').split(',').filter(Boolean).forEach(function (v) {
@@ -159,7 +264,7 @@
         if (b) { b.setAttribute('aria-pressed', 'false'); restored = true; }
       });
     });
-    if (p.get('from') || p.get('to') || restored) { panel.hidden = false; toggle.setAttribute('aria-expanded', 'true'); }
+    if (p.get('from') || p.get('to') || p.get('dfrom') || p.get('dto') || restored) { panel.hidden = false; toggle.setAttribute('aria-expanded', 'true'); }
 
     toggle.addEventListener('click', function () {
       panel.hidden = !panel.hidden;
@@ -170,7 +275,17 @@
     form.elements.sort.addEventListener('change', function () { apply(true); });
     from.addEventListener('input', function () { if (+from.value > +to.value) from.value = to.value; paintRange(); apply(true); });
     to.addEventListener('input', function () { if (+to.value < +from.value) to.value = from.value; paintRange(); apply(true); });
-    form.querySelectorAll('.presets button').forEach(function (b) {
+    if (dRange) {
+      dFrom.addEventListener('input', function () { if (+dFrom.value > +dTo.value) dFrom.value = dTo.value; dlo = posToYear(+dFrom.value); if (+dFrom.value === 0) dlo = DMIN; paintDuring(); apply(true); });
+      dTo.addEventListener('input', function () { if (+dTo.value < +dFrom.value) dTo.value = dFrom.value; dhi = posToYear(+dTo.value); if (+dTo.value === 1000) dhi = DMAX; paintDuring(); apply(true); });
+      dFS.querySelectorAll('.presets button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          setDuring(+b.dataset.efrom, +b.dataset.eto);
+          paintDuring(); apply(true);
+        });
+      });
+    }
+    form.querySelectorAll('.presets button[data-years]').forEach(function (b) {
       b.addEventListener('click', function () {
         var n = +b.dataset.years;
         from.value = n === 0 ? MIN : Math.max(MIN, thisYear - n + 1);
@@ -205,6 +320,7 @@
     function clearAll() {
       form.elements.q.value = '';
       from.value = MIN; to.value = MAX;
+      if (dRange) { setDuring(DMIN, DMAX); paintDuring(); }
       form.querySelectorAll('.chip').forEach(function (b) { b.setAttribute('aria-pressed', 'true'); });
       paintRange(); apply(true);
     }
@@ -213,6 +329,7 @@
     if (clr) clr.addEventListener('click', clearAll);
 
     paintRange();
+    paintDuring();
     apply(false);
   });
 })();

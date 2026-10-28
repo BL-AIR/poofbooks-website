@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="/assets/js/view-settings.js?v=202610271530" defer></script>
 <script src="/assets/js/currency.js?v=202610271230" defer></script>
 <script src="/assets/js/gate.js?v=202610262132" defer></script>
-<script src="/assets/js/shelf.js?v=202610280140" defer></script>
+<script src="/assets/js/shelf.js?v=202610281300" defer></script>
 <script src="/assets/js/showcase.js?v=202610262132" defer></script>
 </head>
 <body>
@@ -144,12 +144,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </div>
         <div class="filters" id="filters-luminous-literature" hidden>
           <fieldset class="f-group">
-            <legend>Published</legend>
-            <div class="presets" role="group" aria-label="Quick ranges"><button type="button" data-years="2">Last 2 years</button><button type="button" data-years="5">Last 5</button><button type="button" data-years="20">Last 20</button><button type="button" data-years="0">Any time</button></div>
-            <div class="range" style="--lo:0%;--hi:100%"><span class="track"></span>
+            <legend>Published in the last</legend>
+            <div class="presets" role="group" aria-label="Published in the last"><button type="button" data-years="2">2 years</button><button type="button" data-years="5">5 years</button><button type="button" data-years="20">20 years</button><button type="button" data-years="0">Any time</button></div>
+            <div class="range" data-range="published" style="--lo:0%;--hi:100%"><span class="track"></span>
               <input type="range" name="from" min="2026" max="2026" value="2026" aria-label="Published from">
               <input type="range" name="to" min="2026" max="2026" value="2026" aria-label="Published to"></div>
             <p class="range-out" aria-live="polite"><span data-out="from">2026</span> – <span data-out="to">2026</span></p>
+          </fieldset>
+          <fieldset class="f-group">
+            <legend>Set during</legend>
+            <div class="presets" role="group" aria-label="Eras"></div>
+            <div class="range" data-range="during" style="--lo:0%;--hi:100%"><span class="track"></span>
+              <input type="range" name="dfrom" aria-label="Set during, from">
+              <input type="range" name="dto" aria-label="Set during, to"></div>
+            <p class="range-out" aria-live="polite"><span data-out="dfrom"></span> – <span data-out="dto"></span></p>
           </fieldset>
           <fieldset class="f-group"><legend>Set in</legend><div class="chips" data-chips="places"></div></fieldset>
           <fieldset class="f-group"><legend>Format</legend><div class="chips" data-chips="formats"></div></fieldset>
@@ -159,7 +167,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </form>
       <p class="shelf-count" aria-live="polite"></p>
       <div class="books">
-        <a class="book" href="/books/the-art-of-surrender/" data-title="The Art of Surrender" data-author="Blair Purvis" data-pronouns="He" data-date="2026-10-15" data-places="Morocco|Gibraltar|Switzerland|Germany|Australia" data-formats="Hardback|Paperback|eBook" data-price="39.95" data-pick="1"><span class="jacket"><img src="/assets/books/art-of-surrender-print.webp" width="800" height="1200" alt="" loading="lazy"></span><span class="t">The Art of Surrender</span><span class="m">Blair Purvis · 2026 · <span class="money" data-aud="39.95">A$39.95</span></span><span class="w">Set in Morocco, Gibraltar +3</span></a>
+        <a class="book" href="/books/the-art-of-surrender/" data-title="The Art of Surrender" data-author="Blair Purvis" data-pronouns="He" data-date="2026-10-15" data-during="2010|2026" data-places="Morocco|Gibraltar|Switzerland|Germany|Australia" data-formats="Hardback|Paperback|eBook" data-price="39.95" data-pick="1"><span class="jacket"><img src="/assets/books/art-of-surrender-print.webp" width="800" height="1200" alt="" loading="lazy"></span><span class="t">The Art of Surrender</span><span class="m">Blair Purvis · 2026 · <span class="money" data-aud="39.95">A$39.95</span></span><span class="w">Set in Morocco, Gibraltar +3</span></a>
       </div>
       <p class="no-match" hidden>Nothing on this shelf matches all of that. <button type="button" class="linklike" data-clear>Reset the filters</button></p>
     </section>
