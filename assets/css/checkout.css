@@ -19,12 +19,17 @@
     linear-gradient(90deg, rgba(24,18,43,.05) 0%, rgba(24,18,43,.3) 34%, rgba(24,18,43,.82) 56%, rgba(24,18,43,.94) 100%); }
 .co-room .room-glow { left: 4%; top: 280px; bottom: auto; }
 
-.co-room .wrap.co-grid { display: grid; grid-template-columns: minmax(260px, 430px) minmax(0, 1fr); align-items: start; gap: 24px clamp(32px, 4vw, 64px); padding-top: 40px; padding-bottom: 88px; }
-.otter { position: sticky; top: 16px; min-width: 0; }
+.co-room .wrap.co-grid { display: grid; grid-template-columns: minmax(260px, 430px) minmax(0, 1fr);
+  grid-template-areas: "otter head" "otter form" "sum form"; grid-template-rows: auto auto 1fr;
+  align-items: start; gap: 0 clamp(32px, 4vw, 64px); padding-top: 40px; padding-bottom: 88px; }
+.otter { grid-area: otter; }
+.co-head { grid-area: head; min-width: 0; max-width: 720px; }
+.co-box { grid-area: sum; }
+.co-panel { grid-area: form; }
+.otter { min-width: 0; }
 .otter-stage { position: relative; padding-bottom: 28px; min-height: 712px; display: flex; flex-direction: column; justify-content: flex-end; } /* parcels sit on the foreground floor (~725px down), in front of the packing bench */
 .otter .fig { width: 100%; max-height: 600px; object-position: bottom center; }
-.co-main { min-width: 0; max-width: 720px; }
-.co-main h1 { font-size: clamp(40px, 5vw, 64px); }
+.co-head h1 { font-size: clamp(40px, 5vw, 64px); }
 
 /* Play button by his figure (only shown when Sound is on) */
 .otter-play-wrap { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); margin: 0; white-space: nowrap; }
@@ -40,13 +45,15 @@
 .otter-speech .catch { color: var(--pink); font-weight: 700; }
 .plain-intro { margin: 18px 0 0; max-width: 640px; font-size: 18px; line-height: 1.6; color: var(--muted); }
 
-/* The checkout panel (where the curator's box sits) */
-.co-panel { margin-top: 28px; padding: clamp(18px, 3vw, 32px); background: rgba(34,26,59,.95); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+/* The two boxes: Your order (left, under the Mailroom) and the checkout form (where the curator's box sits) */
+.co-panel, .co-box { padding: clamp(18px, 3vw, 32px); background: rgba(34,26,59,.95); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+.co-panel { margin-top: 28px; min-width: 0; max-width: 720px; }
+.co-box { margin-top: 28px; position: sticky; top: 16px; }        /* stays in view while the form scrolls */
 
 /* Curators off: a plain, on-brand form */
-html.no-curators .co-room .wrap.co-grid { grid-template-columns: minmax(0, 1fr); padding-top: 56px; }
-html.no-curators .co-main { max-width: 760px; }
-html.no-curators .co-main h1 { font-size: clamp(44px, 6vw, 72px); }
+html.no-curators .co-room .wrap.co-grid { grid-template-areas: "head head" "sum form"; grid-template-rows: auto 1fr; grid-template-columns: minmax(260px, 380px) minmax(0, 1fr); padding-top: 56px; }
+html.no-curators .co-head { max-width: 760px; }
+html.no-curators .co-head h1 { font-size: clamp(44px, 6vw, 72px); }
 
 /* Order summary */
 .summary h2 { margin: 0 0 6px; font-size: 20px; font-weight: 800; }
@@ -70,7 +77,8 @@ html.no-curators .co-main h1 { font-size: clamp(44px, 6vw, 72px); }
 .summary [data-fx-note] { margin: 4px 0 0; }
 
 /* Form */
-.co-form { margin-top: 8px; }
+.co-form { margin: 0; }
+.co-form .co-step:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
 .co-step { margin: 28px 0 0; padding: 26px 0 0; border: 0; border-top: 1px solid var(--line-subtle); min-width: 0; }
 .co-step legend { float: left; width: 100%; display: flex; align-items: center; gap: 12px; padding: 0; margin: 0 0 4px; font-size: 21px; font-weight: 800; }
 .co-step legend + * { clear: both; }
@@ -134,16 +142,17 @@ html.no-curators .co-main h1 { font-size: clamp(44px, 6vw, 72px); }
 
 /* Narrower screens */
 @media (max-width: 1000px) {
-  .co-room .wrap.co-grid { grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); }
+  .co-room .wrap.co-grid, html.no-curators .co-room .wrap.co-grid { grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); }
 }
 @media (max-width: 760px) {
-  .co-room .wrap.co-grid { grid-template-columns: minmax(0, 1fr); padding-top: 20px; gap: 0; }
-  .otter { position: static; display: flex; justify-content: center; }
+  .co-room .wrap.co-grid, html.no-curators .co-room .wrap.co-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "otter" "head" "sum" "form"; grid-template-rows: auto; padding-top: 20px; gap: 0; }
+  .co-box { position: static; }
+  .otter { display: flex; justify-content: center; }
   .otter-stage { width: min(72vw, 300px); min-height: 530px; } /* parcels on the foreground floor (~520px down) */
   .co-room .room-bg, .co-room .room-shade { height: 560px; }
   .co-room .room-shade { background: linear-gradient(180deg, rgba(24,18,43,.15) 0%, rgba(24,18,43,.4) 60%, rgba(24,18,43,.9) 90%, var(--night) 100%); }
-  .co-main { margin-top: 12px; }
-  .co-panel { margin-left: calc(-1 * var(--gutter) / 2); margin-right: calc(-1 * var(--gutter) / 2); }
+  .co-head { margin-top: 12px; }
+  .co-panel, .co-box { margin-left: calc(-1 * var(--gutter) / 2); margin-right: calc(-1 * var(--gutter) / 2); }
   .row.two, .row.three { grid-template-columns: 1fr; }
   .pay { font-size: 19px; }
 }

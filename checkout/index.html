@@ -25,11 +25,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
 <link rel="stylesheet" href="/assets/css/section.css?v=202610281330">
-<link rel="stylesheet" href="/assets/css/checkout.css?v=202610282000">
+<link rel="stylesheet" href="/assets/css/checkout.css?v=202610281945">
 <script src="/assets/js/view-settings.js?v=202610281310" defer></script>
 <script src="/assets/js/currency.js?v=202610271230" defer></script>
 <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
-<script src="/assets/js/checkout.js?v=202610282000" defer></script>
+<script src="/assets/js/checkout.js?v=202610281945" defer></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -67,7 +67,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <main class="checkout">
   <section class="room co-room" aria-labelledby="co-h">
-    <img class="room-bg c-on" src="/assets/rooms/mailroom.webp" width="1280" height="720" alt="">
+    <img class="room-bg c-on" src="/assets/rooms/mailroom.webp?v=202610281945" width="1280" height="720" alt="">
     <div class="room-shade c-on" aria-hidden="true"></div>
     <div class="room-glow c-on" aria-hidden="true"></div>
 
@@ -76,12 +76,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <!-- Lil Otter, layered in front of the Mailroom (curators on) -->
       <div class="otter c-on">
         <div class="otter-stage">
-          <img class="fig" src="/assets/curators/cutouts/LilOtter.webp" width="524" height="690" alt="Lil Otter the Leatherman in his cap and leather vest, sitting on a stack of wrapped parcels with a book, giving a thumbs-up">
+          <img class="fig" src="/assets/curators/cutouts/LilOtter.webp?v=202610281945" width="524" height="690" alt="Lil Otter the Leatherman in his cap and leather vest, sitting on a stack of wrapped parcels with a book, giving a thumbs-up">
           <p class="sound-only otter-play-wrap" data-otter-play-wrap><button class="otter-play" type="button" data-otter-play data-audio="/assets/audio/lil-otter-checkout.mp3" aria-pressed="false"><svg class="i-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg><svg class="i-stop" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"></rect></svg><span>Hear Lil Otter</span></button></p>
         </div>
       </div>
 
-      <div class="co-main">
+      <div class="co-head">
         <p class="eyebrow"><span class="c-on">The Mailroom · Lil Otter's staff room</span><span class="c-off">Poof Books</span></p>
         <h1 id="co-h" data-title>Checkout</h1>
         <p class="with c-on">with Lil Otter the Leatherman</p>
@@ -90,22 +90,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <blockquote data-otter-says>¡Hola, boss! I am Lil Otter, down here in the Mailroom. My job? I take the book you choose, and I send it straight to your door. Wrapped twice, tied with string… very pretty. So! I need your name and your address for the label, and how you like to pay, ¿vale? Fill in the little boxes, then press the big pink button. Yes, boss! I start wrapping.</blockquote>
         </figure>
         <p class="plain-intro c-off" data-plain-says>Fill in your details and delivery address, then pay. We'll email your receipt straight away, and again when your order is on its way.</p>
+      </div>
 
-        <!-- The checkout panel sits where a curator's speech box sits on the section pages -->
-        <div class="co-panel" data-panel>
+      <!-- Your order: its own box under the Mailroom, left column -->
+      <section class="co-box summary" aria-labelledby="sum-h">
+        <h2 id="sum-h">Your order</h2>
+        <ul class="lines" data-lines></ul>
+        <dl class="totals">
+          <div><dt>Books</dt><dd data-books-total></dd></div>
+          <div><dt>Delivery</dt><dd><span class="gap-inline">rates to come</span></dd></div>
+          <div class="grand"><dt>Total</dt><dd data-grand-total></dd></div>
+        </dl>
+        <p class="sum-note">Charged in Australian dollars. No GST is charged.</p>
+        <p data-fx-note hidden></p>
+      </section>
 
-          <section class="summary" aria-labelledby="sum-h">
-            <h2 id="sum-h">Your order</h2>
-            <ul class="lines" data-lines></ul>
-            <dl class="totals">
-              <div><dt>Books</dt><dd data-books-total></dd></div>
-              <div><dt>Delivery</dt><dd><span class="gap-inline">rates to come</span></dd></div>
-              <div class="grand"><dt>Total</dt><dd data-grand-total></dd></div>
-            </dl>
-            <p class="sum-note">Charged in Australian dollars. No GST is charged.</p>
-            <p data-fx-note hidden></p>
-          </section>
-
+      <!-- The checkout form: where a curator's speech box sits on the section pages -->
+      <div class="co-panel" data-panel>
           <form class="co-form" id="checkout-form" novalidate data-form>
             <fieldset class="co-step">
               <legend><span class="n">1</span>Your details</legend>
@@ -163,7 +164,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <p><a class="btn btn-primary" href="/the-cabin/">Back to the shop</a></p>
           </section>
 
-        </div>
       </div>
     </div>
   </section>
