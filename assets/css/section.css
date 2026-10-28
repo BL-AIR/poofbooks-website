@@ -93,6 +93,17 @@ h1 { margin: 0; font-size: clamp(40px, 5vw, 68px); line-height: 1.02; font-weigh
 .say { display: inline-flex; align-items: center; gap: 8px; }
 html:not(.sound-on) .sound-only { display: none !important; }
 html.sound-on .quiet-only { display: none !important; }
+/* Curators' voices: Sound only. Words that have a recording are hidden from view (screen readers still read them),
+   leaving the play button. Words without a recording always show. */
+html.words-off .speech:has(.hear[data-audio]:not([data-audio=""])) blockquote,
+html.words-off .about .c-on:has(.about-hear .hear[data-audio]:not([data-audio=""])) > p:not(.about-hear),
+html.words-off .co-grid:has(.otter-play[data-audio]) .otter-speech > * {
+  position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+html.words-off .speech:has(.hear[data-audio]:not([data-audio=""])),
+html.words-off .co-grid:has(.otter-play[data-audio]) .otter-speech { padding: 0; background: none; border: 0; box-shadow: none; }
+html.words-off .speech:has(.hear[data-audio]:not([data-audio=""])) figcaption { margin-top: 0; }
+html.words-off .about .c-on:has(.about-hear .hear[data-audio]:not([data-audio=""])) .about-hear { margin-top: 0; }
+.pace button[disabled] { opacity: .45; cursor: not-allowed; }
 @media (max-width: 760px) {
   .room .wrap { padding-top: 24px; gap: 0; }
   .figure { flex-basis: 100%; display: flex; justify-content: center; }

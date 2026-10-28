@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Section page: draft. Not in sitemap, noindex. -->
-<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,c=s.curators!==false,m=typeof s.motion==='boolean'?s.motion:!r;if(!c)d.classList.add('no-curators');if(c&&s.sound!==false)d.classList.add('sound-on');if(c&&m)d.classList.add('motion-on')})();</script>
+<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,c=s.curators!==false,m=typeof s.motion==='boolean'?s.motion:!r,v=(s.voice==='text'||s.voice==='both'||s.voice==='sound')?s.voice:(s.sound===false?'text':'both');if(!c)d.classList.add('no-curators');if(c&&v!=='text')d.classList.add('sound-on');if(c&&v==='sound')d.classList.add('words-off');if(c&&m)d.classList.add('motion-on')})();</script>
 <script src="/assets/js/consent.js"></script>
 <link rel="stylesheet" href="/assets/css/consent.css">
 <!-- Google Tag Manager -->
@@ -24,8 +24,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
-<link rel="stylesheet" href="/assets/css/section.css?v=202610282005">
-<script src="/assets/js/view-settings.js?v=202610281310" defer></script>
+<link rel="stylesheet" href="/assets/css/section.css?v=202610290945">
+<script src="/assets/js/view-settings.js?v=202610290945" defer></script>
 <script src="/assets/js/cart.js?v=202610282045" defer></script>
 <script src="/assets/js/currency.js?v=202610282005" defer></script>
 <script src="/assets/js/gate.js?v=202610261845" defer></script>
@@ -56,10 +56,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <h2>How would you like to browse?</h2>
     <p class="hint">We'll remember this on your device.</p>
     <div class="vs-row"><div class="lab"><b>Curators</b><span>Meet the characters who look after each shelf. Off: just the books.</span></div><button class="switch" type="button" role="switch" aria-checked="true" aria-label="Curators" data-key="curators"><span class="knob"></span></button></div>
-    <div class="vs-row"><div class="lab"><b>Sound</b><span>Let curators speak when you press play. Their words always appear as text.</span></div><button class="switch" type="button" role="switch" aria-checked="false" aria-label="Sound" data-key="sound"><span class="knob"></span></button></div>
+    <div class="vs-row vs-pace vs-voice"><div class="lab"><b>Curators&#x2019; voices</b><span>Read their words, hear them, or both. Nothing plays until you press play.</span></div><div class="pace" role="group" aria-label="Curators&#x2019; voices"><button type="button" data-voice="text" aria-pressed="false">Text only</button><button type="button" data-voice="both" aria-pressed="true">Sound &amp; text</button><button type="button" data-voice="sound" aria-pressed="false">Sound only</button></div></div>
     <div class="vs-row"><div class="lab"><b>Motion</b><span>Gentle animation on the curators. Follows your device setting.</span></div><button class="switch" type="button" role="switch" aria-checked="true" aria-label="Motion" data-key="motion"><span class="knob"></span></button></div>
     <div class="vs-row vs-pace"><div class="lab"><b>Reading pace</b><span>Used to work out how long a book will take you.</span></div><div class="pace" role="group" aria-label="Reading pace"><button type="button" data-pace="slow" aria-pressed="false">Slow</button><button type="button" data-pace="average" aria-pressed="true">Average</button><button type="button" data-pace="fast" aria-pressed="false">Fast</button></div></div>
-    <p class="vs-note">Sound and motion only apply to the curators, so they're paused while the curators are off.</p>
+    <p class="vs-note">Voices and motion only apply to the curators, so they're paused while the curators are off.</p>
   </section>
 </header>
 

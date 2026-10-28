@@ -1,4 +1,4 @@
-/* Poof Books view settings: Curators, Sound, Motion, Reading pace.
+/* Poof Books view settings: Curators, Curators' voices (Text only / Sound & text / Sound only), Motion, Reading pace.
    The tiny inline script in each page's <head> applies the saved choice before first paint;
    this file wires up the gear, the pop-up, the switches and the Hear button. */
 (function () {
@@ -14,7 +14,9 @@
     try { s = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { s = {}; }
     return {
       curators: s.curators !== false,
-      sound: s.sound !== false,   // on by default; nothing plays until a Hear button is pressed
+      // Curators' voices: 'text' (words only), 'both' (default), 'sound' (words with a recording are hidden; press play).
+      // Older saves only had sound true/false, which maps to both/text. Nothing ever plays until a play button is pressed.
+      voice: (s.voice === 'text' || s.voice === 'both' || s.voice === 'sound') ? s.voice : (s.sound === false ? 'text' : 'both'),
       motion: typeof s.motion === 'boolean' ? s.motion : !reduce,
       pace: PACE[s.pace] ? s.pace : 'average'
     };
@@ -50,7 +52,8 @@
 
   function apply() {
     root.classList.toggle('no-curators', !state.curators);
-    root.classList.toggle('sound-on', state.curators && state.sound);
+    root.classList.toggle('sound-on', state.curators && state.voice !== 'text');
+    root.classList.toggle('words-off', state.curators && state.voice === 'sound');
     root.classList.toggle('motion-on', state.curators && state.motion);
     document.querySelectorAll('.switch[data-key]').forEach(function (b) {
       var k = b.getAttribute('data-key');
@@ -58,7 +61,11 @@
       b.disabled = dependent && !state.curators;
       b.setAttribute('aria-checked', state[k] && !b.disabled ? 'true' : 'false');
     });
-    if (!(state.curators && state.sound)) stopAudio();
+    if (!(state.curators && state.voice !== 'text')) stopAudio();
+    document.querySelectorAll('.pace button[data-voice]').forEach(function (b) {
+      b.disabled = !state.curators;
+      b.setAttribute('aria-pressed', state.curators && b.getAttribute('data-voice') === state.voice ? 'true' : 'false');
+    });
     document.querySelectorAll('.pace button[data-pace]').forEach(function (b) {
       b.setAttribute('aria-pressed', b.getAttribute('data-pace') === state.pace ? 'true' : 'false');
     });
@@ -97,6 +104,15 @@
         if (b.disabled) return;
         var k = b.getAttribute('data-key');
         state[k] = !state[k];
+        save(state);
+        apply();
+      });
+    });
+
+    document.querySelectorAll('.pace button[data-voice]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.disabled) return;
+        state.voice = b.getAttribute('data-voice');
         save(state);
         apply();
       });
