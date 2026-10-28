@@ -10,6 +10,8 @@
   var APP_ID = 'sandbox-sq0idb-7HXAqE7ZD7W34CJAug8Lhg';
   var LOCATION_ID = 'LV05GKTGY70ZC';
   var SHOP_EMAIL = 'BigDaddy@poofbooks.com';
+  // Payments Worker: prices the cart itself, charges Square, saves the order and sends Lil Otter's receipt.
+  var PAY_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/checkout';
 
   // Lil Otter's lines. Only the greeting has a recording so far; the others get one later (set audio).
   var OTTER = {
@@ -203,6 +205,38 @@
     var brand = (c.brand || 'Card').replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, function (m) { return m.toUpperCase(); });
     return brand + (c.last4 ? ' ending ' + c.last4 : '');
   }
+  // Send the token and the order to the payments Worker. Resolves with the Worker's order, or throws an Error
+  // whose message is safe to show the customer.
+  function newKey() {
+    try { return crypto.randomUUID(); } catch (e) { return 'k' + Date.now() + Math.random().toString(36).slice(2); }
+  }
+  async function payViaWorker(payload) {
+    payload.items = currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; });
+    payload.curators = !html.classList.contains('no-curators');
+    payload.idempotencyKey = newKey();
+    var res, data;
+    try {
+      res = await fetch(PAY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      data = await res.json();
+    } catch (e) {
+      throw new Error('We couldn\'t reach our payment service just now. You have not been charged.');
+    }
+    if (!res.ok || !data.ok) throw new Error(data && data.error ? data.error : 'The payment didn\'t go through. You have not been charged.');
+    return data;
+  }
+  // The thank-you page's order, from the Worker's reply (its prices and order number), with covers from the cart.
+  function orderFromWorker(w) {
+    return {
+      ref: w.ref, test: !!w.test, placedAt: new Date().toISOString(),
+      email: w.email, name: w.name, address: w.address || [], paidWith: w.paidWith,
+      items: (w.items || []).map(function (i) {
+        var c = currentCart.filter(function (l) { return l.isbn === i.isbn; })[0];
+        return { title: i.title, author: c ? c.book.author : '', cover: c ? c.book.cover : '', format: i.format, qty: i.qty, price: i.price };
+      }),
+      booksTotal: w.booksTotal, delivery: w.delivery, total: w.total
+    };
+  }
+
   function goThanks(order) {
     try {
       sessionStorage.setItem('poof-last-order', JSON.stringify(order));
@@ -292,12 +326,18 @@
     // tokenize() must be the first thing the click does (Apple Pay rejects anything async before it).
     method.tokenize().then(function (result) {
       if (result.status === 'OK') {
-        // Live checkout: send result.token, result.details (address and email) and the cart to the payments Worker.
-        $('[data-status]').innerHTML = '';
-        var w = walletAddress(result.details);
-        var order = buildOrder(walletEmail(result.details), w.name, w.lines, name);
-        if (usingRealCart) PoofCart.clear();
-        goThanks(order);
+        if (!usingRealCart) { goThanks(buildOrder(walletEmail(result.details), walletAddress(result.details).name, walletAddress(result.details).lines, name)); return; }
+        plainStatus('Taking payment…', 'ok');
+        var c = (result.details && result.details.shipping && result.details.shipping.contact) || {};
+        payViaWorker({
+          sourceId: result.token, paidWith: name, adult: !!(form.adult && form.adult.checked),
+          email: walletEmail(result.details), given: c.givenName || '', family: c.familyName || '',
+          address: { line1: (c.addressLines || [])[0] || '', line2: (c.addressLines || [])[1] || '', city: c.city || '', state: c.state || '', postcode: c.postalCode || '', country: c.countryCode || '' }
+        }).then(function (w) {
+          $('[data-status]').innerHTML = '';
+          PoofCart.clear();
+          goThanks(orderFromWorker(w));
+        }).catch(function (e) { showProblem(e.message); });
       } else if (result.status !== 'Cancel') {
         console.warn('[Poof checkout] ' + name + ' not completed', result.status, JSON.stringify(result.errors));
         showProblem(name + ' didn\'t go through. You can try again, or pay by card below.');
@@ -356,12 +396,25 @@
       try {
         var result = await card.tokenize();
         if (result.status === 'OK') {
-          // Live checkout: send result.token, the cart and the address to the payments Worker here,
-          // and only show the confirmation once the Worker says the payment went through.
-          $('[data-status]').innerHTML = '';
-          var order = buildOrder(form.email.value.trim(), (form.given.value + ' ' + form.family.value).trim(), formAddress(form), cardLabel(result.details));
-          if (usingRealCart) PoofCart.clear();
-          goThanks(order);
+          if (!usingRealCart) {
+            // Preview (sample order, no real cart): nothing is charged or sent.
+            goThanks(buildOrder(form.email.value.trim(), (form.given.value + ' ' + form.family.value).trim(), formAddress(form), cardLabel(result.details)));
+            return;
+          }
+          plainStatus('Taking payment…', 'ok');
+          try {
+            var w = await payViaWorker({
+              sourceId: result.token, paidWith: cardLabel(result.details), adult: !!(form.adult && form.adult.checked),
+              email: form.email.value.trim(), given: form.given.value.trim(), family: form.family.value.trim(),
+              address: { line1: form.line1.value, line2: form.line2.value, city: form.city.value, state: form.state.value, postcode: form.postcode.value, country: form.country.value }
+            });
+            $('[data-status]').innerHTML = '';
+            PoofCart.clear();
+            goThanks(orderFromWorker(w));
+            return;
+          } catch (err) {
+            showProblem(err.message);
+          }
         } else {
           console.warn('[Poof checkout] card not accepted', result.status, JSON.stringify(result.errors));
           showProblem('Square didn\'t accept that card. Check the number, expiry and security code, or try another card.');
