@@ -60,11 +60,14 @@
         ul.appendChild(li);
       });
       if (gear) {
-        var tools = document.createElement('div');
-        tools.className = 'hdr-tools';
-        gear.parentNode.insertBefore(tools, gear);
-        tools.appendChild(box);
-        tools.appendChild(gear);
+        var tools = gear.closest('.hdr-tools');           // cart.js may have made it already
+        if (!tools) {
+          tools = document.createElement('div');
+          tools.className = 'hdr-tools';
+          gear.parentNode.insertBefore(tools, gear);
+          tools.appendChild(gear);
+        }
+        tools.insertBefore(box, tools.firstChild);        // currency first, then trolley, then gear
       }
       var btn = box.querySelector('.cur-btn'), menu = box.querySelector('.cur-menu');
       function open(o) { menu.hidden = !o; btn.setAttribute('aria-expanded', o ? 'true' : 'false'); }

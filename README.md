@@ -42,3 +42,7 @@ Master logo files live in the `Logos` folder alongside this repo.
 - Stock wording is general only (`STOCK`): never quantities.
 - Preview moments: `?demo=cart`, `?demo=backorder`, `?demo=confirmed`, `?demo=problem`. The lilac test band comes off at go-live.
 - Apple Pay and Google Pay: an "Express checkout" strip at the top of the form box (`startWallets` in `checkout.js`). Apple Pay needs the domain verified in the Square Developer Console; the file lives at `.well-known/apple-developer-merchantid-domain-association`, and `.nojekyll` must stay at the repository root or GitHub Pages won't serve that folder.
+
+## Trolley and cart
+
+`assets/js/cart.js` (load it on every page with the header, before `currency.js`) adds the trolley between the currency switcher and the gear, with a pink item count. The cart is kept in localStorage `poof-cart` as `[{isbn, qty}]`; use `PoofCart.add(isbn, qty)`, `PoofCart.items()`, `PoofCart.count()`, `PoofCart.clear()`. Changes fire `poof:cart` on `document`.
