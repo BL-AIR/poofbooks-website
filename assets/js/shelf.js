@@ -38,7 +38,7 @@
       { label: 'Post-war', from: 1945, to: 1969 },
       { label: 'Stonewall to AIDS', from: 1969, to: 1981 },
       { label: 'The AIDS years', from: 1981, to: 1996 },
-      { label: '1997 to now', from: 1997, to: thisYear }
+      { label: '1997 to now', from: 1997, to: 9999 }   // open-ended, like the database (to_year NULL)
     ];
     function yr(n) { n = +n; return n < 0 ? (-n) + ' BC' : String(n); }
 
@@ -55,7 +55,7 @@
       c._kinds = c.dataset.kinds ? c.dataset.kinds.split('|') : [];
       var dur = (c.dataset.during || '').split('|');
       c._dFrom = dur[0] !== '' && dur.length === 2 ? +dur[0] : null;
-      c._dTo = c._dFrom !== null ? Math.min(+dur[1], thisYear) : null;
+      c._dTo = c._dFrom !== null ? +dur[1] : null;   // may be in the future (near-future settings)
       // Author's pronouns: He, She or They. A collaboration lists each author's, e.g. "He|She";
       // if they differ the book counts as Mixed only (so ticking He never brings in a co-written-with-a-woman book).
       // Co-authors who share pronouns ("He|He") count as that one. Blank = Not stated.
@@ -123,7 +123,7 @@
       DMIN = Math.min.apply(null, dCards.map(function (c) { return c._dFrom; }));
       DMAX = Math.max.apply(null, dCards.map(function (c) { return c._dTo; }));
       if (DMAX === DMIN) DMIN = DMAX - 1;
-      var cuts = [ERAS[0].from].concat(ERAS.slice(1).map(function (e) { return e.from; }), [thisYear + 1]);
+      var cuts = [ERAS[0].from].concat(ERAS.slice(1).map(function (e) { return e.from; }), [Math.max(thisYear, DMAX) + 1]);
       for (var i = 0; i < cuts.length - 1; i++) {
         var a = Math.max(cuts[i], DMIN), b = Math.min(cuts[i + 1], DMAX);
         if (a < b) SEGS.push([a, b]);
