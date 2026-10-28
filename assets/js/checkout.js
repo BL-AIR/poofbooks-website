@@ -140,11 +140,26 @@
     return cart.some(function (l) { return l.stock === 'back'; });
   }
 
+  // One button to empty the cart; asks once ("Tap again to empty") so it can't happen by accident.
+  function addEmptyButton() {
+    var h = $('.summary h2'), wrap = document.createElement('div'), btn = document.createElement('button'), t = null;
+    wrap.className = 'sum-head'; h.parentNode.insertBefore(wrap, h); wrap.appendChild(h);
+    btn.type = 'button'; btn.className = 'empty-cart'; btn.textContent = 'Empty cart';
+    wrap.appendChild(btn);
+    btn.addEventListener('click', function () {
+      if (btn.dataset.armed) { PoofCart.clear(); location.reload(); return; }
+      btn.dataset.armed = '1'; btn.textContent = 'Tap again to empty';
+      clearTimeout(t);
+      t = setTimeout(function () { delete btn.dataset.armed; btn.textContent = 'Empty cart'; }, 4000);
+    });
+  }
+
   /* ---------- Moments ---------- */
   function showConfirmed(email, scroll) {
     $('[data-form]').hidden = true;
+    $('.co-box').hidden = true;                 // the order is placed: no more "Your order" box
     var d = $('[data-done]'); d.hidden = false;
-    if (email) $('[data-done-email]').textContent = email;
+    if (email) document.querySelectorAll('[data-done-email]').forEach(function (el) { el.textContent = email; });
     $('[data-title]').textContent = 'Order received';
     say('confirmed');
     if (scroll) $('[data-title]').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -326,6 +341,7 @@
       $('.summary h2').after(note);
     }
     var hasBack = renderCart(usingRealCart ? mine : (demo === 'backorder' ? CARTS.backorder : CARTS.single));
+    if (usingRealCart) addEmptyButton();
     say(hasBack ? 'backorder' : 'greeting');
     if (demo === 'problem') showProblem('');
     startSquare(form);

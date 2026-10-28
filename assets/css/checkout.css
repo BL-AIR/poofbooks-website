@@ -174,3 +174,13 @@ html.no-curators .co-head h1 { font-size: clamp(44px, 6vw, 72px); }
 .line-remove { display: block; margin-top: 6px; padding: 0; border: 0; background: none; color: var(--muted); font: inherit; font-size: 12.5px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .line-remove:hover { color: var(--pink); }
 .sample-note { margin: 0 0 6px; color: var(--lilac); }
+
+.sum-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 6px; }
+.sum-head h2 { margin: 0; }
+.empty-cart { padding: 4px 0; border: 0; background: none; color: var(--muted); font: inherit; font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; white-space: nowrap; }
+.empty-cart:hover, .empty-cart[data-armed] { color: var(--pink); }
+
+.done a[href^="mailto:"] { color: var(--pink); font-weight: 700; }
+.done .catch { color: var(--pink); font-weight: 800; white-space: nowrap; }
+.co-box[hidden] { display: none; }
+.co-form[hidden] ~ .done { margin-top: 0; padding-top: 0; border-top: 0; }

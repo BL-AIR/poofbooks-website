@@ -25,12 +25,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
 <link rel="stylesheet" href="/assets/css/section.css?v=202610282005">
-<link rel="stylesheet" href="/assets/css/checkout.css?v=202610282015">
+<link rel="stylesheet" href="/assets/css/checkout.css?v=202610282032">
 <script src="/assets/js/view-settings.js?v=202610281310" defer></script>
 <script src="/assets/js/cart.js?v=202610282005" defer></script>
 <script src="/assets/js/currency.js?v=202610282005" defer></script>
 <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
-<script src="/assets/js/checkout.js?v=202610282015" defer></script>
+<script src="/assets/js/checkout.js?v=202610282030" defer></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -173,7 +173,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
           <section class="done" data-done hidden aria-labelledby="done-h">
             <h2 id="done-h">What happens next</h2>
-            <p>Thank you. Your receipt is on its way to <b data-done-email>your inbox</b>, and we'll email again with tracking when your parcel leaves the Mailroom.</p>
+            <!-- Lil Otter's version (curators on). Normal spelling: his voice adds the lisp; "Yeth, both!" is his one spelled catchphrase. -->
+            <div class="c-on otter-next">
+              <p>Thank you, boss! Your receipt is already flying to <b data-done-email>your inbox</b>.</p>
+              <p>Now your book comes down to me in the Mailroom. I wrap it twice, I tie the string, I write your name very neat. When it leaves, I send you another email with the tracking number, so you can follow it all the way to your door.</p>
+              <p>And if the post lets us down (too slow, too lost, a little bit squashed) you write to me straight away: <a href="mailto:LilOtter@poofbooks.com">LilOtter@poofbooks.com</a>. I fix it. <span class="catch">Yeth, both!</span></p>
+            </div>
+            <div class="c-off">
+              <p>Thank you. Your receipt is on its way to <b data-done-email>your inbox</b>, and we'll email again with tracking when your order is dispatched.</p>
+              <p>If anything goes wrong with your delivery, email <a href="mailto:LilOtter@poofbooks.com">LilOtter@poofbooks.com</a> and we'll put it right.</p>
+            </div>
             <p class="done-test">Test mode: nothing was charged and nothing will be sent.</p>
             <p><a class="btn btn-primary" href="/the-cabin/">Back to the shop</a></p>
           </section>
