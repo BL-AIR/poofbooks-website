@@ -184,3 +184,23 @@ html.no-curators .co-head h1 { font-size: clamp(44px, 6vw, 72px); }
 .done .catch { color: var(--pink); font-weight: 800; white-space: nowrap; }
 .co-box[hidden] { display: none; }
 .co-form[hidden] ~ .done { margin-top: 0; padding-top: 0; border-top: 0; }
+
+/* Thank-you page (/checkout/thanks/) */
+.thanks .otter-speech blockquote p { margin: 0; }
+.thanks .otter-speech blockquote p + p { margin-top: 12px; }
+.thanks .otter-speech a, .thanks .plain-intro a { color: var(--pink); font-weight: 700; }
+.thanks .otter-speech .catch { color: var(--pink); font-weight: 800; white-space: nowrap; }
+.thanks .plain-intro p { margin: 0 0 10px; }
+.order-done[hidden] { display: none; }
+.od-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 6px; }
+.od-head h2 { margin: 0; font-size: 20px; font-weight: 800; }
+.od-ref { margin: 0; font-size: 14px; color: var(--muted); }
+.od-ref b { color: var(--cream); font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.od-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px 32px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line-subtle); }
+.od-cols h3 { margin: 0 0 6px; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--lilac); }
+.od-cols address, .od-cols p { margin: 0; font-style: normal; font-size: 15px; line-height: 1.55; }
+.od-help { margin: 18px 0 0; font-size: 14px; color: var(--muted); }
+.od-help a { color: var(--pink); font-weight: 700; }
+.order-done .btn { margin-top: 8px; }
+html.no-curators .thanks .co-room .wrap.co-grid { grid-template-areas: "head" "form"; grid-template-columns: minmax(0, 1fr); }
+html.no-curators .thanks .co-panel { max-width: 760px; }
