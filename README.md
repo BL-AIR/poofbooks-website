@@ -41,3 +41,4 @@ Master logo files live in the `Logos` folder alongside this repo.
 - Lil Otter's lines live in `OTTER` in `checkout.js` (normal spelling; the voice adds the lisp; only exception "Yeth, both!"), with plain versions in `PLAIN` for Curators off. A line with `audio` gets the play button.
 - Stock wording is general only (`STOCK`): never quantities.
 - Preview moments: `?demo=cart`, `?demo=backorder`, `?demo=confirmed`, `?demo=problem`. The lilac test band comes off at go-live.
+- Apple Pay and Google Pay: an "Express checkout" strip at the top of the form box (`startWallets` in `checkout.js`). Apple Pay needs the domain verified in the Square Developer Console; the file lives at `.well-known/apple-developer-merchantid-domain-association`, and `.nojekyll` must stay at the repository root or GitHub Pages won't serve that folder.

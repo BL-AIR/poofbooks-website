@@ -61,6 +61,7 @@
   var $ = function (s) { return document.querySelector(s); };
   var html = document.documentElement;
   var audio = null;
+  var cartTotal = 0;
 
   function aud(n) { return n.toFixed(2); }
   function money(n) { var s = document.createElement('span'); s.className = 'money'; s.setAttribute('data-aud', aud(n)); s.textContent = 'A$' + aud(n); return s; }
@@ -116,6 +117,7 @@
     });
     $('[data-books-total]').replaceChildren(money(total));
     $('[data-grand-total]').replaceChildren(money(total));
+    cartTotal = total;
     $('[data-pay-total]').textContent = aud(total);        // the Pay button always shows the AUD charge
     $('[data-adult]').hidden = !adult;
     return cart.some(function (l) { return l.stock === 'back'; });
@@ -159,12 +161,93 @@
     return !first;
   }
 
+  /* ---------- Express checkout: Apple Pay and Google Pay ----------
+     The wallet supplies the buyer's name, email and delivery address, so the form isn't needed.
+     Delivery is a placeholder until the shipping rates are in. */
+  function walletRequest(payments) {
+    var amount = aud(cartTotal);
+    var shipping = [{ id: 'standard', label: 'Standard post (rate to come)', amount: '0.00' }];
+    var lineItems = [{ label: 'Books', amount: amount }, { label: 'Delivery', amount: '0.00' }];
+    var req = payments.paymentRequest({
+      countryCode: 'AU', currencyCode: 'AUD',
+      total: { amount: amount, label: 'Poof Books' },
+      lineItems: lineItems,
+      requestBillingContact: true,
+      requestShippingContact: true,
+      shippingOptions: shipping
+    });
+    // Later: price delivery for the address chosen in the wallet (by weight and size).
+    try {
+      req.addEventListener('shippingcontactchanged', function () { return { shippingOptions: shipping, lineItems: lineItems, total: { amount: amount, label: 'Poof Books' } }; });
+      req.addEventListener('shippingoptionchanged', function () { return { lineItems: lineItems, total: { amount: amount, label: 'Poof Books' } }; });
+    } catch (e) { /* older SDK: fixed delivery for now */ }
+    return req;
+  }
+
+  function adultOk(form) {
+    var adult = $('[data-adult]');
+    if (adult.hidden || form.adult.checked) return true;
+    form.adult.focus();
+    plainStatus('Please tick "I\'m 18 or over" first: your order includes a book from Exquisite Erotica.', 'err');
+    return false;
+  }
+
+  function walletEmail(details) {
+    if (!details) return '';
+    var s = details.shipping && details.shipping.contact, b = details.billing;
+    return (s && s.email) || (b && b.email) || '';
+  }
+
+  function payWithWallet(method, name, form) {
+    if (!adultOk(form)) return;
+    // tokenize() must be the first thing the click does (Apple Pay rejects anything async before it).
+    method.tokenize().then(function (result) {
+      if (result.status === 'OK') {
+        // Live checkout: send result.token, result.details (address and email) and the cart to the payments Worker.
+        $('[data-status]').innerHTML = '';
+        showConfirmed(walletEmail(result.details), true);
+      } else if (result.status !== 'Cancel') {
+        console.warn('[Poof checkout] ' + name + ' not completed', result.status, JSON.stringify(result.errors));
+        showProblem(name + ' didn\'t go through. You can try again, or pay by card below.');
+      }
+    }).catch(function (e) {
+      console.error('[Poof checkout]', e);
+      showProblem(name + ' didn\'t go through. You can try again, or pay by card below.');
+    });
+  }
+
+  async function startWallets(payments, form) {
+    var express = $('[data-express]'), any = false;
+    try {
+      var applePay = await payments.applePay(walletRequest(payments));   // Safari with Apple Pay set up, on a verified domain
+      var ab = $('#apple-pay-button');
+      ab.hidden = false; any = true;
+      ab.addEventListener('click', function (ev) { ev.preventDefault(); payWithWallet(applePay, 'Apple Pay', form); });
+    } catch (e) { /* not available on this device or browser */ }
+    try {
+      var googlePay = await payments.googlePay(walletRequest(payments));
+      var gb = $('#google-pay-button');
+      gb.hidden = false;
+      await googlePay.attach('#google-pay-button', { buttonColor: 'white', buttonSizeMode: 'fill', buttonType: 'long' });
+      any = true;
+      gb.addEventListener('click', function (ev) { ev.preventDefault(); payWithWallet(googlePay, 'Google Pay', form); });
+    } catch (e) { $('#google-pay-button').hidden = true; }
+    express.hidden = !any;
+  }
+
   async function startSquare(form) {
     var btn = $('[data-pay]'), loading = $('[data-card-loading]');
     if (!window.Square) { loading.textContent = 'The card box couldn\'t load. Check your connection and refresh the page.'; return; }
-    var card;
+    var card, payments;
     try {
-      var payments = window.Square.payments(APP_ID, LOCATION_ID);
+      payments = window.Square.payments(APP_ID, LOCATION_ID);
+    } catch (e) {
+      console.error('[Poof checkout]', e);
+      loading.textContent = 'Payments couldn\'t start. Please refresh the page.';
+      return;
+    }
+    startWallets(payments, form);
+    try {
       card = await payments.card({ style: CARD_STYLE });
       await card.attach('#card-container');
       loading.hidden = true; btn.disabled = false;

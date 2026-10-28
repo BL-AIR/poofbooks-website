@@ -25,11 +25,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
 <link rel="stylesheet" href="/assets/css/section.css?v=202610281330">
-<link rel="stylesheet" href="/assets/css/checkout.css?v=202610281945">
+<link rel="stylesheet" href="/assets/css/checkout.css?v=202610282000">
 <script src="/assets/js/view-settings.js?v=202610281310" defer></script>
 <script src="/assets/js/currency.js?v=202610271230" defer></script>
 <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
-<script src="/assets/js/checkout.js?v=202610281945" defer></script>
+<script src="/assets/js/checkout.js?v=202610282000" defer></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -108,6 +108,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <!-- The checkout form: where a curator's speech box sits on the section pages -->
       <div class="co-panel" data-panel>
           <form class="co-form" id="checkout-form" novalidate data-form>
+            <!-- Erotica orders only: asked first, because it applies to every way of paying -->
+            <label class="adult" data-adult hidden><input type="checkbox" name="adult"> I'm 18 or over.<span class="hint">Your order includes a book from Exquisite Erotica.</span></label>
+
+            <!-- Express checkout: Square draws Google Pay; Apple Pay is Apple's own button (Safari only). Shown only when the device supports one. -->
+            <div class="express" data-express hidden>
+              <p class="express-h">Express checkout</p>
+              <div class="wallets">
+                <button type="button" class="apple-pay" id="apple-pay-button" lang="en" aria-label="Pay with Apple Pay" hidden></button>
+                <div class="google-pay" id="google-pay-button" hidden></div>
+              </div>
+              <p class="express-note">Your wallet fills in your name, email and delivery address for you.</p>
+              <p class="or"><span>or pay by card</span></p>
+            </div>
+
             <fieldset class="co-step">
               <legend><span class="n">1</span>Your details</legend>
               <div class="row two">
@@ -149,7 +163,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <div id="card-container" class="card-box"></div>
               <p class="card-loading" data-card-loading>Opening the card box…</p>
 
-              <label class="adult" data-adult hidden><input type="checkbox" name="adult"> I'm 18 or over.<span class="hint">Your order includes a book from Exquisite Erotica.</span></label>
 
               <button class="pay" type="submit" data-pay disabled>Pay A$<span data-pay-total></span></button>
               <p class="pay-small">By paying you agree to our terms of sale and <a href="/privacy/">privacy statement</a>.</p>

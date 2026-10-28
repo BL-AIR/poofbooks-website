@@ -78,7 +78,7 @@ html.no-curators .co-head h1 { font-size: clamp(44px, 6vw, 72px); }
 
 /* Form */
 .co-form { margin: 0; }
-.co-form .co-step:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.co-form .co-step:first-of-type { margin-top: 0; padding-top: 0; border-top: 0; }
 .co-step { margin: 28px 0 0; padding: 26px 0 0; border: 0; border-top: 1px solid var(--line-subtle); min-width: 0; }
 .co-step legend { float: left; width: 100%; display: flex; align-items: center; gap: 12px; padding: 0; margin: 0 0 4px; font-size: 21px; font-weight: 800; }
 .co-step legend + * { clear: both; }
@@ -156,3 +156,17 @@ html.no-curators .co-head h1 { font-size: clamp(44px, 6vw, 72px); }
   .row.two, .row.three { grid-template-columns: 1fr; }
   .pay { font-size: 19px; }
 }
+
+/* Express checkout: Apple Pay and Google Pay (white buttons on Night, per both brands' dark-background guidance) */
+.express { margin: 0 0 26px; }
+.express[hidden] { display: none; }
+.express-h { margin: 0 0 12px; font-size: 21px; font-weight: 800; }
+.wallets { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.wallets [hidden] { display: none !important; }
+.apple-pay { display: block; width: 100%; height: 52px; min-height: 52px; padding: 0; border: 0; border-radius: 12px; cursor: pointer;
+  -webkit-appearance: -apple-pay-button; -apple-pay-button-type: plain; -apple-pay-button-style: white; }
+.google-pay { height: 52px; min-height: 52px; border-radius: 12px; overflow: hidden; }
+.express-note { margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+.or { display: flex; align-items: center; gap: 14px; margin: 22px 0 0; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.or::before, .or::after { content: ""; flex: 1 1 auto; height: 1px; background: var(--line-subtle); }
+.adult { margin: 0 0 20px !important; }
