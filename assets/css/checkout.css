@@ -56,6 +56,12 @@ html.no-curators .co-head { max-width: 760px; }
 html.no-curators .co-head h1 { font-size: clamp(44px, 6vw, 72px); }
 
 /* Order summary */
+
+/* Empty cart: Lil Otter shoos you back upstairs; the box moves up beside him (where the form would be) */
+html.cart-empty .co-box { grid-area: form; max-width: 520px; position: static; }
+.empty-note { margin: 4px 0 0; font-size: 17px; line-height: 1.55; color: var(--muted); }
+.back-to-shelves { text-decoration: none; }
+html.cart-empty .summary .totals, html.cart-empty .summary .sum-note, html.cart-empty .summary [data-fx-note] { display: none !important; }
 .summary h2 { margin: 0 0 6px; font-size: 20px; font-weight: 800; }
 .lines { list-style: none; margin: 0; padding: 0; }
 .line { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 14px; align-items: start; padding: 12px 0; border-top: 1px solid var(--rule); }

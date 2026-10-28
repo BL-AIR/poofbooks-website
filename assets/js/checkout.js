@@ -17,7 +17,8 @@
     cart:      { text: 'Three books? Yes, boss! Excellent choices. I go and find a nice box.' },
     confirmed: { text: 'Got it! Payment is in. Big Daddy will be very happy. Now I wrap.' },
     backorder: { text: 'Ay, this one is still on the boat. As soon as it lands, I send it. Promise.' },
-    problem:   { text: 'Something wrong? Tell me everything. I fix it.' }
+    problem:   { text: 'Something wrong? Tell me everything. I fix it.' },
+    empty:     { text: 'You! There is nothing in your box, boss. You only came down here to admire my hairy chest, no? Go, go! Back up to the shelves and pick a book. ¡Vamos, vamos! Vamoose!', audio: '/assets/audio/lil-otter-empty.mp3' }
   };
   // The same moments in plain words (curators off).
   var PLAIN = {
@@ -25,7 +26,8 @@
     cart:      'Here\'s what\'s in your cart. When you\'re ready, go to checkout.',
     confirmed: 'Thank you: your payment has been received and your order is being prepared.',
     backorder: 'One of your books is on back order with our supplier. We\'ll send it as soon as it arrives.',
-    problem:   'Something went wrong. Please check your details, or email us and we\'ll sort it out.'
+    problem:   'Something went wrong. Please check your details, or email us and we\'ll sort it out.',
+    empty:     'Your cart is empty. Browse the shelves and press Buy beside a format to add a book.'
   };
 
   // Stock wording is always general: never a quantity.
@@ -153,6 +155,18 @@
       clearTimeout(t);
       t = setTimeout(function () { delete btn.dataset.armed; btn.textContent = 'Empty cart'; }, 4000);
     });
+  }
+
+  // Nothing in the cart: Lil Otter shoos the visitor back upstairs to the curators' grid in the Cabin.
+  function showEmpty() {
+    var box = $('.summary');
+    box.querySelectorAll('[data-lines], .totals, .sum-note, [data-fx-note]').forEach(function (el) { el.hidden = true; });
+    var p = document.createElement('p'); p.className = 'empty-note'; p.textContent = 'Your cart is empty.';
+    var a = document.createElement('a'); a.className = 'pay back-to-shelves'; a.href = '/the-cabin/#curators'; a.textContent = 'Back to the shelves';
+    box.append(p, a);
+    $('[data-panel]').hidden = true;
+    html.classList.add('cart-empty');
+    say('empty');
   }
 
   /* ---------- Moments ---------- */
@@ -381,7 +395,8 @@
 
     var mine = demo ? [] : realCart();
     usingRealCart = mine.length > 0;
-    if (!usingRealCart && !demo) {
+    if (demo === 'empty' || (!usingRealCart && !demo)) { showEmpty(); return; }
+    if (demo === 'sample') {
       var note = document.createElement('p'); note.className = 'sum-note sample-note';
       note.textContent = 'Sample order (test mode). Press Buy on a book\'s page to see your own cart here.';
       $('.summary h2').after(note);
