@@ -250,6 +250,10 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .f-group[hidden] { display: none; }
 .f-group legend { padding: 0; margin-bottom: 10px; font-size: 12.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+/* Slider groups stretch to the tallest in their row and keep the slider at the bottom, so sliders line up
+   however many preset buttons each group has. */
+.f-group:has(> .range) { align-self: stretch; display: flex; flex-direction: column; }
+.f-group:has(> .range) > .presets { flex: 1 0 auto; align-content: flex-start; }
 .presets button, .chip { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: transparent; color: var(--cream); font: inherit; font-size: 14px; cursor: pointer; }
 .presets button[aria-pressed="true"], .chip[aria-pressed="true"] { background: var(--lilac); border-color: var(--lilac); color: var(--on-pink); font-weight: 600; }
 .chip small { font-size: 12px; opacity: .7; }

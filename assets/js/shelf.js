@@ -144,7 +144,7 @@
         box.appendChild(bt);
       });
       var any = document.createElement('button');
-      any.type = 'button'; any.textContent = 'Any time'; any.dataset.efrom = DMIN; any.dataset.eto = DMAX;
+      any.type = 'button'; any.dataset.any = '1'; any.textContent = 'Any time'; any.dataset.efrom = DMIN; any.dataset.eto = DMAX;
       box.appendChild(any);
     }
     function posToYear(p) {
@@ -170,9 +170,12 @@
       dRange.style.setProperty('--hi', (+dTo.value / 10) + '%');
       dFS.querySelector('[data-out="dfrom"]').textContent = yr(dlo);
       dFS.querySelector('[data-out="dto"]').textContent = yr(dhi);
+      // Only one preset lights at a time: when the whole range is chosen that is "Any time", even if an era covers it too.
+      var dAll = dlo === DMIN && dhi === DMAX;
       dFS.querySelectorAll('.presets button').forEach(function (bt) {
         var lo = Math.max(DMIN, +bt.dataset.efrom), hi = Math.min(DMAX, +bt.dataset.eto);
-        bt.setAttribute('aria-pressed', (dlo === lo && dhi === hi) ? 'true' : 'false');
+        var on = bt.dataset.any ? dAll : (!dAll && dlo === lo && dhi === hi);
+        bt.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
     }
 
@@ -218,7 +221,8 @@
       form.querySelector('[data-out="to"]').textContent = to.value;
       form.querySelectorAll('.presets button[data-years]').forEach(function (b) {
         var n = +b.dataset.years;
-        var on = n === 0 ? (+from.value === MIN && +to.value === MAX) : (+from.value === Math.max(MIN, thisYear - n + 1) && +to.value === MAX);
+        var all = +from.value === MIN && +to.value === MAX;
+        var on = n === 0 ? all : (!all && +from.value === Math.max(MIN, thisYear - n + 1) && +to.value === MAX);
         b.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
     }
@@ -253,7 +257,7 @@
         title: function (a, b) { return a._title.localeCompare(b._title); },
         author: function (a, b) { return a._author.localeCompare(b._author) || a._title.localeCompare(b._title); },
         price: function (a, b) { return a._price - b._price || a._title.localeCompare(b._title); },
-        pick: function (a, b) { return (b._pick - a._pick) || (b._date || '').localeCompare(a._date || ''); }
+        pick: function (a, b) { return (b._pick - a._pick) || (b._date || '').localeCompare(a._date || '') || a._i - b._i; }
       }[sort] || null;
       cards.slice().sort(by).forEach(function (c) { grid.appendChild(c); });
 
@@ -271,7 +275,7 @@
           if (/^utm_/.test(k) || k === 'gclid' || k === 'fbclid') p.set(k, v);
         });
         if (q) p.set('q', q);
-        if (sort !== 'newest') p.set('sort', sort);
+        if (sort !== 'pick') p.set('sort', sort);  // the curator's picks first is the default
         if (lo > MIN) p.set('from', lo);
         if (hi < MAX) p.set('to', hi);
         if (rOn) p.set('time', rH);
