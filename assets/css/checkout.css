@@ -15,13 +15,13 @@
 .co-room .room-bg { height: 780px; bottom: auto; object-position: center bottom; opacity: .6; } /* anchored to the floor line, so the floor stays at ~600-650px down at any width */
 .co-room .room-shade { height: 780px; bottom: auto;
   background:
-    linear-gradient(180deg, rgba(24,18,43,0) 50%, var(--night) 100%),
+    linear-gradient(180deg, rgba(24,18,43,0) 72%, var(--night) 100%),
     linear-gradient(90deg, rgba(24,18,43,.05) 0%, rgba(24,18,43,.3) 34%, rgba(24,18,43,.82) 56%, rgba(24,18,43,.94) 100%); }
 .co-room .room-glow { left: 4%; top: 280px; bottom: auto; }
 
 .co-room .wrap.co-grid { display: grid; grid-template-columns: minmax(260px, 430px) minmax(0, 1fr); align-items: start; gap: 24px clamp(32px, 4vw, 64px); padding-top: 40px; padding-bottom: 88px; }
 .otter { position: sticky; top: 16px; min-width: 0; }
-.otter-stage { position: relative; padding-bottom: 28px; min-height: 610px; display: flex; flex-direction: column; justify-content: flex-end; } /* parcels land on the Mailroom floor (~620px down) */
+.otter-stage { position: relative; padding-bottom: 28px; min-height: 712px; display: flex; flex-direction: column; justify-content: flex-end; } /* parcels sit on the foreground floor (~725px down), in front of the packing bench */
 .otter .fig { width: 100%; max-height: 600px; object-position: bottom center; }
 .co-main { min-width: 0; max-width: 720px; }
 .co-main h1 { font-size: clamp(40px, 5vw, 64px); }
@@ -139,9 +139,9 @@ html.no-curators .co-main h1 { font-size: clamp(44px, 6vw, 72px); }
 @media (max-width: 760px) {
   .co-room .wrap.co-grid { grid-template-columns: minmax(0, 1fr); padding-top: 20px; gap: 0; }
   .otter { position: static; display: flex; justify-content: center; }
-  .otter-stage { width: min(72vw, 300px); min-height: 470px; } /* floor sits ~460px down on a phone */
+  .otter-stage { width: min(72vw, 300px); min-height: 530px; } /* parcels on the foreground floor (~520px down) */
   .co-room .room-bg, .co-room .room-shade { height: 560px; }
-  .co-room .room-shade { background: linear-gradient(180deg, rgba(24,18,43,.15) 0%, rgba(24,18,43,.45) 45%, rgba(24,18,43,.95) 78%, var(--night) 100%); }
+  .co-room .room-shade { background: linear-gradient(180deg, rgba(24,18,43,.15) 0%, rgba(24,18,43,.4) 60%, rgba(24,18,43,.9) 90%, var(--night) 100%); }
   .co-main { margin-top: 12px; }
   .co-panel { margin-left: calc(-1 * var(--gutter) / 2); margin-right: calc(-1 * var(--gutter) / 2); }
   .row.two, .row.three { grid-template-columns: 1fr; }
