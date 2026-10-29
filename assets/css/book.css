@@ -164,3 +164,12 @@ html:not(.sound-on) .script { display: none; }
 .buy.added { background: var(--lilac); }
 .ib-checkout { margin-top: 6px; font-size: 14px; font-weight: 700; color: var(--pink) !important; text-decoration: none; }
 .ib-checkout[hidden] { display: none; }
+
+/* Commissioned review (curator's retelling with curators on, approved plain version with them off). */
+.crev-head { display: flex; align-items: flex-end; gap: 16px; margin-bottom: 14px; }
+.crev-fig { width: 84px; height: auto; flex: none; }
+.crev-head .listen { margin: 0 0 6px; }
+.crev-head .hear .dur { font-weight: 400; opacity: .8; }
+.crev .prose p { line-height: 1.7; }
+.crev-note { margin: 14px 0 0; font-size: 13.5px; color: var(--muted); font-style: italic; }
+html.words-off .crev:has(.hear[data-audio]:not([data-audio=""])) .crev-text { display: none; }
