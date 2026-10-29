@@ -1,0 +1,42 @@
+/* Reviewers' submission page (/reviewers/submit/). Builds on section.css tokens. */
+.rv { max-width: 760px; padding-top: 40px; padding-bottom: 88px; }
+.rv h1 { margin: 6px 0 24px; }
+.rv-status, .rv-help { color: var(--muted); }
+.rv-help { margin-top: 40px; font-size: 14px; }
+.rv-help a { color: var(--pink); }
+.rv-closed, .rv-card, .rv-how, .rv-done { background: var(--surface); border: 1px solid var(--line-subtle); border-radius: 14px; padding: 20px 22px; }
+.rv-closed p { margin: 0; }
+.rv-card dl { margin: 0; display: grid; gap: 10px; }
+.rv-card dl div { display: grid; grid-template-columns: 130px 1fr; gap: 12px; }
+.rv-card dt { color: var(--muted); font-size: 14px; }
+.rv-card dd { margin: 0; color: var(--cream); font-weight: 600; }
+.rv-card dd em { font-style: italic; }
+.rv-card dd .by { font-weight: 400; color: var(--muted); }
+.rv-again, .rv-warn { margin: 16px 0 0; font-size: 14px; }
+.rv-again { color: var(--lilac); }
+.rv-warn { color: var(--pink); }
+.rv-how { margin-top: 16px; }
+.rv-how summary { cursor: pointer; font-weight: 600; color: var(--lilac); }
+.rv-how ul { margin: 12px 0 0; padding-left: 20px; line-height: 1.55; }
+.rv-how li + li { margin-top: 6px; }
+#rv-form { margin-top: 28px; }
+.rv-q { display: block; margin: 26px 0 8px; border: 0; padding: 0; }
+.rv-q b, .rv-q legend { display: block; font-weight: 600; color: var(--cream); font-size: 16px; }
+.rv-q span { display: block; margin-top: 2px; font-size: 14px; color: var(--muted); }
+.rv-choices { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 10px; }
+.rv-choices label, .rv-credit { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+.rv-choices input, .rv-credit input { width: 18px; height: 18px; accent-color: var(--pink); }
+.rv textarea { display: block; width: 100%; box-sizing: border-box; min-height: 80px; resize: vertical; padding: 12px 14px;
+  background: var(--night); color: var(--cream); border: 1.5px solid var(--line); border-radius: 10px; font: inherit; font-size: 16px; line-height: 1.5; }
+.rv textarea:focus { outline: none; border-color: var(--lilac); }
+.rv [aria-invalid="true"] { border-color: var(--pink) !important; }
+.rv-credit { margin-top: 28px; align-items: flex-start; font-size: 15px; }
+.rv-credit input { margin-top: 2px; flex: none; }
+.rv-error { margin: 20px 0 0; color: var(--pink); font-weight: 600; }
+.rv-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 26px; }
+.rv-actions .btn { border: 0; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+.rv-actions .btn[disabled] { opacity: .6; cursor: progress; }
+.rv-draft { font-size: 13px; color: var(--muted); }
+.rv-done h2 { margin: 0 0 8px; color: var(--lilac); }
+.rv-done .rv-sign { margin-bottom: 0; color: var(--muted); }
+@media (max-width: 520px) { .rv-card dl div { grid-template-columns: 1fr; gap: 2px; } }

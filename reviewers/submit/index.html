@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Reviewers' submission page: hidden. Not linked, not in the sitemap, noindex, no analytics or cookies.
+     Each commissioned reviewer gets a private link (#t=...) made by poofbooks-data/reviews/new_commission.py. -->
+<title>Your review — Poof Books</title>
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#18122B">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
+<link rel="stylesheet" href="/assets/css/section.css?v=202610291815">
+<link rel="stylesheet" href="/assets/css/review-submit.css?v=202610292230">
+<script src="/assets/js/review-submit.js?v=202610292230" defer></script>
+</head>
+<body data-api="https://poofbooks-reviews.big--daddy.workers.dev">
+<header class="site-header">
+  <div class="wrap">
+    <a class="home" href="/the-cabin/" aria-label="Poof Books"><img src="/assets/logo.svg" width="662" height="170" alt="Poof Books"></a>
+  </div>
+</header>
+
+<main class="rv wrap">
+  <p class="eyebrow">For reviewers</p>
+  <h1>Your review</h1>
+
+  <p class="rv-status" id="rv-loading">Finding your commission…</p>
+  <div class="rv-closed" id="rv-closed" hidden><p></p></div>
+
+  <div id="rv-open" hidden>
+    <section class="rv-card" aria-label="What you're reviewing">
+      <dl>
+        <div><dt>Book</dt><dd id="rv-book"></dd></div>
+        <div><dt>Written for</dt><dd id="rv-curator"></dd></div>
+        <div id="rv-due-row"><dt>Please send by</dt><dd id="rv-due"></dd></div>
+      </dl>
+      <p class="rv-again" id="rv-again" hidden>We have your review. You can change it and send it again until we start editing; we keep every version you send.</p>
+      <p class="rv-warn" id="rv-contract" hidden>We haven&#x2019;t received your signed reviewer agreement yet. You can send your review now, but we can&#x2019;t publish it until the agreement is signed.</p>
+    </section>
+
+    <details class="rv-how" open>
+      <summary>How we&#x2019;ll use your review</summary>
+      <ul>
+        <li>With the curators switched off, readers see your review as we&#x2019;ve edited it: tidied, and shortened if it needs it.</li>
+        <li>With the curators on, <span class="rv-curator-name">the curator</span> retells it in character, and we record the reading.</li>
+        <li>Your name never appears with the curator&#x2019;s version. With the curators off it appears only if you tick the box below. Either way, readers are told the review was commissioned.</li>
+        <li>We may edit or remove anything we think is too harsh or could be defamatory. We won&#x2019;t change what you fundamentally think of the book.</li>
+        <li>We&#x2019;ll send you the curator&#x2019;s version before it goes live, as a courtesy.</li>
+      </ul>
+    </details>
+
+    <form id="rv-form" novalidate>
+      <fieldset class="rv-q">
+        <legend>How did you read it?</legend>
+        <div class="rv-choices" role="radiogroup">
+          <label><input type="radio" name="format" value="print"> Printed book</label>
+          <label><input type="radio" name="format" value="ebook"> eBook</label>
+          <label><input type="radio" name="format" value="audio"> Audiobook</label>
+        </div>
+      </fieldset>
+
+      <label class="rv-q" for="about"><b>What it&#x2019;s about</b><span>The set-up, the people, the place. No spoilers.</span></label>
+      <textarea id="about" name="about" rows="6" maxlength="3000" required></textarea>
+
+      <label class="rv-q" for="for_whom"><b>Who it&#x2019;s for</b><span>The reader who&#x2019;ll love it, and anyone who should steer clear.</span></label>
+      <textarea id="for_whom" name="for_whom" rows="3" maxlength="1500" required></textarea>
+
+      <label class="rv-q" for="liked"><b>What you liked</b></label>
+      <textarea id="liked" name="liked" rows="6" maxlength="3000" required></textarea>
+
+      <label class="rv-q" for="disliked"><b>What you didn&#x2019;t like</b><span>Optional, but honest reviews help readers most.</span></label>
+      <textarea id="disliked" name="disliked" rows="4" maxlength="3000"></textarea>
+
+      <label class="rv-q" for="worth_knowing"><b>Worth knowing</b><span>Optional: facts about the book or the author a reader would want, such as a prize, a true story behind it, a film, or content to be aware of.</span></label>
+      <textarea id="worth_knowing" name="worth_knowing" rows="3" maxlength="2000"></textarea>
+
+      <label class="rv-credit"><input type="checkbox" name="credit_plain" id="credit_plain"><span>Show my name as <b id="rv-byline"></b> when readers have the curators switched off</span></label>
+
+      <p class="rv-error" id="rv-error" role="alert" hidden></p>
+      <p class="rv-actions"><button class="btn btn-primary" type="submit" id="rv-send">Send my review</button>
+        <span class="rv-draft" id="rv-draft" aria-live="polite"></span></p>
+    </form>
+  </div>
+
+  <div class="rv-done" id="rv-done" hidden tabindex="-1">
+    <h2>Thank you</h2>
+    <p>Your review has arrived. We&#x2019;ll be in touch when we&#x2019;ve edited it, and we&#x2019;ll send you <span class="rv-curator-name">the curator</span>&#x2019;s version before it goes live.</p>
+    <p>You can come back to this link to change it until we start editing.</p>
+    <p class="rv-sign">Big Daddy, Poof Books</p>
+  </div>
+
+  <p class="rv-help">Questions? Write to <a href="mailto:BigDaddy@poofbooks.com">BigDaddy@poofbooks.com</a>.</p>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Poof Books · M2M books. Nothing else.</span>
+    <nav aria-label="Legal"><a href="/privacy/">Privacy</a></nav>
+  </div>
+</footer>
+</body>
+</html>
