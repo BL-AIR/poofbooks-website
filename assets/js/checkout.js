@@ -237,6 +237,12 @@
     };
   }
 
+  // A sample order (test-mode preview, no real cart) is never charged or emailed. Say so plainly rather than
+  // pretending it went through.
+  function sampleOnly() {
+    plainStatus('This is only a sample order, so nothing was charged and no email was sent. To test a real order, add a book with its Buy button and come back to checkout.', 'err');
+  }
+
   function goThanks(order) {
     try {
       sessionStorage.setItem('poof-last-order', JSON.stringify(order));
@@ -326,7 +332,7 @@
     // tokenize() must be the first thing the click does (Apple Pay rejects anything async before it).
     method.tokenize().then(function (result) {
       if (result.status === 'OK') {
-        if (!usingRealCart) { goThanks(buildOrder(walletEmail(result.details), walletAddress(result.details).name, walletAddress(result.details).lines, name)); return; }
+        if (!usingRealCart) { sampleOnly(); return; }
         plainStatus('Taking payment…', 'ok');
         var c = (result.details && result.details.shipping && result.details.shipping.contact) || {};
         payViaWorker({
@@ -396,11 +402,7 @@
       try {
         var result = await card.tokenize();
         if (result.status === 'OK') {
-          if (!usingRealCart) {
-            // Preview (sample order, no real cart): nothing is charged or sent.
-            goThanks(buildOrder(form.email.value.trim(), (form.given.value + ' ' + form.family.value).trim(), formAddress(form), cardLabel(result.details)));
-            return;
-          }
+          if (!usingRealCart) { sampleOnly(); btn.disabled = false; return; }
           plainStatus('Taking payment…', 'ok');
           try {
             var w = await payViaWorker({
