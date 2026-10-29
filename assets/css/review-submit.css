@@ -30,6 +30,8 @@
   background: var(--night); color: var(--cream); border: 1.5px solid var(--line); border-radius: 10px; font: inherit; font-size: 16px; line-height: 1.5; }
 .rv textarea:focus { outline: none; border-color: var(--lilac); }
 .rv [aria-invalid="true"] { border-color: var(--pink) !important; }
+.rv-count { margin: 6px 2px 0; min-height: 1em; text-align: right; font-size: 13px; color: var(--muted); }
+.rv-count.over { color: var(--pink); }   /* well past the guide (half as much again) */
 .rv-credit { margin-top: 28px; align-items: flex-start; font-size: 15px; }
 .rv-credit input { margin-top: 2px; flex: none; }
 .rv-error { margin: 20px 0 0; color: var(--pink); font-weight: 600; }

@@ -52,9 +52,21 @@
       if (d.format) { var r = form.querySelector('input[name=format][value="' + d.format + '"]'); if (r) r.checked = true; }
       if (d.sent) { fill(d.sent); $('rv-again').hidden = false; $('rv-send').textContent = 'Send my changes'; }
       fill(store(true));                                      // an unsent draft on this device wins
+      counts();
       show('rv-open');
     })
     .catch(function () { closed('We couldn’t reach our reviews desk just now. Please try again in a minute, or write to BigDaddy@poofbooks.com.'); });
+
+  // A small running word count under each box (the guide is in each heading).
+  FIELDS.forEach(function (k) {
+    var box = form.elements[k], c = document.createElement('p');
+    c.className = 'rv-count'; c.setAttribute('aria-hidden', 'true'); box.parentNode.insertBefore(c, box.nextSibling);
+    var guide = { about: 250, for_whom: 100, liked: 200, disliked: 200, worth_knowing: 200 }[k];
+    box._count = function () { var n = (box.value.match(/\S+/g) || []).length;
+      c.textContent = n + ' of about ' + guide + ' words'; c.classList.toggle('over', n > guide * 1.5); };
+    box.addEventListener('input', box._count);
+  });
+  function counts() { FIELDS.forEach(function (k) { form.elements[k]._count(); }); }
 
   var t;
   form.addEventListener('input', function () {
