@@ -13,19 +13,23 @@
   // Payments Worker: prices the cart itself, charges Square, saves the order and sends Lil Otter's receipt.
   var PAY_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/checkout';
 
-  // Lil Otter's lines. Only the greeting has a recording so far; the others get one later (set audio).
+  // Lil Otter's lines. Each with `audio` has an approved recording (eleven_v3); the words match it.
   var OTTER = {
     greeting:  { text: '¡Hola, boss! I am Lil Otter, down here in the Mailroom. My job? I take the book you choose, and I send it straight to your door. Wrapped twice, tied with string… very pretty. So! I need your name and your address for the label, and how you like to pay, ¿vale? Fill in the little boxes, then press the big pink button. Yes, boss! I start wrapping.', audio: '/assets/audio/lil-otter-checkout.mp3' },
-    cart:      { text: 'Three books? Yes, boss! Excellent choices. I go and find a nice box.' },
-    confirmed: { text: 'Got it! Payment is in. Big Daddy will be very happy. Now I wrap.' },
-    backorder: { text: 'Ay, this one is still on the boat. As soon as it lands, I send it. Promise.' },
-    problem:   { text: 'Something wrong? Tell me everything. I fix it.' },
+    cart_one:   { text: 'One book? Excellent choice, boss! I go and find a nice box.', audio: '/assets/audio/lil-otter-cart-one.mp3' },
+    cart_many:  { text: 'So many books! Excellent choices, boss. I go and find a bigger box.', audio: '/assets/audio/lil-otter-cart-many.mp3' },
+    cart_gifts: { text: 'You want so many? Must be gifts. I find a ribbon.', audio: '/assets/audio/lil-otter-cart-gifts.mp3' },
+    confirmed: { text: 'Got it, boss! Your payment is in, and Big Daddy is very very happy. Now I wrap.', audio: '/assets/audio/lil-otter-confirmed.mp3' },
+    backorder: { text: '¡Hola, boss! Good news, and a little bit of waiting news. One of your books is still on the boat from the publisher. The moment it lands, I wrap it twice and send it to you. Promise. So, fill in the little boxes and press the big pink button. Yes, boss!', audio: '/assets/audio/lil-otter-backorder.mp3' },
+    problem:   { text: 'Ay, boss! Something go clunk, but do not worry, nothing is charged. Check the card number, the date and the little code on the back, or try another card. Still no good? Write to me, I fix it.', audio: '/assets/audio/lil-otter-problem.mp3' },
     empty:     { text: 'You! There is nothing in your box, boss. You only came down here to admire my hairy chest, no? Go, go! Back up to the shelves and pick a book. ¡Vamos, vamos! Vamoose!', audio: '/assets/audio/lil-otter-empty.mp3' }
   };
   // The same moments in plain words (curators off).
   var PLAIN = {
     greeting:  'Fill in your details and delivery address, then pay. We\'ll email your receipt straight away, and again when your order is on its way.',
-    cart:      'Here\'s what\'s in your cart. When you\'re ready, go to checkout.',
+    cart_one:   'Here\'s what\'s in your cart. When you\'re ready, go to checkout.',
+    cart_many:  'Here\'s what\'s in your cart. When you\'re ready, go to checkout.',
+    cart_gifts: 'Here\'s what\'s in your cart. When you\'re ready, go to checkout.',
     confirmed: 'Thank you: your payment has been received and your order is being prepared.',
     backorder: 'One of your books is on back order with our supplier. We\'ll send it as soon as it arrives.',
     problem:   'Something went wrong. Please check your details, or email us and we\'ll sort it out.',
@@ -85,6 +89,11 @@
   function stopVoice() {
     if (audio) { audio.pause(); audio = null; }
     var b = $('[data-otter-play]'); if (b) b.setAttribute('aria-pressed', 'false');
+  }
+  // Which cart line fits: several copies of any one book → gifts; several different books → bigger box; else one book.
+  function cartKey(cart) {
+    if (cart.some(function (l) { return l.qty > 1; })) return 'cart_gifts';
+    return cart.length > 1 ? 'cart_many' : 'cart_one';
   }
   function say(key) {
     stopVoice();
@@ -449,7 +458,7 @@
       form.hidden = true;
       var go = document.createElement('p'); go.innerHTML = '<a class="pay" href="?">Go to checkout</a>';
       $('[data-panel]').appendChild(go);
-      say('cart');
+      say(cartKey(CARTS.three));
       return;
     }
     if (demo === 'confirmed') { location.replace('/checkout/thanks/?demo=1'); return; }
