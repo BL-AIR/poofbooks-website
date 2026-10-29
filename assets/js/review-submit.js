@@ -61,7 +61,7 @@
   FIELDS.forEach(function (k) {
     var box = form.elements[k], c = document.createElement('p');
     c.className = 'rv-count'; c.setAttribute('aria-hidden', 'true'); box.parentNode.insertBefore(c, box.nextSibling);
-    var guide = { about: 250, for_whom: 100, liked: 200, disliked: 200, worth_knowing: 200 }[k];
+    var guide = { about: 250, for_whom: 150, liked: 200, disliked: 200, worth_knowing: 200 }[k];
     box._count = function () { var n = (box.value.match(/\S+/g) || []).length;
       c.textContent = n + ' of about ' + guide + ' words'; c.classList.toggle('over', n > guide * 1.5); };
     box.addEventListener('input', box._count);
