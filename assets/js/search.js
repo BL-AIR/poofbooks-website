@@ -2,7 +2,8 @@
    Markup: <div class="quick-search" data-quick-search></div>  (built out here; can appear more than once)
    Index:  /assets/data/search.json, built from the database (works with a page on the site).
    Titles and author names match loosely: any order, partial words, small typos ("surender", "purvs").
-   ISBNs match exactly: 13 digits, or an old 10-digit ISBN, with or without hyphens/spaces.
+   ISBNs narrow as you type from 4 digits (matching the start of an ISBN-13, or of an old ISBN-10);
+   a complete 13- or 10-digit ISBN matches exactly. Hyphens and spaces are ignored.
    Results show to the right of the box when there's room, otherwise underneath. */
 (function () {
   'use strict';
@@ -68,9 +69,20 @@
     var works = index.works, res = [];
     if (looksLikeIsbn(raw)) {
       var code = isbn13(raw);
-      if (!code) return { isbn: 'partial' };
-      works.forEach(function (w) { if (w.i.indexOf(code) > -1) res.push({ w: w, score: 10 }); });
-      return { isbn: code, list: res };
+      if (code) {                                   // a complete ISBN: exact match
+        works.forEach(function (w) { if (w.i.indexOf(code) > -1) res.push({ w: w, score: 10, isbn: code }); });
+        if (res.length || code.length === raw.replace(/[\s-]/g, '').length) return { isbn: code, list: res };
+      }                                             // 10 digits with no ISBN-10 match may be the start of an ISBN-13
+      // Partly typed (4+ digits): narrow on how the ISBN starts, as ISBN-13 or as an old ISBN-10.
+      var d = raw.replace(/\D/g, '');
+      works.forEach(function (w) {
+        for (var i = 0; i < w.i.length; i++) {
+          var e = w.i[i];
+          if (e.indexOf(d) === 0 || (e.indexOf('978') === 0 && e.slice(3).indexOf(d) === 0)) { res.push({ w: w, score: 5, isbn: e }); return; }
+        }
+      });
+      res.sort(function (a, b) { return a.isbn.localeCompare(b.isbn); });
+      return { isbn: 'partial', digits: d, more: res.length > MAX, list: res.slice(0, MAX) };
     }
     var qs = words(raw).filter(function (x) { return !STOP[x]; });
     if (!qs.length) return { list: [] };
@@ -135,17 +147,19 @@
         if (input.value !== raw) return;              // typed on; a newer render will follow
         var r = search(raw);
         list.innerHTML = ''; items = []; msg.textContent = '';
-        if (r.isbn === 'partial') { msg.textContent = 'Keep going: an ISBN has 13 digits (or 10 on older books).'; open(true); return; }
         r.list.forEach(function (x, k) {
           var w = x.w, li = document.createElement('li');
           li.id = list.id + '-' + k; li.setAttribute('role', 'option'); li.setAttribute('aria-selected', 'false');
           li.innerHTML = '<a href="' + w.u + '" tabindex="-1">' +
             (w.c ? '<img src="' + esc(w.c) + '" alt="" width="40" height="60" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement(\'span\'),{className:\'qs-nocover\'}))">' : '<span class="qs-nocover"></span>') +
             '<span class="qs-text"><b>' + esc(w.t) + '</b><span>' + esc(w.a.join(', ')) + (w.y ? ' · ' + w.y : '') + '</span>' +
-            (r.isbn ? '<small>ISBN ' + r.isbn + '</small>' : '') + '</span></a>';
+            (x.isbn ? '<small>ISBN ' + x.isbn + '</small>' : '') + '</span></a>';
           list.appendChild(li); items.push(li);
         });
-        if (!items.length) msg.textContent = r.isbn ? 'No book with ISBN ' + r.isbn + ' on our shelves yet.'
+        if (r.isbn === 'partial') msg.textContent = !items.length ? 'No ISBN on our shelves starts with ' + r.digits + '.'
+          : r.more ? 'First ' + items.length + ' matches. Keep typing the ISBN to narrow them.'
+          : items.length === 1 ? '1 book. Press Enter to open it.' : items.length + ' books.';
+        else if (!items.length) msg.textContent = r.isbn ? 'No book with ISBN ' + r.isbn + ' on our shelves yet.'
           : 'Nothing on the shelves matches that. Check the spelling, or try just the author’s surname.';
         else msg.textContent = items.length === 1 ? '1 book. Press Enter to open it.' : items.length + ' books.';
         setActive(items.length ? 0 : -1);
