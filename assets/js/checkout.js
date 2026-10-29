@@ -95,13 +95,22 @@
     if (cart.some(function (l) { return l.qty > 1; })) return 'cart_gifts';
     return cart.length > 1 ? 'cart_many' : 'cart_one';
   }
-  function say(key) {
+  // Lil Otter says one moment, optionally led by his reaction to the cart (leadKey, e.g. 'cart_gifts').
+  // Both lines show in his speech box; one press of the play button plays them back to back.
+  function say(key, leadKey) {
     stopVoice();
-    var line = OTTER[key];
-    $('[data-otter-says]').textContent = line.text;
-    $('[data-plain-says]').textContent = PLAIN[key];
+    var lines = [leadKey && OTTER[leadKey], OTTER[key]].filter(Boolean);
+    var box = $('[data-otter-says]'); box.textContent = '';
+    lines.forEach(function (l, i) {
+      if (lines.length === 1) { box.textContent = l.text; return; }
+      var p = document.createElement('span'); p.className = 'say-line'; p.textContent = l.text;
+      if (i) box.appendChild(document.createElement('br')), box.appendChild(document.createElement('br'));
+      box.appendChild(p);
+    });
+    $('[data-plain-says]').textContent = PLAIN[key];          // plain wording: the moment only, no cart chatter
+    var srcs = lines.map(function (l) { return l.audio; }).filter(Boolean);
     var wrap = $('[data-otter-play-wrap]'), btn = $('[data-otter-play]');
-    if (line.audio) { btn.setAttribute('data-audio', line.audio); wrap.hidden = false; }
+    if (srcs.length) { btn.setAttribute('data-audio', srcs.join('|')); wrap.hidden = false; }
     else { btn.removeAttribute('data-audio'); wrap.hidden = true; }
   }
   function bindVoice() {
@@ -109,12 +118,14 @@
     btn.addEventListener('click', function () {
       if (audio) { stopVoice(); return; }                     // press again to stop
       if (!html.classList.contains('sound-on')) return;      // Sound off: text only
-      var src = btn.getAttribute('data-audio'); if (!src) return;
+      var list = (btn.getAttribute('data-audio') || '').split('|').filter(Boolean); if (!list.length) return;
       document.querySelectorAll('audio').forEach(function (a) { a.pause(); });
-      audio = new Audio(src);
       btn.setAttribute('aria-pressed', 'true');
-      audio.addEventListener('ended', stopVoice);
-      audio.play().catch(stopVoice);                         // never autoplays: only on this click
+      (function playFrom(i) {                                 // never autoplays: only on this click
+        audio = new Audio(list[i]);
+        audio.addEventListener('ended', function () { if (i + 1 < list.length && audio) playFrom(i + 1); else stopVoice(); });
+        audio.play().catch(stopVoice);
+      })(0);
     });
     // Stop him if Sound or Curators are switched off while he's talking.
     new MutationObserver(function () {
@@ -473,7 +484,7 @@
     }
     var hasBack = renderCart(usingRealCart ? mine : (demo === 'backorder' ? CARTS.backorder : CARTS.single));
     if (usingRealCart) addEmptyButton();
-    say(hasBack ? 'backorder' : 'greeting');
+    say(hasBack ? 'backorder' : 'greeting', usingRealCart ? cartKey(mine) : null);
     if (demo === 'problem') showProblem('');
     startSquare(form);
   });
