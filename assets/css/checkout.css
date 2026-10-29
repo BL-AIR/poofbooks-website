@@ -179,6 +179,13 @@ html.cart-empty .summary .totals, html.cart-empty .summary .sum-note, html.cart-
 
 .line-remove { display: block; margin-top: 6px; padding: 0; border: 0; background: none; color: var(--muted); font: inherit; font-size: 12.5px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .line-remove:hover { color: var(--pink); }
+.qty { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.qty-btn { width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--cream); font: inherit; font-size: 17px; line-height: 1; cursor: pointer; }
+.qty-btn:hover:not([disabled]) { border-color: var(--pink); color: var(--pink); }
+.qty-btn:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
+.qty-btn[disabled] { opacity: .35; cursor: default; }
+.qty-n { min-width: 1.6em; text-align: center; font-size: 15px; font-weight: 700; color: var(--cream); }
+.qty .line-remove { margin: 0 0 0 6px; }
 .sample-note { margin: 0 0 6px; color: var(--lilac); }
 
 .sum-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 6px; }

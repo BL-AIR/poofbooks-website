@@ -2,6 +2,7 @@
    The cart lives on the reader's device (localStorage "poof-cart": [{ isbn, qty }]).
    Other scripts use window.PoofCart:
      PoofCart.add(isbn, qty)   add copies of an edition (qty defaults to 1)
+     PoofCart.setQty(isbn, n)  set the copies of an edition (0 removes it; at most 10)
      PoofCart.items()          the cart as a list
      PoofCart.count()          total number of items
      PoofCart.clear()          empty it (after an order is placed)
@@ -30,6 +31,13 @@
       write(items);
     },
     remove: function (isbn) { write(read().filter(function (i) { return i.isbn !== String(isbn); })); },
+    setQty: function (isbn, qty) {                         // 0 or less removes the line; capped at 10 (the payments Worker's limit)
+      var q = Math.min(10, Math.floor(Number(qty) || 0));
+      if (q <= 0) { this.remove(isbn); return; }
+      var items = read(), hit = items.filter(function (i) { return i.isbn === String(isbn); })[0];
+      if (hit) hit.qty = q; else items.push({ isbn: String(isbn), qty: q });
+      write(items);
+    },
     clear: function () { write([]); }
   };
 

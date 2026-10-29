@@ -134,6 +134,19 @@
   }
 
   /* ---------- Order summary ---------- */
+  var MAX_QTY = 10;                                          // the payments Worker accepts up to 10 of one edition
+  var walletRequests = [];                                   // Apple Pay / Google Pay requests, updated when the cart changes
+  // Redraw after a quantity change or removal, without reloading (the customer's typed details stay put).
+  function refreshCart() {
+    var mine = realCart();
+    if (!mine.length) { showEmpty(); return; }
+    var hasBack = renderCart(mine);
+    say(hasBack ? 'backorder' : 'greeting', cartKey(mine));
+    var t = { amount: aud(cartTotal), label: 'Poof Books' };
+    walletRequests.forEach(function (r) {
+      try { r.update({ total: t, lineItems: [{ label: 'Books', amount: t.amount }, { label: 'Delivery', amount: '0.00' }] }); } catch (e) { /* older SDK */ }
+    });
+  }
   function renderCart(cart) {
     var ul = $('[data-lines]'); ul.innerHTML = '';
     var total = 0, adult = false;
@@ -144,15 +157,27 @@
       var t = document.createElement('div'); t.className = 'line-text';
       var b = document.createElement('b'); b.textContent = l.book.title;
       var a = document.createElement('span'); a.textContent = l.book.author;
-      var f = document.createElement('span'); f.textContent = l.format + ' · Qty ' + l.qty;
+      var f = document.createElement('span'); f.textContent = usingRealCart ? l.format : l.format + ' · Qty ' + l.qty;
       var st = document.createElement('span'); st.className = 'stock' + (l.stock === 'back' ? ' back' : ''); st.textContent = STOCK[l.stock];
       t.append(b, a, f, st);
       var p = money(l.price * l.qty); p.classList.add('line-price');
       if (usingRealCart) {
+        // Quantity stepper (1 to MAX_QTY) and Remove. Changes redraw the order in place, so typed details stay.
+        var q = document.createElement('div'); q.className = 'qty';
+        var minus = document.createElement('button'); minus.type = 'button'; minus.className = 'qty-btn'; minus.textContent = '−';
+        minus.setAttribute('aria-label', 'One fewer: ' + l.book.title + ', ' + l.format);
+        var n = document.createElement('output'); n.className = 'qty-n'; n.textContent = l.qty;
+        n.setAttribute('aria-label', 'Quantity ' + l.qty);
+        var plus = document.createElement('button'); plus.type = 'button'; plus.className = 'qty-btn'; plus.textContent = '+';
+        plus.setAttribute('aria-label', 'One more: ' + l.book.title + ', ' + l.format);
+        minus.disabled = l.qty <= 1; plus.disabled = l.qty >= MAX_QTY;
+        minus.addEventListener('click', function () { PoofCart.setQty(l.isbn, l.qty - 1); refreshCart(); });
+        plus.addEventListener('click', function () { PoofCart.setQty(l.isbn, l.qty + 1); refreshCart(); });
         var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'line-remove'; rm.textContent = 'Remove';
         rm.setAttribute('aria-label', 'Remove ' + l.book.title + ', ' + l.format);
-        rm.addEventListener('click', function () { PoofCart.remove(l.isbn); location.reload(); });
-        t.appendChild(rm);
+        rm.addEventListener('click', function () { PoofCart.remove(l.isbn); refreshCart(); });
+        q.append(minus, n, plus, rm);
+        t.appendChild(q);
       }
       li.append(img, t, p); ul.appendChild(li);
     });
@@ -314,22 +339,24 @@
      The wallet supplies the buyer's name, email and delivery address, so the form isn't needed.
      Delivery is a placeholder until the shipping rates are in. */
   function walletRequest(payments) {
-    var amount = aud(cartTotal);
+    // Amounts are read live from cartTotal, so a quantity change on the page reaches the wallet sheet.
     var shipping = [{ id: 'standard', label: 'Standard post (rate to come)', amount: '0.00' }];
-    var lineItems = [{ label: 'Books', amount: amount }, { label: 'Delivery', amount: '0.00' }];
+    function lineItems() { return [{ label: 'Books', amount: aud(cartTotal) }, { label: 'Delivery', amount: '0.00' }]; }
+    function total() { return { amount: aud(cartTotal), label: 'Poof Books' }; }
     var req = payments.paymentRequest({
       countryCode: 'AU', currencyCode: 'AUD',
-      total: { amount: amount, label: 'Poof Books' },
-      lineItems: lineItems,
+      total: total(),
+      lineItems: lineItems(),
       requestBillingContact: true,
       requestShippingContact: true,
       shippingOptions: shipping
     });
     // Later: price delivery for the address chosen in the wallet (by weight and size).
     try {
-      req.addEventListener('shippingcontactchanged', function () { return { shippingOptions: shipping, lineItems: lineItems, total: { amount: amount, label: 'Poof Books' } }; });
-      req.addEventListener('shippingoptionchanged', function () { return { lineItems: lineItems, total: { amount: amount, label: 'Poof Books' } }; });
+      req.addEventListener('shippingcontactchanged', function () { return { shippingOptions: shipping, lineItems: lineItems(), total: total() }; });
+      req.addEventListener('shippingoptionchanged', function () { return { lineItems: lineItems(), total: total() }; });
     } catch (e) { /* older SDK: fixed delivery for now */ }
+    walletRequests.push(req);
     return req;
   }
 
