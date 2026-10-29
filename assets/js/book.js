@@ -16,3 +16,24 @@ document.addEventListener('DOMContentLoaded', function () {
     if (t) t.click();
   });
 });
+
+/* Long text (first page, reviews): show about 10 lines, fading out, with "Read more" to open it all. */
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.prose.extract, .crev .prose').forEach(function (el, i) {
+    var words = (el.textContent.match(/\S+/g) || []).length;
+    if (words < 150) return;                      // short enough to show whole
+    if (!el.id) el.id = 'fold-' + i;
+    el.classList.add('fold-body', 'folded');
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'fold-btn';
+    b.setAttribute('aria-controls', el.id); b.setAttribute('aria-expanded', 'false');
+    b.textContent = 'Read more';
+    el.parentNode.insertBefore(b, el.nextSibling);
+    b.addEventListener('click', function () {
+      var open = el.classList.toggle('folded') === false;
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+      b.textContent = open ? 'Show less' : 'Read more';
+      if (!open && el.getBoundingClientRect().top < 0) el.scrollIntoView({ block: 'start' });
+    });
+  });
+});

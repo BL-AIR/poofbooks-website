@@ -173,3 +173,12 @@ html:not(.sound-on) .script { display: none; }
 .crev .prose p { line-height: 1.7; }
 .crev-note { margin: 14px 0 0; font-size: 13.5px; color: var(--muted); font-style: italic; }
 html.words-off .crev:has(.hear[data-audio]:not([data-audio=""])) .crev-text { display: none; }
+
+/* Folded long text: about 10 lines (18px × 1.75), fading to nothing, then "Read more". */
+.fold-body.folded { max-height: 320px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
+.fold-btn { display: inline-block; margin: 2px 0 0; padding: 6px 0; background: none; border: 0; font: inherit; font-size: 15px;
+  font-weight: 600; color: var(--lilac); cursor: pointer; }
+.fold-btn:hover { color: var(--pink); }
+.fold-btn::after { content: " \2193"; }
+.fold-btn[aria-expanded="true"]::after { content: " \2191"; }
