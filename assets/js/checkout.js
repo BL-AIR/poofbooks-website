@@ -396,7 +396,13 @@
     }
     form.addEventListener('submit', async function (ev) {
       ev.preventDefault();
-      if (!checkFields(form)) { plainStatus('Please fill in the highlighted boxes.', 'err'); return; }
+      if (!checkFields(form)) {
+        // Name the missing boxes: the first one is scrolled into view, which can feel like the form reset.
+        var names = { given: 'first name', family: 'last name', email: 'email address', line1: 'street address', city: 'suburb or town', postcode: 'postcode' };
+        var missing = [].filter.call(form.querySelectorAll('input.is-error'), function (el) { return names[el.name]; }).map(function (el) { return names[el.name]; });
+        plainStatus(missing.length ? 'Nearly there: please fill in your ' + missing.join(', ') + ' (highlighted above).' : 'Please fill in the highlighted boxes.', 'err');
+        return;
+      }
       btn.disabled = true;
       plainStatus('Checking your card with Square…', 'ok');
       try {
