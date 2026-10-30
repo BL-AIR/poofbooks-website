@@ -1,7 +1,7 @@
 {
  "base": "AUD",
  "charge": "AUD",
- "date": "2026-10-29",
+ "date": "2026-10-30",
  "source": "European Central Bank",
  "currencies": [
   {
@@ -14,31 +14,31 @@
    "code": "NZD",
    "symbol": "NZ$",
    "flag": "nz",
-   "rate": 1.2509
+   "rate": 1.2464
   },
   {
    "code": "USD",
    "symbol": "US$",
    "flag": "us",
-   "rate": 0.70256
+   "rate": 0.70246
   },
   {
    "code": "GBP",
    "symbol": "£",
    "flag": "gb",
-   "rate": 0.52757
+   "rate": 0.52427
   },
   {
    "code": "EUR",
    "symbol": "€",
    "flag": "eu",
-   "rate": 0.63123
+   "rate": 0.62877
   },
   {
    "code": "CAD",
    "symbol": "C$",
    "flag": "ca",
-   "rate": 0.98327
+   "rate": 0.98126
   }
  ]
 }
