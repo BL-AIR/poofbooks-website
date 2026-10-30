@@ -39,3 +39,6 @@ temp/
 
 # Temporary files left by remote editing
 .fuse_hidden*
+
+# Local previews (never published)
+_preview/
