@@ -474,3 +474,13 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 
 /* "What's on my shelf" button under the curator's shelf description */
 .about .about-hear { margin-top: 4px; }
+
+/* Showcase month arrows (30 Oct 2026): small ‹ › in the tab row step through months. */
+.sc-tabs .sc-month { flex: 0 0 auto; width: 40px; min-height: 40px; display: inline-grid; place-items: center; border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--cream); cursor: pointer; }
+.sc-tabs .sc-month:hover:not(:disabled) { border-color: var(--pink); color: var(--pink); }
+.sc-tabs .sc-month:disabled { opacity: .3; cursor: default; }
+.sc-tabs .sc-month:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
+/* Coming soon: one sideways-scrolling row (30 Oct 2026). */
+.mini-books.scroll { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 12px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.mini-books.scroll > .book { flex: 0 0 150px; scroll-snap-align: start; }
+.mini-books.scroll:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; border-radius: 8px; }

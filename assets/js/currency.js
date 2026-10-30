@@ -106,6 +106,7 @@
         });
       }
       paint();
+      document.addEventListener('poof:content', paint);   // content drawn later (showcase months) gets converted too
     }).catch(function () { /* no rates: prices stay in AUD, as written in the page */ });
   });
 })();
