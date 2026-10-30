@@ -484,3 +484,14 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .mini-books.scroll { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 12px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
 .mini-books.scroll > .book { flex: 0 0 150px; scroll-snap-align: start; }
 .mini-books.scroll:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; border-radius: 8px; }
+
+/* The Cabin: Looker List flush left, Book Clubs Bulletin Boards beside it (30 Oct 2026). Stacked on narrow screens. */
+.cabin-duo { display: grid; grid-template-columns: minmax(0, 880px) minmax(260px, 1fr); gap: 24px; align-items: start; }
+.cabin-duo > .posted-band { margin: 0; max-width: none; }
+.clubs-band h2 { margin: 0; font-size: 22px; font-weight: 800; color: var(--lilac); }
+.clubs-band p { margin: 10px 0 0; font-size: 16px; line-height: 1.55; color: var(--cream); }
+.clubs-band .clubs-ask { color: var(--muted); font-size: 15px; }
+.clubs-band .clubs-btn { display: inline-block; margin-top: 18px; padding: 12px 22px; border-radius: 10px; background: var(--pink); color: var(--on-pink); font-weight: 800; text-decoration: none; }
+.clubs-band .clubs-btn:hover { background: var(--lilac); }
+.clubs-band .clubs-btn:focus-visible { outline: 3px solid var(--lilac); outline-offset: 2px; }
+@media (max-width: 1100px) { .cabin-duo { grid-template-columns: 1fr; } }
