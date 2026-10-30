@@ -4,7 +4,8 @@
    e.g. /conniving-crimes/?set=Australia&from=2024
 
    Filters a shelf can carry (each is a fieldset in the page; one with no data on the shelf hides itself):
-     Published in the last : slider + presets (data-years)            card: data-date="2026-10-15"
+     Published in the last : slider + presets (data-years)            card: data-date="2026-10-15" (this edition)
+                             data-first="1956" (first published, when earlier) wins for the slider and date sorts
      Reading time          : "up to" slider + presets (data-hours)     card: data-words="101441"
                              hours = words / the reader's pace (cog setting, view-settings.js) / 60
      Set during            : slider + era presets (fiction)           card: data-during="2010|2026" (years; BC as negative)
@@ -74,7 +75,8 @@
       c._i = i;
       c._title = (c.dataset.title || '').toLowerCase();
       c._author = (c.dataset.author || '').toLowerCase();
-      c._date = c.dataset.date || '';
+      // First published (data-first, a year) beats this edition's date: Giovanni's Room is a 1956 book, not a 2004 one.
+      c._date = c.dataset.first ? c.dataset.first + '-00-00' : (c.dataset.date || '');
       c._year = c._date ? +c._date.slice(0, 4) : null;
       c._places = c.dataset.places ? c.dataset.places.split('|') : [];
       c._formats = c.dataset.formats ? c.dataset.formats.split('|') : [];
@@ -92,6 +94,7 @@
       c._words = c.dataset.words ? +c.dataset.words : null;
       c._price = c.dataset.price ? parseFloat(c.dataset.price) : Infinity;
       c._pick = c.dataset.pick === '1';
+      c._nocover = c.dataset.nocover === '1' ? 1 : 0;   // books with no cover art sit at the bottom, whatever the sort (Blair, 30 Oct 2026)
     });
 
     // Every chip starts ticked, so the whole shelf shows; the reader unticks what he doesn't want.
@@ -285,7 +288,7 @@
         price: function (a, b) { return a._price - b._price || a._title.localeCompare(b._title); },
         pick: function (a, b) { return (b._pick - a._pick) || (b._date || '').localeCompare(a._date || '') || a._i - b._i; }
       }[sort] || null;
-      cards.slice().sort(by).forEach(function (c) { grid.appendChild(c); });
+      cards.slice().sort(function (a, b) { return (a._nocover - b._nocover) || (by ? by(a, b) : a._i - b._i); }).forEach(function (c) { grid.appendChild(c); });
       cards = Array.prototype.slice.call(grid.querySelectorAll('.book'));   // in the order now shown
       var onShow = paginate();
 

@@ -182,3 +182,10 @@ html.words-off .crev:has(.hear[data-audio]:not([data-audio=""])) .crev-text { di
 .fold-btn:hover { color: var(--pink); }
 .fold-btn::after { content: " \2193"; }
 .fold-btn[aria-expanded="true"]::after { content: " \2191"; }
+
+/* Author pages (30 Oct 2026): bio, then the author's books, newest first. */
+.author-page .bsec { max-width: 900px; }
+.author-page .mini-books { margin-top: 8px; }
+.author-page .mini-books .book .m { color: var(--muted); }
+.author-page .mini-books .jacket { aspect-ratio: 2 / 3; display: flex; align-items: flex-end; }
+.author-page .mini-books .jacket img { width: 100%; height: 100%; object-fit: contain; object-position: bottom center; }
