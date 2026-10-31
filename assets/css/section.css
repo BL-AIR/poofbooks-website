@@ -511,12 +511,12 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .qs-row .quick-search { flex: 1 1 auto; min-width: 0; max-width: none; margin: 0; }
 .foyer-title .qs-row { margin-bottom: 28px; }
 .foyer-title .qs-row .quick-search { margin-bottom: 0; }
-.fys { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; }
-.fys-label { text-align: right; }
+.fys { flex: 0 0 auto; position: relative; display: flex; flex-direction: column; align-items: flex-end; }
+.fys-label { position: absolute; right: 0; bottom: 100%; white-space: nowrap; text-align: right; }   /* hangs over the gap, so the box can run up to the button */
 .fys-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 22px; border-radius: 999px; font-size: 16px; font-weight: 700; white-space: nowrap; text-decoration: none; }
 @media (max-width: 520px) {
   .qs-row { flex-wrap: wrap; align-items: stretch; }
   .qs-row .quick-search { flex-basis: 100%; }
   .fys { flex-basis: 100%; align-items: stretch; }
-  .fys-label { text-align: left; }
+  .fys-label { position: static; white-space: normal; text-align: left; }
 }
