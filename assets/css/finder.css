@@ -27,3 +27,15 @@
 .f-adult { margin: -8px 0 20px; font-size: 14px; color: var(--muted); }
 .f-adult[hidden] { display: none; }
 .f-shelf .shelf-more { margin-top: 24px; }
+
+/* Support note, shown only when the reader asks about suicide. Quiet, not alarming. */
+.want-care { margin: 14px 0 0; padding: 14px 18px; border-radius: 14px; background: rgba(34,26,59,.94); border: 1px solid var(--line); font-size: 15px; line-height: 1.5; }
+.want-care[hidden] { display: none; }
+.want-care p { margin: 0 0 8px; }
+.care-lines { margin: 0 0 8px; padding: 0; list-style: none; }
+.care-lines li { margin: 4px 0; }
+.care-lines a, .care-any a { color: var(--pink); font-weight: 600; white-space: nowrap; }
+.care-lines span { color: var(--muted); font-size: 13.5px; }
+.care-more summary { cursor: pointer; color: var(--lilac); font-size: 14px; margin: 4px 0 6px; }
+.care-c { margin: 8px 0 2px !important; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.care-any { margin: 6px 0 0 !important; font-size: 13.5px; color: var(--muted); }
