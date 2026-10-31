@@ -6,6 +6,27 @@
   'use strict';
   var form = document.getElementById('zcampaignOptinForm');
   if (!form) return;
+  // Zoho's form script pulls in Google reCAPTCHA (about 1 MB). Load it only when the form is about to be seen
+  // or someone reaches for it, not on every page view (Blair, 31 Oct 2026: speed worldwide).
+  var tag = document.getElementById('zc-optin'), loaded = false;
+  function loadZoho() {
+    if (loaded || !tag) return; loaded = true;
+    var s = document.createElement('script');
+    s.src = tag.dataset.src; s.async = true;
+    s.onload = function () {
+      if (window.setupSF) setupSF(tag.dataset.sf, 'ZCFORMVIEW', false, 'light', false, '0');
+      if (window.referenceSetter) referenceSetter(document.getElementById('refImage'));
+    };
+    document.head.appendChild(s);
+  }
+  if (tag) {
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); loadZoho(); } }, { rootMargin: '600px 0px' });
+      io.observe(form);
+    } else loadZoho();
+    form.addEventListener('focusin', loadZoho);
+    form.addEventListener('pointerenter', loadZoho);
+  }
   form.addEventListener('keydown', function (ev) {
     if (ev.key === 'Enter' && ev.target.tagName === 'INPUT' && ev.target.type !== 'button') {
       ev.preventDefault();
