@@ -520,3 +520,26 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
   .fys { flex-basis: 100%; align-items: stretch; }
   .fys-label { position: static; white-space: normal; text-align: left; }
 }
+
+/* Bedfellows plate on Big Daddy's trunk (placed and warped by assets/js/trunk-plate.js). */
+.trunk-plate { position: absolute; left: 0; top: 0; z-index: 3; width: 300px; height: 84px; transform-origin: 0 0;
+  display: flex; align-items: center; justify-content: center; text-decoration: none; border-radius: 10px;
+  background:
+    radial-gradient(circle at 16px 16px, #f3d79a 0 3px, #5a3c14 4px, transparent 6px),
+    radial-gradient(circle at calc(100% - 16px) 16px, #f3d79a 0 3px, #5a3c14 4px, transparent 6px),
+    radial-gradient(circle at 16px calc(100% - 16px), #f3d79a 0 3px, #5a3c14 4px, transparent 6px),
+    radial-gradient(circle at calc(100% - 16px) calc(100% - 16px), #f3d79a 0 3px, #5a3c14 4px, transparent 6px),
+    linear-gradient(180deg, #c99a4b 0%, #a87a33 45%, #7d5722 100%);
+  border: 3px solid #4a3110;
+  box-shadow: inset 0 2px 0 rgba(255, 228, 170, .55), inset 0 -3px 0 rgba(40, 24, 6, .45), 0 4px 10px rgba(0, 0, 0, .55);
+  filter: brightness(.7) saturate(.85);
+  transition: filter .25s ease, box-shadow .25s ease; }
+.trunk-plate[hidden] { display: none; }
+.trunk-plate span { font-family: Georgia, 'Times New Roman', serif; font-size: 46px; font-weight: 700; letter-spacing: .04em; font-variant: small-caps;
+  color: #3a240a; text-shadow: 0 2px 0 rgba(255, 226, 165, .45), 0 -1px 0 rgba(30, 16, 2, .5);
+  transition: color .25s ease, text-shadow .25s ease; }
+.trunk-plate:hover, .trunk-plate:focus-visible { filter: brightness(1.05) saturate(1.05); outline: none;
+  box-shadow: inset 0 2px 0 rgba(255, 228, 170, .55), inset 0 -3px 0 rgba(40, 24, 6, .45),
+    0 0 0 3px var(--pink), 0 0 28px 8px rgba(255, 95, 162, .85), 0 0 60px 18px rgba(255, 95, 162, .45); }
+.trunk-plate:hover span, .trunk-plate:focus-visible span { color: #7a0f3f;
+  text-shadow: 0 0 10px rgba(255, 95, 162, .9), 0 0 22px rgba(255, 95, 162, .6), 0 2px 0 rgba(255, 226, 165, .4); }
