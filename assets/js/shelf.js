@@ -14,6 +14,8 @@
      Kind of book          : chips  data-chips="kinds" (non-fiction)  card: data-kinds="Memoir|History"
      Subject matter        : chips  data-chips="subjects"             card: data-subjects="AIDS|Activism"
      Format, Author's pronouns as before.
+     Publisher             : three buttons Traditional / Both / Indie  card: data-pub="trad" or "indie"
+                             (Blair, 31 Oct 2026: Traditional = the Big Five and their imprints; everyone else is Indie)
    A chips box may carry data-fixed="A|B|C" (always shown in that order, even at 0) or data-order="A|B|C"
    (only values on the shelf, in that order). Era definitions below must match the database's era table. */
 (function () {
@@ -94,7 +96,8 @@
       c._words = c.dataset.words ? +c.dataset.words : null;
       c._price = c.dataset.price ? parseFloat(c.dataset.price) : Infinity;
       c._pick = c.dataset.pick === '1';
-      c._nocover = c.dataset.nocover === '1' ? 1 : 0;   // books with no cover art sit at the bottom, whatever the sort (Blair, 30 Oct 2026)
+      c._nocover = c.dataset.nocover === '1' ? 1 : 0;
+      c._pub = c.dataset.pub || '';   // books with no cover art sit at the bottom, whatever the sort (Blair, 30 Oct 2026)
     });
 
     // Every chip starts ticked, so the whole shelf shows; the reader unticks what he doesn't want.
@@ -142,6 +145,21 @@
     buildChips('formats', 'fmt');
     buildChips('subjects', 'sub');
     buildChips('pronouns', 'pr', ['He', 'She', 'They', 'Mixed', 'Not stated']);
+
+    // Publisher: Traditional / Both / Indie (one choice; Both shows everything).
+    var seg = form.querySelector('[data-seg="pub"]'), pubSel = 'both';
+    if (seg) {
+      var pubN = { trad: 0, indie: 0 };
+      cards.forEach(function (c) { if (pubN[c._pub] !== undefined) pubN[c._pub]++; });
+      if (!pubN.trad && !pubN.indie) { seg.closest('fieldset').hidden = true; seg = null; }
+      else seg.querySelectorAll('button').forEach(function (b) {
+        var n = b.dataset.v === 'both' ? pubN.trad + pubN.indie : pubN[b.dataset.v];
+        b.setAttribute('aria-label', b.textContent + ' (' + n + (n === 1 ? ' book)' : ' books)'));
+      });
+    }
+    function paintPub() {
+      if (seg) seg.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === pubSel ? 'true' : 'false'); });
+    }
 
     // Set during (fiction): a second slider over the years books are set in, with era presets.
     // The slider gives each era an equal share of its length (an ancient-world book would otherwise squeeze
@@ -270,6 +288,7 @@
           (!dateOn || (c._year !== null && c._year >= lo && c._year <= hi)) &&
           (!durOn || c._dFrom === null || (c._dFrom <= dhi && c._dTo >= dlo)) &&
           (!rOn || !c._words || P.hours(c._words) <= rH) &&
+          (pubSel === 'both' || !c._pub || c._pub === pubSel) &&
           GROUPS.every(function (g) {
             var mine = c['_' + g[0]];
             // Values with no chip on this shelf (e.g. not on a fixed list) never hide a book.
@@ -292,7 +311,7 @@
       cards = Array.prototype.slice.call(grid.querySelectorAll('.book'));   // in the order now shown
       var onShow = paginate();
 
-      var active = (dateOn ? 1 : 0) + (durOn ? 1 : 0) + (rOn ? 1 : 0) + offCount;
+      var active = (dateOn ? 1 : 0) + (durOn ? 1 : 0) + (rOn ? 1 : 0) + (pubSel !== 'both' ? 1 : 0) + offCount;
       paintAll();
       badge.hidden = !active; badge.textContent = active;
       countEl.textContent = (shown === cards.length ? cards.length + (cards.length === 1 ? ' book' : ' books')
@@ -313,6 +332,7 @@
         if (rOn) p.set('time', rH);
         if (durOn && dlo > DMIN) p.set('dfrom', dlo);
         if (durOn && dhi < DMAX) p.set('dto', dhi);
+        if (pubSel !== 'both') p.set('pub', pubSel);
         // The address bar records what has been unticked, e.g. ?not-pr=She,Mixed
         GROUPS.forEach(function (g) { if (off[g[1]].length) p.set('not-' + g[1], off[g[1]].join(',')); });
         var qs = p.toString();
@@ -330,6 +350,8 @@
     if (rRange && p.get('time')) { rCap = Math.max(0.5, +p.get('time')); rIn.value = Math.min(rCap, RMAX); }
     if (dRange && (p.get('dfrom') || p.get('dto'))) setDuring(p.get('dfrom') ? +p.get('dfrom') : DMIN, p.get('dto') ? +p.get('dto') : DMAX);
     var restored = false;
+    if (seg && (p.get('pub') === 'trad' || p.get('pub') === 'indie')) { pubSel = p.get('pub'); restored = true; }
+    paintPub();
     GROUPS.forEach(function (g) {
       (p.get('not-' + g[1]) || '').split(',').filter(Boolean).forEach(function (v) {
         var b = form.querySelector('.chip[data-key="' + g[1] + '"][data-val="' + CSS.escape(v) + '"]');
@@ -400,6 +422,8 @@
       box.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') { set(false); btn.focus(); } });
     });
     form.addEventListener('click', function (ev) {
+      var sb = seg && ev.target.closest('[data-seg="pub"] button');
+      if (sb) { pubSel = sb.dataset.v; paintPub(); apply(true); return; }
       var all = ev.target.closest('.chip-all');
       if (all) {
         var chips = form.querySelectorAll('.chip[data-key="' + all.dataset.key + '"]');
@@ -418,6 +442,7 @@
       if (dRange) { setDuring(DMIN, DMAX); paintDuring(); }
       if (rRange) { rCap = Infinity; rIn.value = RMAX; paintReading(); }
       form.querySelectorAll('.chip').forEach(function (b) { b.setAttribute('aria-pressed', 'true'); });
+      pubSel = 'both'; paintPub();
       paintRange(); apply(true);
     }
     form.addEventListener('reset', function (ev) { ev.preventDefault(); clearAll(); });
