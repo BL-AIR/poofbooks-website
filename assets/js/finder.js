@@ -319,6 +319,12 @@
     document.dispatchEvent(new Event('poof:cards'));
   }
 
+  // The empty-box prompt's link puts the cursor in whichever box is on show.
+  root.addEventListener('click', function (ev) {
+    if (!ev.target.closest('[data-focus-want]')) return;
+    var v = inputs.filter(function (i) { return i.offsetParent; })[0] || inputs[0];
+    if (v) { v.scrollIntoView({ block: 'center', behavior: 'smooth' }); v.focus({ preventScroll: true }); }
+  });
   // Typing: keep both boxes (curators on / off) in step, and re-match after a short pause.
   var timer = null;
   inputs.forEach(function (inp) {

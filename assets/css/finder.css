@@ -39,3 +39,10 @@
 .care-more summary { cursor: pointer; color: var(--lilac); font-size: 14px; margin: 4px 0 6px; }
 .care-c { margin: 8px 0 2px !important; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .care-any { margin: 6px 0 0 !important; font-size: 13.5px; color: var(--muted); }
+
+/* Empty box: no books, just a nudge back up to the box (Blair, 31 Oct 2026). */
+.finder:not(.want-on) .f-groups, .finder:not(.want-on) .shelf-count, .finder:not(.want-on) .shelf-tools,
+.finder:not(.want-on) .no-match, .finder:not(.want-on) .shelf-more { display: none; }
+.f-prompt { margin: 0; font-size: 17px; color: var(--muted); }
+.finder.want-on .f-prompt, .finder.loading .f-prompt { display: none; }
+.f-prompt .linklike { font: inherit; color: var(--pink); }
