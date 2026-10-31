@@ -10,7 +10,8 @@
                              hours = words / the reader's pace (cog setting, view-settings.js) / 60
      Set during            : slider + era presets (fiction)           card: data-during="2010|2026" (years; BC as negative)
      Set during (sci-fi)   : chips  data-chips="eras"                 card: data-eras="Far future|Near future"
-     Set in                : chips  data-chips="places"               card: data-places="Morocco|Germany"
+     Set in                : chips  data-chips="places"               card: data-places="Morocco|Germany" (countries)
+                             Set in and Set during both offer "Not stated" for books whose description doesn't say (31 Oct 2026)
      Kind of book          : chips  data-chips="kinds" (non-fiction)  card: data-kinds="Memoir|History"
      Subject matter        : chips  data-chips="subjects"             card: data-subjects="AIDS|Activism"
      Format, Author's pronouns as before.
@@ -80,7 +81,7 @@
       // First published (data-first, a year) beats this edition's date: Giovanni's Room is a 1956 book, not a 2004 one.
       c._date = c.dataset.first ? c.dataset.first + '-00-00' : (c.dataset.date || '');
       c._year = c._date ? +c._date.slice(0, 4) : null;
-      c._places = c.dataset.places ? c.dataset.places.split('|') : [];
+      c._places = c.dataset.places ? c.dataset.places.split('|') : ['Not stated'];
       c._formats = c.dataset.formats ? c.dataset.formats.split('|') : [];
       c._subjects = c.dataset.subjects ? c.dataset.subjects.split('|') : [];
       c._eras = c.dataset.eras ? c.dataset.eras.split('|') : [];
@@ -118,6 +119,8 @@
         if (order) { var ia = order.indexOf(a), ib = order.indexOf(b); ia = ia < 0 ? 999 : ia; ib = ib < 0 ? 999 : ib; if (ia !== ib) return ia - ib; }
         return tally[b] - tally[a] || a.localeCompare(b);
       });
+      if (!fixed) vals = vals.filter(function (v) { return v !== 'Not stated'; }).concat(vals.indexOf('Not stated') > -1 ? ['Not stated'] : []);   // always last
+      if (vals.length === 1 && vals[0] === 'Not stated') { box.closest('fieldset').hidden = true; return; }   // nothing to choose between
       if (fixed && !cards.some(function (c) { return c['_' + key].length; })) { box.closest('fieldset').hidden = true; return; }
       if (!vals.length) { box.closest('fieldset').hidden = true; return; }
       vals.forEach(function (v) {
@@ -193,7 +196,16 @@
       var any = document.createElement('button');
       any.type = 'button'; any.dataset.any = '1'; any.textContent = 'Any time'; any.dataset.efrom = DMIN; any.dataset.eto = DMAX;
       box.appendChild(any);
+      // Books whose description doesn't say when they're set: a "Not stated" chip, ticked like the rest.
+      var nsN = cards.filter(function (c) { return c._dFrom === null; }).length;
+      if (nsN) {
+        var nsBox = document.createElement('div'); nsBox.className = 'chips chips-ns';
+        nsBox.innerHTML = '<button type="button" class="chip" aria-pressed="true" data-key="dns" data-val="Not stated"><span>Not stated</span><small></small></button>';
+        nsBox.querySelector('small').textContent = nsN;
+        dFS.appendChild(nsBox);
+      }
     }
+    function dNS() { return !form.querySelector('.chip[data-key="dns"][aria-pressed="false"]'); }
     function posToYear(p) {
       var w = 1000 / SEGS.length, i = Math.min(SEGS.length - 1, Math.floor(p / w)), sg = SEGS[i];
       return Math.round(sg[0] + (p - i * w) / w * (sg[1] - sg[0]));
@@ -286,7 +298,7 @@
       cards.forEach(function (c) {
         var ok = (!q || c._title.indexOf(q) > -1 || c._author.indexOf(q) > -1) &&
           (!dateOn || (c._year !== null && c._year >= lo && c._year <= hi)) &&
-          (!durOn || c._dFrom === null || (c._dFrom <= dhi && c._dTo >= dlo)) &&
+          (c._dFrom === null ? (!dRange || dNS()) : (!durOn || (c._dFrom <= dhi && c._dTo >= dlo))) &&
           (!rOn || !c._words || P.hours(c._words) <= rH) &&
           (pubSel === 'both' || !c._pub || c._pub === pubSel) &&
           GROUPS.every(function (g) {
@@ -311,7 +323,7 @@
       cards = Array.prototype.slice.call(grid.querySelectorAll('.book'));   // in the order now shown
       var onShow = paginate();
 
-      var active = (dateOn ? 1 : 0) + (durOn ? 1 : 0) + (rOn ? 1 : 0) + (pubSel !== 'both' ? 1 : 0) + offCount;
+      var active = (dateOn ? 1 : 0) + (durOn ? 1 : 0) + (rOn ? 1 : 0) + (pubSel !== 'both' ? 1 : 0) + (dRange && !dNS() ? 1 : 0) + offCount;
       paintAll();
       badge.hidden = !active; badge.textContent = active;
       countEl.textContent = (shown === cards.length ? cards.length + (cards.length === 1 ? ' book' : ' books')
@@ -333,6 +345,7 @@
         if (durOn && dlo > DMIN) p.set('dfrom', dlo);
         if (durOn && dhi < DMAX) p.set('dto', dhi);
         if (pubSel !== 'both') p.set('pub', pubSel);
+        if (dRange && !dNS()) p.set('not-dur', '1');
         // The address bar records what has been unticked, e.g. ?not-pr=She,Mixed
         GROUPS.forEach(function (g) { if (off[g[1]].length) p.set('not-' + g[1], off[g[1]].join(',')); });
         var qs = p.toString();
@@ -351,6 +364,8 @@
     if (dRange && (p.get('dfrom') || p.get('dto'))) setDuring(p.get('dfrom') ? +p.get('dfrom') : DMIN, p.get('dto') ? +p.get('dto') : DMAX);
     var restored = false;
     if (seg && (p.get('pub') === 'trad' || p.get('pub') === 'indie')) { pubSel = p.get('pub'); restored = true; }
+    var nsChip = form.querySelector('.chip[data-key="dns"]');
+    if (nsChip && p.get('not-dur') === '1') { nsChip.setAttribute('aria-pressed', 'false'); restored = true; }
     paintPub();
     GROUPS.forEach(function (g) {
       (p.get('not-' + g[1]) || '').split(',').filter(Boolean).forEach(function (v) {
