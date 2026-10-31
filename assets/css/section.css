@@ -495,3 +495,6 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .clubs-band .clubs-btn:hover { background: var(--lilac); }
 .clubs-band .clubs-btn:focus-visible { outline: 3px solid var(--lilac); outline-offset: 2px; }
 @media (max-width: 1100px) { .cabin-duo { grid-template-columns: 1fr; } }
+
+/* Set during: "Not stated" chip under the era presets (31 Oct 2026) */
+.chips-ns { margin-top: 10px; }
