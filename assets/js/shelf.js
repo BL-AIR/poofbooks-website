@@ -187,7 +187,9 @@
       dlo = DMIN; dhi = DMAX;
       var box = dFS.querySelector('.presets');
       ERAS.forEach(function (e) {
-        // Only eras that some book on the shelf is set in.
+        // Only eras that some book on the shelf is set in. Ancient world and The AIDS years are left out of the buttons
+        // to keep the box short (Blair, 31 Oct 2026); the slider still covers those years.
+        if (e.label === 'Ancient world' || e.label === 'The AIDS years') return;
         if (!dCards.some(function (c) { return c._dFrom <= e.to && c._dTo >= e.from; })) return;
         var bt = document.createElement('button');
         bt.type = 'button'; bt.textContent = e.label; bt.dataset.efrom = e.from; bt.dataset.eto = e.to;
@@ -199,10 +201,11 @@
       // Books whose description doesn't say when they're set: a "Not stated" chip, ticked like the rest.
       var nsN = cards.filter(function (c) { return c._dFrom === null; }).length;
       if (nsN) {
-        var nsBox = document.createElement('div'); nsBox.className = 'chips chips-ns';
-        nsBox.innerHTML = '<button type="button" class="chip" aria-pressed="true" data-key="dns" data-val="Not stated"><span>Not stated</span><small></small></button>';
-        nsBox.querySelector('small').textContent = nsN;
-        dFS.appendChild(nsBox);
+        // In the button row, after "Any time", so it isn't missed under the slider (Blair, 31 Oct 2026).
+        var nsB = document.createElement('button');
+        nsB.type = 'button'; nsB.className = 'chip chip-ns'; nsB.setAttribute('aria-pressed', 'true'); nsB.dataset.key = 'dns'; nsB.dataset.val = 'Not stated';
+        nsB.innerHTML = '<span>Not stated</span><small></small>'; nsB.querySelector('small').textContent = nsN;
+        box.appendChild(nsB);
       }
     }
     function dNS() { return !form.querySelector('.chip[data-key="dns"][aria-pressed="false"]'); }
@@ -231,7 +234,7 @@
       dFS.querySelector('[data-out="dto"]').textContent = yr(dhi);
       // Only one preset lights at a time: when the whole range is chosen that is "Any time", even if an era covers it too.
       var dAll = dlo === DMIN && dhi === DMAX;
-      dFS.querySelectorAll('.presets button').forEach(function (bt) {
+      dFS.querySelectorAll('.presets button:not(.chip)').forEach(function (bt) {
         var lo = Math.max(DMIN, +bt.dataset.efrom), hi = Math.min(DMAX, +bt.dataset.eto);
         var on = bt.dataset.any ? dAll : (!dAll && dlo === lo && dhi === hi);
         bt.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -347,7 +350,13 @@
         if (pubSel !== 'both') p.set('pub', pubSel);
         if (dRange && !dNS()) p.set('not-dur', '1');
         // The address bar records what has been unticked, e.g. ?not-pr=She,Mixed
-        GROUPS.forEach(function (g) { if (off[g[1]].length) p.set('not-' + g[1], off[g[1]].join(',')); });
+        // ...or, when most are unticked, what is still ticked (?only-set=France), so the address stays short.
+        GROUPS.forEach(function (g) {
+          if (!off[g[1]].length) return;
+          var onNow = chosen(g[1]);
+          if (off[g[1]].length > onNow.length) p.set('only-' + g[1], onNow.join(','));
+          else p.set('not-' + g[1], off[g[1]].join(','));
+        });
         var qs = p.toString();
         history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
       }
@@ -372,6 +381,12 @@
         var b = form.querySelector('.chip[data-key="' + g[1] + '"][data-val="' + CSS.escape(v) + '"]');
         if (b) { b.setAttribute('aria-pressed', 'false'); restored = true; }
       });
+      if (p.has('only-' + g[1])) {
+        var keep = p.get('only-' + g[1]).split(',').filter(Boolean);
+        form.querySelectorAll('.chip[data-key="' + g[1] + '"]').forEach(function (b) {
+          if (keep.indexOf(b.dataset.val) < 0) { b.setAttribute('aria-pressed', 'false'); restored = true; }
+        });
+      }
     });
     if (p.get('from') || p.get('to') || p.get('time') || p.get('dfrom') || p.get('dto') || restored) { panel.hidden = false; toggle.setAttribute('aria-expanded', 'true'); }
 
@@ -410,7 +425,7 @@
     if (dRange) {
       dFrom.addEventListener('input', function () { if (+dFrom.value > +dTo.value) dFrom.value = dTo.value; dlo = posToYear(+dFrom.value); if (+dFrom.value === 0) dlo = DMIN; paintDuring(); apply(true); });
       dTo.addEventListener('input', function () { if (+dTo.value < +dFrom.value) dTo.value = dFrom.value; dhi = posToYear(+dTo.value); if (+dTo.value === 1000) dhi = DMAX; paintDuring(); apply(true); });
-      dFS.querySelectorAll('.presets button').forEach(function (b) {
+      dFS.querySelectorAll('.presets button:not(.chip)').forEach(function (b) {
         b.addEventListener('click', function () {
           setDuring(+b.dataset.efrom, +b.dataset.eto);
           paintDuring(); apply(true);

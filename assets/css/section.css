@@ -496,5 +496,11 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .clubs-band .clubs-btn:focus-visible { outline: 3px solid var(--lilac); outline-offset: 2px; }
 @media (max-width: 1100px) { .cabin-duo { grid-template-columns: 1fr; } }
 
-/* Set during: "Not stated" chip under the era presets (31 Oct 2026) */
-.chips-ns { margin-top: 10px; }
+/* Set during: "Not stated" sits in the era button row, dashed so it reads as a separate on/off choice (31 Oct 2026) */
+.presets .chip-ns { border-style: dashed; }
+.presets .chip-ns[aria-pressed="true"] { border-style: solid; }
+/* Set in: the full height of the panel's first two rows instead of a short scrolling box (Blair, 31 Oct 2026) */
+@media (min-width: 900px) {
+  .f-group:has(> .chips[data-chips="places"]) { grid-row: span 2; align-self: stretch; display: flex; flex-direction: column; }
+  .f-group:has(> .chips[data-chips="places"]) > .chips { max-height: none; flex: 1 1 0; min-height: 176px; }
+}
