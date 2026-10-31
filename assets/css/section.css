@@ -486,7 +486,7 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
 .mini-books.scroll:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; border-radius: 8px; }
 
 /* The Cabin: Looker List flush left, Book Clubs Bulletin Boards beside it (30 Oct 2026). Stacked on narrow screens. */
-.cabin-duo { display: grid; grid-template-columns: minmax(0, 880px) minmax(260px, 1fr); gap: 24px; align-items: start; }
+.cabin-duo { display: grid; grid-template-columns: minmax(0, 880px) minmax(260px, 1fr); gap: 24px; align-items: stretch; }   /* both boxes end on the same line (Blair, 31 Oct) */
 .cabin-duo > .posted-band { margin: 0; max-width: none; }
 .clubs-band h2 { margin: 0; font-size: 22px; font-weight: 800; color: var(--lilac); }
 .clubs-band p { margin: 10px 0 0; font-size: 16px; line-height: 1.55; color: var(--cream); }
