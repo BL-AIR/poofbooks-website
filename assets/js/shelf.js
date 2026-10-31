@@ -21,38 +21,55 @@
    (only values on the shelf, in that order). Era definitions below must match the database's era table. */
 (function () {
   'use strict';
+  // Big Daddy's finder page builds its cards after the page loads (data-wait), then says so with 'poof:cards'.
   document.addEventListener('DOMContentLoaded', function () {
     var form = document.querySelector('.shelf-tools');
     if (!form) return;
-    var grid = document.querySelector('.shelf .books');
-    var cards = Array.prototype.slice.call(grid.querySelectorAll('.book'));
+    if (form.hasAttribute('data-wait')) document.addEventListener('poof:cards', function () { init(form); }, { once: true });
+    else init(form);
+  });
+  function init(form) {
+    // A page may hold several grids (the finder groups its books by shelf); each pages on its own.
+    var grids = Array.prototype.slice.call(document.querySelectorAll('.shelf .books'));
+    var grid = grids[0];
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.shelf .books .book'));
+    var FINDER = window.PoofFinder || null;   // relevance from the "Kinda know what you want?" box
+    var defSort = (form.elements.sort.querySelector('option[selected]') || {}).value || 'pick';
     var countEl = document.querySelector('.shelf-count');
     var noMatch = document.querySelector('.shelf .no-match');
     // Paging: show about 25 books at a time (5 x 5 at five across), always whole rows, then "Show more".
     // Applied after filtering and sorting, so filters and sort work across the whole shelf.
-    var PAGE = 25, pages = 1;
-    var more = document.createElement('p');
-    more.className = 'shelf-more'; more.hidden = true;
-    more.innerHTML = '<button type="button" class="btn btn-ghost"></button>';
-    grid.parentNode.insertBefore(more, grid.nextSibling);
-    var moreBtn = more.firstChild;
+    var PAGE = +form.dataset.page || 25;
+    grids.forEach(function (g) {
+      g._pages = 1;
+      var more = document.createElement('p');
+      more.className = 'shelf-more'; more.hidden = true;
+      more.innerHTML = '<button type="button" class="btn btn-ghost"></button>';
+      g.parentNode.insertBefore(more, g.nextSibling);
+      g._more = more; more.firstChild._grid = g;
+    });
+    function setPages(n) { grids.forEach(function (g) { g._pages = n; }); }
     function perPage() {
-      var cols = (getComputedStyle(grid).gridTemplateColumns || '').split(' ').filter(Boolean).length || 1;
+      var g = grids.filter(function (x) { return x.offsetParent; })[0] || grid;
+      var cols = (getComputedStyle(g).gridTemplateColumns || '').split(' ').filter(Boolean).length || 1;
       return cols * Math.max(1, Math.round(PAGE / cols));
     }
     function paginate() {
-      var limit = perPage() * pages, n = 0, total = 0;
+      var per = perPage(), onShow = 0;
+      grids.forEach(function (g) { g._n = 0; });
       cards.forEach(function (c) {
         if (c.hidden) { c.classList.remove('paged'); return; }
-        total++;
-        c.classList.toggle('paged', ++n > limit);
+        var g = c._grid;
+        c.classList.toggle('paged', ++g._n > per * g._pages);
       });
-      var left = total - Math.min(total, limit);
-      more.hidden = left <= 0;
-      var next = Math.min(left, perPage());
-      moreBtn.textContent = 'Show ' + next + ' more';
-      moreBtn.setAttribute('aria-label', 'Show ' + next + ' more books (' + left + ' not yet shown)');
-      return Math.min(total, limit);
+      grids.forEach(function (g) {
+        var limit = per * g._pages, left = g._n - Math.min(g._n, limit), next = Math.min(left, per), b = g._more.firstChild;
+        onShow += Math.min(g._n, limit);
+        g._more.hidden = left <= 0;
+        b.textContent = 'Show ' + next + ' more';
+        b.setAttribute('aria-label', 'Show ' + next + ' more books (' + left + ' not yet shown)');
+      });
+      return onShow;
     }
     var panel = form.querySelector('.filters');
     var toggle = form.querySelector('.toggle');
@@ -76,6 +93,8 @@
 
     cards.forEach(function (c, i) {
       c._i = i;
+      c._grid = c.parentNode;
+      c._score = 0;
       c._title = (c.dataset.title || '').toLowerCase();
       c._author = (c.dataset.author || '').toLowerCase();
       // First published (data-first, a year) beats this edition's date: Giovanni's Room is a 1956 book, not a 2004 one.
@@ -290,7 +309,8 @@
     }
 
     function apply(push) {
-      var q = form.elements.q.value.trim().toLowerCase();
+      var q = form.elements.q ? form.elements.q.value.trim().toLowerCase() : '';
+      var want = FINDER ? FINDER.query() : '', fOn = FINDER ? FINDER.score(cards, want) : false;
       var lo = +from.value, hi = +to.value;
       var on = {}, off = {}, offCount = 0;
       GROUPS.forEach(function (g) { on[g[0]] = chosen(g[1]); off[g[1]] = unticked(g[1]); offCount += off[g[1]].length; });
@@ -299,7 +319,7 @@
       var rOn = readOn(), rH = rRange ? +rIn.value : 0;
       var shown = 0;
       cards.forEach(function (c) {
-        var ok = (!q || c._title.indexOf(q) > -1 || c._author.indexOf(q) > -1) &&
+        var ok = (!q || c._title.indexOf(q) > -1 || c._author.indexOf(q) > -1) && (!fOn || c._hit) &&
           (!dateOn || (c._year !== null && c._year >= lo && c._year <= hi)) &&
           (c._dFrom === null ? (!dRange || dNS()) : (!durOn || (c._dFrom <= dhi && c._dTo >= dlo))) &&
           (!rOn || !c._words || P.hours(c._words) <= rH) &&
@@ -314,17 +334,20 @@
         if (ok) shown++;
       });
       var sort = form.elements.sort.value;
+      if (sort === 'match' && !fOn) sort = 'pick';   // nothing typed yet: nothing to match
       var by = {
         newest: function (a, b) { return (b._date || '').localeCompare(a._date || '') || a._i - b._i; },
         oldest: function (a, b) { return (a._date || '9999').localeCompare(b._date || '9999') || a._i - b._i; },
         title: function (a, b) { return a._title.localeCompare(b._title); },
         author: function (a, b) { return a._author.localeCompare(b._author) || a._title.localeCompare(b._title); },
         price: function (a, b) { return a._price - b._price || a._title.localeCompare(b._title); },
+        match: function (a, b) { return (b._score - a._score) || (b._pick - a._pick) || (b._date || '').localeCompare(a._date || '') || a._i - b._i; },
         pick: function (a, b) { return (b._pick - a._pick) || (b._date || '').localeCompare(a._date || '') || a._i - b._i; }
       }[sort] || null;
-      cards.slice().sort(function (a, b) { return (a._nocover - b._nocover) || (by ? by(a, b) : a._i - b._i); }).forEach(function (c) { grid.appendChild(c); });
-      cards = Array.prototype.slice.call(grid.querySelectorAll('.book'));   // in the order now shown
+      cards = cards.slice().sort(function (a, b) { return (a._nocover - b._nocover) || (by ? by(a, b) : a._i - b._i); });
+      cards.forEach(function (c) { c._grid.appendChild(c); });   // in the order now shown, each in its own grid
       var onShow = paginate();
+      if (FINDER) FINDER.after(cards, fOn);
 
       var active = (dateOn ? 1 : 0) + (durOn ? 1 : 0) + (rOn ? 1 : 0) + (pubSel !== 'both' ? 1 : 0) + (dRange && !dNS() ? 1 : 0) + offCount;
       paintAll();
@@ -340,8 +363,9 @@
           if (/^utm_/.test(k) || k === 'gclid' || k === 'fbclid') p.set(k, v);
         });
         if (q) p.set('q', q);
-        if (pages > 1) p.set('shown', pages);  // so Back from a book page returns to the same place
-        if (sort !== 'pick') p.set('sort', sort);  // the curator's picks first is the default
+        if (fOn) p.set('want', want.slice(0, 600));   // the finder's description, so a search can be shared
+        if (grids.length === 1 && grid._pages > 1) p.set('shown', grid._pages);  // so Back from a book page returns to the same place
+        if (form.elements.sort.value !== defSort && !(FINDER && form.elements.sort.value === 'match')) p.set('sort', form.elements.sort.value);  // the curator's picks first is the default
         if (lo > MIN) p.set('from', lo);
         if (hi < MAX) p.set('to', hi);
         if (rOn) p.set('time', rH);
@@ -364,8 +388,8 @@
 
     // Restore from the address bar.
     var p = new URLSearchParams(location.search);
-    if (p.get('q')) form.elements.q.value = p.get('q');
-    if (+p.get('shown') > 1) pages = Math.min(40, Math.floor(+p.get('shown')));
+    if (p.get('q') && form.elements.q) form.elements.q.value = p.get('q');
+    if (+p.get('shown') > 1 && grids.length === 1) grid._pages = Math.min(40, Math.floor(+p.get('shown')));
     if (p.get('sort')) form.elements.sort.value = p.get('sort');
     if (p.get('from')) from.value = Math.max(MIN, Math.min(MAX, +p.get('from')));
     if (p.get('to')) to.value = Math.max(MIN, Math.min(MAX, +p.get('to')));
@@ -396,17 +420,21 @@
     });
     form.addEventListener('submit', function (ev) { ev.preventDefault(); });
     // Any change of filter or sort starts again from the first 25.
-    form.addEventListener('input', function () { pages = 1; }, true);
-    form.addEventListener('change', function () { pages = 1; }, true);
-    form.addEventListener('click', function (ev) { if (ev.target.closest('button')) pages = 1; }, true);
-    moreBtn.addEventListener('click', function () {
-      var first = cards.filter(function (c) { return !c.hidden && c.classList.contains('paged'); })[0];
-      pages++; apply(true);
-      if (first) { var a = first.matches('a') ? first : first.querySelector('a'); if (a) a.focus({ preventScroll: true }); }
+    form.addEventListener('input', function () { setPages(1); }, true);
+    form.addEventListener('change', function () { setPages(1); }, true);
+    form.addEventListener('click', function (ev) { if (ev.target.closest('button')) setPages(1); }, true);
+    grids.forEach(function (g) {
+      g._more.firstChild.addEventListener('click', function () {
+        var first = cards.filter(function (c) { return c._grid === g && !c.hidden && c.classList.contains('paged'); })[0];
+        g._pages++; apply(true);
+        if (first) { var a = first.matches('a') ? first : first.querySelector('a'); if (a) a.focus({ preventScroll: true }); }
+      });
     });
+    // The finder's box (outside this form) changed.
+    document.addEventListener('poof:want', function () { setPages(1); apply(true); });
     var lastPer = perPage();
     window.addEventListener('resize', function () { var n = perPage(); if (n !== lastPer) { lastPer = n; apply(false); } });
-    form.elements.q.addEventListener('input', function () { apply(true); });
+    if (form.elements.q) form.elements.q.addEventListener('input', function () { apply(true); });
     form.elements.sort.addEventListener('change', function () { apply(true); });
     from.addEventListener('input', function () { if (+from.value > +to.value) from.value = to.value; paintRange(); apply(true); });
     to.addEventListener('input', function () { if (+to.value < +from.value) to.value = from.value; paintRange(); apply(true); });
@@ -467,7 +495,7 @@
       apply(true);
     });
     function clearAll() {
-      form.elements.q.value = '';
+      if (form.elements.q) form.elements.q.value = '';
       from.value = MIN; to.value = MAX;
       if (dRange) { setDuring(DMIN, DMAX); paintDuring(); }
       if (rRange) { rCap = Infinity; rIn.value = RMAX; paintReading(); }
@@ -477,11 +505,11 @@
     }
     form.addEventListener('reset', function (ev) { ev.preventDefault(); clearAll(); });
     var clr = document.querySelector('.shelf [data-clear]');
-    if (clr) clr.addEventListener('click', function () { pages = 1; clearAll(); });
+    if (clr) clr.addEventListener('click', function () { setPages(1); clearAll(); });
 
     paintRange();
     paintDuring();
     paintReading();
     apply(false);
-  });
+  }
 })();

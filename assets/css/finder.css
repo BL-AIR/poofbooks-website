@@ -1,0 +1,29 @@
+/* Big Daddy's book finder ("Kinda know what you want?"), 31 Oct 2026. Sits on top of section.css. */
+.want { position: relative; margin: 24px 0 0; max-width: 560px; }
+.foyer-title .want { margin-bottom: 28px; }
+.want-input { display: block; width: 100%; box-sizing: border-box; min-height: 8.6em; max-height: 14em; padding: 14px 18px; resize: vertical;
+  border-radius: 18px; border: 1.5px solid var(--line); background: rgba(34,26,59,.94); color: var(--cream);
+  font: inherit; font-size: 17px; line-height: 1.45; }
+.want-input::placeholder { color: var(--muted); }
+.want-input:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255,95,162,.25); }
+.want-hint { margin: 8px 2px 0; font-size: 13.5px; color: var(--muted); }
+
+/* Heading swaps once he's typed something worth matching. */
+.finder .f-live { display: none; }
+.finder.want-on .f-live { display: inline; }
+.finder.want-on .f-idle { display: none; }
+.finder .f-loading { display: none; color: var(--muted); }
+.finder.loading .f-loading { display: block; }
+
+/* One group per shelf, best-matching shelf first. */
+.f-groups { display: grid; gap: 48px; }
+.f-shelf[hidden] { display: none; }
+.f-shelf-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 0 0 20px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--line); font-size: 21px; font-weight: 800; }
+.f-shelf-h a { color: var(--cream); text-decoration: none; }
+.f-shelf-h a:hover { color: var(--pink); }
+.f-who { font-size: 15px; font-weight: 500; color: var(--lilac); }
+.f-n { margin-left: auto; font-size: 14px; font-weight: 500; color: var(--muted); }
+.f-adult { margin: -8px 0 20px; font-size: 14px; color: var(--muted); }
+.f-adult[hidden] { display: none; }
+.f-shelf .shelf-more { margin-top: 24px; }
