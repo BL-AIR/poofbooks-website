@@ -46,8 +46,16 @@
     '9781922263971': { book: BOOK, format: 'Paperback, Long & Skinny', price: 39.95, stock: 'available' },
     '9781922263933': { book: BOOK, format: 'Hardback Special Edition', price: 89.95, stock: 'available' }
   };
+  // Every other edition we can sell comes from the site build (assets/data/sellable.json, 31 Oct 2026): books Ingram can
+  // supply. s = 'available' or 'back' (Ingram has it on back order: Lil Otter's 'still on the boat').
+  var SELL = {};
+  var NO_COVER = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200"><rect width="800" height="1200" fill="#2A2140"/></svg>');
+  function fromSell(isbn) {
+    var s = SELL[isbn]; if (!s) return null;
+    return { book: { title: s.t, author: s.a || '', cover: s.c || NO_COVER, shelf: '' }, format: s.f, price: s.p, stock: s.s === 'back' ? 'back' : 'available', adult: !!s.x };
+  }
   function line(isbn, qty, stock) {
-    var e = EDITIONS[isbn]; if (!e) return null;
+    var e = EDITIONS[isbn] || fromSell(isbn); if (!e) return null;
     return { book: e.book, format: e.format, isbn: isbn, price: e.price, qty: qty || 1, stock: stock || e.stock, adult: !!e.adult };
   }
   // The reader's own cart (cart.js), skipping anything we no longer sell.
@@ -483,6 +491,12 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    fetch('/assets/data/sellable.json', { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .then(function (j) { SELL = j || {}; }, function () { SELL = {}; })
+      .then(start);
+  });
+  function start() {
     bindVoice();
     var form = $('[data-form]');
     var demo = new URLSearchParams(location.search).get('demo') || '';
@@ -514,5 +528,5 @@
     say(hasBack ? 'backorder' : 'greeting', usingRealCart ? cartKey(mine) : null);
     if (demo === 'problem') showProblem('');
     startSquare(form);
-  });
+  }
 })();
