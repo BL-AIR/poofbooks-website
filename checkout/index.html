@@ -25,12 +25,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
 <link rel="stylesheet" href="/assets/css/section.css?v=202610311400">
-<link rel="stylesheet" href="/assets/css/checkout.css?v=202610291615">
+<link rel="stylesheet" href="/assets/css/checkout.css?v=202611021830">
 <script src="/assets/js/view-settings.js?v=202610290945" defer></script>
 <script src="/assets/js/cart.js?v=202610291615" defer></script>
 <script src="/assets/js/currency.js?v=202610301330" defer></script>
 <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
-<script src="/assets/js/checkout.js?v=202610312330" defer></script>
+<script src="/assets/js/checkout.js?v=202611021830" defer></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -99,7 +99,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <ul class="lines" data-lines></ul>
         <dl class="totals">
           <div><dt>Books</dt><dd data-books-total></dd></div>
-          <div><dt>Delivery</dt><dd><span class="gap-inline">rates to come</span></dd></div>
+          <div><dt>Delivery</dt><dd data-delivery-total><span class="gap-inline">working it out…</span></dd></div>
           <div class="grand"><dt>Total</dt><dd data-grand-total></dd></div>
         </dl>
         <p class="sum-note">Charged in Australian dollars. No GST is charged.</p>
@@ -153,8 +153,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <label>Postcode<input name="postcode" autocomplete="postal-code" required></label>
               </div>
               <div class="ship" role="radiogroup" aria-label="Delivery method">
-                <label class="ship-opt"><input type="radio" name="ship" value="standard" checked><span><b>Standard post</b><small>Tracked. Priced by weight and size.</small></span><span class="gap-inline">price</span></label>
-                <label class="ship-opt"><input type="radio" name="ship" value="express"><span><b>Express post</b><small>Tracked, faster.</small></span><span class="gap-inline">price</span></label>
+                <p class="ship-wait">Working out delivery…</p>
               </div>
             </fieldset>
 

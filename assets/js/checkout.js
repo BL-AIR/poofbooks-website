@@ -12,6 +12,9 @@
   var SHOP_EMAIL = 'BigDaddy@poofbooks.com';
   // Payments Worker: prices the cart itself, charges Square, saves the order and sends Lil Otter's receipt.
   var PAY_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/checkout';
+  // Delivery options for the cart and address: priced by the same Worker (Australia Post for books we post ourselves,
+  // A$0 for supplier drop-ships until their rates are in). The Worker prices delivery again when it charges.
+  var SHIP_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/shipping';
 
   // Lil Otter's lines. Each with `audio` has an approved recording (eleven_v3); the words match it.
   var OTTER = {
@@ -89,6 +92,13 @@
   var audio = null;
   var cartTotal = 0;
   var currentCart = [];
+  // Delivery: the options the Worker last gave for this cart and address, and the customer's choice.
+  var ship = { options: [], choice: 'standard', key: '', needPostcode: false, error: '', pending: null };
+  function shipCents() {
+    var o = ship.options.filter(function (x) { return x.id === ship.choice; })[0] || ship.options[0];
+    return o ? o.cents : null;
+  }
+  function shipOption() { return ship.options.filter(function (x) { return x.id === ship.choice; })[0] || ship.options[0] || null; }
 
   function aud(n) { return n.toFixed(2); }
   function money(n) { var s = document.createElement('span'); s.className = 'money'; s.setAttribute('data-aud', aud(n)); s.textContent = 'A$' + aud(n); return s; }
@@ -150,10 +160,7 @@
     if (!mine.length) { showEmpty(); return; }
     var hasBack = renderCart(mine);
     say(hasBack ? 'backorder' : 'greeting', cartKey(mine));
-    var t = { amount: aud(cartTotal), label: 'Poof Books' };
-    walletRequests.forEach(function (r) {
-      try { r.update({ total: t, lineItems: [{ label: 'Books', amount: t.amount }, { label: 'Delivery', amount: '0.00' }] }); } catch (e) { /* older SDK */ }
-    });
+    var form = $('[data-form]'); if (form) quoteDelivery(formAddr(form));
   }
   function renderCart(cart) {
     var ul = $('[data-lines]'); ul.innerHTML = '';
@@ -190,12 +197,76 @@
       li.append(img, t, p); ul.appendChild(li);
     });
     $('[data-books-total]').replaceChildren(money(total));
-    $('[data-grand-total]').replaceChildren(money(total));
     cartTotal = total;
     currentCart = cart;
-    $('[data-pay-total]').textContent = aud(total);        // the Pay button always shows the AUD charge
+    showTotals();
     $('[data-adult]').hidden = !adult;
     return cart.some(function (l) { return l.stock === 'back'; });
+  }
+
+  /* ---------- Delivery ---------- */
+  // Books + delivery, on the summary, the Pay button and the wallet sheets.
+  function showTotals() {
+    var c = shipCents(), d = $('[data-delivery-total]');
+    if (d) {
+      if (c != null) d.replaceChildren(money(c / 100));
+      else d.innerHTML = '<span class="gap-inline">' + (ship.needPostcode ? 'enter your postcode' : ship.error ? 'to be confirmed' : 'working it out…') + '</span>';
+    }
+    var grand = cartTotal + (c || 0) / 100;
+    $('[data-grand-total]').replaceChildren(money(grand));
+    $('[data-pay-total]').textContent = aud(grand);        // the Pay button always shows the AUD charge
+    var t = { amount: aud(grand), label: 'Poof Books' };
+    walletRequests.forEach(function (r) {
+      try { r.update({ total: t, lineItems: [{ label: 'Books', amount: aud(cartTotal) }, { label: 'Delivery', amount: aud((c || 0) / 100) }] }); } catch (e) { /* older SDK */ }
+    });
+  }
+  function renderShip() {
+    var box = $('.ship'); if (!box) return;
+    box.innerHTML = '';
+    if (ship.needPostcode || ship.error || !ship.options.length) {
+      var p = document.createElement('p'); p.className = 'ship-wait';
+      p.textContent = ship.error || (ship.needPostcode ? 'Enter your postcode and we\'ll show the delivery price.' : 'Working out delivery…');
+      box.appendChild(p);
+    }
+    ship.options.forEach(function (o) {
+      var lab = document.createElement('label'); lab.className = 'ship-opt';
+      var r = document.createElement('input'); r.type = 'radio'; r.name = 'ship'; r.value = o.id; r.checked = o.id === (shipOption() || {}).id;
+      r.addEventListener('change', function () { ship.choice = o.id; showTotals(); });
+      var t = document.createElement('span'), b = document.createElement('b'), sm = document.createElement('small');
+      b.textContent = o.label;
+      sm.textContent = o.id === 'express' ? 'Tracked, faster.' : o.cents === 0 ? 'Sent straight from our supplier.' : 'Tracked. Priced by weight and size.';
+      t.append(b, sm);
+      lab.append(r, t, money(o.cents / 100)); box.appendChild(lab);
+    });
+    showTotals();
+  }
+  // Ask the Worker for delivery options. Resolves when the options on screen are current for this cart and address.
+  function quoteDelivery(addr) {
+    if (!currentCart.length) return Promise.resolve();
+    var items = currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; });
+    var key = JSON.stringify([items, addr.postcode || '', addr.country || 'AU']);
+    if (key === ship.key && ship.options.length && !ship.pending) return Promise.resolve();
+    if (key === ship.key && ship.pending) return ship.pending;
+    ship.key = key; ship.error = '';
+    var p = fetch(SHIP_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: items, address: addr }) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (x) {
+        if (key !== ship.key) return;                        // a newer address has been typed since
+        if (!x.ok || !x.j.ok) { ship.options = []; ship.needPostcode = false; ship.error = (x.j && x.j.error) || 'We couldn\'t work out delivery just now.'; }
+        else { ship.options = x.j.options || []; ship.needPostcode = !!x.j.needPostcode; }
+      }, function () { if (key === ship.key) { ship.options = []; ship.error = 'We couldn\'t reach our delivery calculator. Check your connection.'; } })
+      .then(function () { if (key === ship.key) { ship.pending = null; renderShip(); } });
+    ship.pending = p;
+    renderShip();
+    return p;
+  }
+  function formAddr(form) { return { postcode: form.postcode.value.trim(), country: form.country.value }; }
+  function bindDelivery(form) {
+    var t = null;
+    function again() { clearTimeout(t); t = setTimeout(function () { quoteDelivery(formAddr(form)); }, 400); }
+    form.postcode.addEventListener('input', again);
+    form.country.addEventListener('change', again);
+    quoteDelivery(formAddr(form));
   }
 
   // One button to empty the cart; asks once ("Tap again to empty") so it can't happen by accident.
@@ -238,7 +309,7 @@
       ref: makeRef(), test: true, placedAt: new Date().toISOString(),
       email: email || '', name: name || '', address: address || [], paidWith: paidWith || '',
       items: currentCart.map(function (l) { return { title: l.book.title, author: l.book.author, cover: l.book.cover, format: l.format, qty: l.qty, price: l.price, stock: l.stock }; }),
-      booksTotal: cartTotal, delivery: null, total: cartTotal
+      booksTotal: cartTotal, delivery: shipCents() == null ? null : shipCents() / 100, total: cartTotal + (shipCents() || 0) / 100
     };
   }
   function formAddress(form) {
@@ -267,6 +338,7 @@
     payload.items = currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; });
     payload.curators = !html.classList.contains('no-curators');
     payload.idempotencyKey = newKey();
+    if (!payload.deliveryOption) { var o = shipOption(); if (o) { payload.deliveryOption = o.id; payload.deliveryCents = o.cents; } }
     var res, data;
     try {
       res = await fetch(PAY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -274,6 +346,7 @@
     } catch (e) {
       throw new Error('We couldn\'t reach our payment service just now. You have not been charged.');
     }
+    if (data && data.code === 'DELIVERY_CHANGED' && data.delivery) { ship.options = data.delivery.options || []; renderShip(); }
     if (!res.ok || !data.ok) throw new Error(data && data.error ? data.error : 'The payment didn\'t go through. You have not been charged.');
     return data;
   }
@@ -348,22 +421,36 @@
      Delivery is a placeholder until the shipping rates are in. */
   function walletRequest(payments) {
     // Amounts are read live from cartTotal, so a quantity change on the page reaches the wallet sheet.
-    var shipping = [{ id: 'standard', label: 'Standard post (rate to come)', amount: '0.00' }];
-    function lineItems() { return [{ label: 'Books', amount: aud(cartTotal) }, { label: 'Delivery', amount: '0.00' }]; }
-    function total() { return { amount: aud(cartTotal), label: 'Poof Books' }; }
+    // Wallet sheets get the same delivery options, priced for the address chosen in the wallet.
+    function shipping() {
+      var list = ship.options.length ? ship.options : [{ id: 'standard', label: 'Standard post', cents: 0 }];
+      return list.map(function (o) { return { id: o.id, label: o.label, amount: aud(o.cents / 100) }; });
+    }
+    function cents() { return shipCents() || 0; }
+    function lineItems() { return [{ label: 'Books', amount: aud(cartTotal) }, { label: 'Delivery', amount: aud(cents() / 100) }]; }
+    function total() { return { amount: aud(cartTotal + cents() / 100), label: 'Poof Books' }; }
     var req = payments.paymentRequest({
       countryCode: 'AU', currencyCode: 'AUD',
       total: total(),
       lineItems: lineItems(),
       requestBillingContact: true,
       requestShippingContact: true,
-      shippingOptions: shipping
+      shippingOptions: shipping()
     });
-    // Later: price delivery for the address chosen in the wallet (by weight and size).
     try {
-      req.addEventListener('shippingcontactchanged', function () { return { shippingOptions: shipping, lineItems: lineItems(), total: total() }; });
-      req.addEventListener('shippingoptionchanged', function () { return { lineItems: lineItems(), total: total() }; });
-    } catch (e) { /* older SDK: fixed delivery for now */ }
+      req.addEventListener('shippingcontactchanged', function (contact) {
+        var c = contact || {};
+        return quoteDelivery({ postcode: c.postalCode || '', country: c.countryCode || 'AU' }).then(function () {
+          if (ship.error) return { error: ship.error };
+          return { shippingOptions: shipping(), lineItems: lineItems(), total: total() };
+        });
+      });
+      req.addEventListener('shippingoptionchanged', function (option) {
+        if (option && option.id) ship.choice = option.id;
+        showTotals();
+        return { lineItems: lineItems(), total: total() };
+      });
+    } catch (e) { /* older SDK: delivery as quoted for the form's address */ }
     walletRequests.push(req);
     return req;
   }
@@ -459,6 +546,10 @@
         return;
       }
       btn.disabled = true;
+      var before = shipCents();
+      await quoteDelivery(formAddr(form));
+      if (ship.error || shipCents() == null) { plainStatus(ship.error || 'Please check your postcode: we need it to work out delivery.', 'err'); btn.disabled = false; return; }
+      if (before !== shipCents()) { plainStatus('Delivery is now A$' + aud(shipCents() / 100) + '. Please check the total and press Pay again.', 'err'); btn.disabled = false; return; }
       plainStatus('Checking your card with Square…', 'ok');
       try {
         var result = await card.tokenize();
@@ -527,6 +618,8 @@
     if (usingRealCart) addEmptyButton();
     say(hasBack ? 'backorder' : 'greeting', usingRealCart ? cartKey(mine) : null);
     if (demo === 'problem') showProblem('');
+    if (usingRealCart) bindDelivery(form);
+    else { ship.options = [{ id: 'standard', label: 'Standard post', cents: 0 }]; renderShip(); }   // sample orders: no quote
     startSquare(form);
   }
 })();
