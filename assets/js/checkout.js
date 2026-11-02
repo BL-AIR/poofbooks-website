@@ -15,6 +15,10 @@
   // Delivery options for the cart and address: priced by the same Worker (Australia Post for books we post ourselves,
   // A$0 for supplier drop-ships until their rates are in). The Worker prices delivery again when it charges.
   var SHIP_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/shipping';
+  // Address lookup: Google Places (New). A browser key, public by design: Google only accepts it from poofbooks.com
+  // and only for Maps JavaScript + Places (New); daily caps and an A$1 budget alert are set in Google Cloud (project
+  // poof-books, 2 Nov 2026). Loaded only when the customer starts typing an address.
+  var PLACES_KEY = 'AIzaSyC9ze8f8niiOvE_0XzcYp-MQPFEPgURlFs';
 
   // Lil Otter's lines. Each with `audio` has an approved recording (eleven_v3); the words match it.
   var OTTER = {
@@ -202,6 +206,92 @@
     showTotals();
     $('[data-adult]').hidden = !adult;
     return cart.some(function (l) { return l.stock === 'back'; });
+  }
+
+  /* ---------- Address lookup (Google Places) ----------
+     Type in Address → pick a suggestion → street, suburb, state, postcode and country fill in.
+     Typing by hand always still works; nothing is sent to Google until three characters are typed. */
+  var places = null, placesLoading = null;
+  function loadPlaces() {
+    if (places) return Promise.resolve(places);
+    if (placesLoading) return placesLoading;
+    placesLoading = new Promise(function (resolve, reject) {
+      window.__poofPlacesReady = function () {
+        google.maps.importLibrary('places').then(function (lib) { places = lib; resolve(lib); }, reject);
+      };
+      var sc = document.createElement('script');
+      sc.src = 'https://maps.googleapis.com/maps/api/js?key=' + PLACES_KEY + '&v=weekly&loading=async&callback=__poofPlacesReady';
+      sc.async = true; sc.onerror = reject;
+      document.head.appendChild(sc);
+    }).catch(function (e) { console.warn('[Poof checkout] address lookup unavailable', e); placesLoading = null; throw e; });
+    return placesLoading;
+  }
+  function bindAddressLookup(form) {
+    var input = form.line1, token = null, timer = null, seq = 0, active = -1, items = [];
+    var list = document.createElement('ul'); list.className = 'addr-suggest'; list.hidden = true;
+    list.id = 'addr-suggest'; list.setAttribute('role', 'listbox');
+    input.setAttribute('aria-autocomplete', 'list'); input.setAttribute('aria-controls', 'addr-suggest');
+    input.parentNode.appendChild(list);
+    function close() { list.hidden = true; list.innerHTML = ''; items = []; active = -1; }
+    function highlight(i) {
+      active = i;
+      [].forEach.call(list.children, function (li, j) { li.setAttribute('aria-selected', j === i ? 'true' : 'false'); });
+    }
+    input.addEventListener('input', function () {
+      clearTimeout(timer);
+      var q = input.value.trim();
+      if (q.length < 3) { close(); return; }
+      timer = setTimeout(function () {
+        var mine = ++seq;
+        loadPlaces().then(function (lib) {
+          if (!token) token = new lib.AutocompleteSessionToken();
+          return lib.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+            input: q, sessionToken: token, includedRegionCodes: [form.country.value.toLowerCase()],
+            includedPrimaryTypes: ['street_address', 'premise', 'subpremise', 'route']
+          });
+        }).then(function (r) {
+          if (mine !== seq) return;
+          items = (r.suggestions || []).map(function (x) { return x.placePrediction; }).filter(Boolean).slice(0, 5);
+          list.innerHTML = '';
+          if (!items.length) { close(); return; }
+          items.forEach(function (p, i) {
+            var li = document.createElement('li'); li.setAttribute('role', 'option'); li.textContent = p.text.text;
+            li.addEventListener('mousedown', function (ev) { ev.preventDefault(); pick(i); });
+            list.appendChild(li);
+          });
+          list.hidden = false; highlight(-1);
+        }).catch(function () { close(); });
+      }, 250);
+    });
+    input.addEventListener('keydown', function (ev) {
+      if (list.hidden) return;
+      if (ev.key === 'ArrowDown') { ev.preventDefault(); highlight(Math.min(active + 1, items.length - 1)); }
+      else if (ev.key === 'ArrowUp') { ev.preventDefault(); highlight(Math.max(active - 1, 0)); }
+      else if (ev.key === 'Enter' && active >= 0) { ev.preventDefault(); pick(active); }
+      else if (ev.key === 'Escape') close();
+    });
+    input.addEventListener('blur', function () { setTimeout(close, 150); });
+    function pick(i) {
+      var p = items[i]; if (!p) return;
+      close();
+      var place = p.toPlace();
+      place.fetchFields({ fields: ['addressComponents'] }).then(function () {
+        token = null;                                        // the session ends with this details call
+        var c = {};
+        (place.addressComponents || []).forEach(function (a) { a.types.forEach(function (t) { c[t] = a; }); });
+        var long = function (t) { return c[t] ? c[t].longText : ''; }, short = function (t) { return c[t] ? c[t].shortText : ''; };
+        var street = [long('street_number'), long('route')].filter(Boolean).join(' ');
+        form.line1.value = (long('subpremise') ? long('subpremise') + '/' : '') + street || form.line1.value;
+        form.city.value = long('locality') || long('postal_town') || long('sublocality') || long('administrative_area_level_2') || form.city.value;
+        form.state.value = short('administrative_area_level_1') || form.state.value;
+        form.postcode.value = long('postal_code') || form.postcode.value;
+        var cc = short('country');
+        if (cc && form.country.querySelector('option[value="' + cc + '"]')) form.country.value = cc;
+        ['line1', 'city', 'state', 'postcode'].forEach(function (n) { form[n].classList.remove('is-error'); });
+        form.postcode.dispatchEvent(new Event('input'));    // re-price delivery for the new postcode
+        (form.line2.value ? form.postcode : form.line2).focus();
+      }).catch(function (e) { console.warn('[Poof checkout] address details failed', e); });
+    }
   }
 
   /* ---------- Delivery ---------- */
@@ -620,6 +710,7 @@
     if (demo === 'problem') showProblem('');
     if (usingRealCart) bindDelivery(form);
     else { ship.options = [{ id: 'standard', label: 'Standard post', cents: 0 }]; renderShip(); }   // sample orders: no quote
+    bindAddressLookup(form);
     startSquare(form);
   }
 })();

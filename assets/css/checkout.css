@@ -218,3 +218,10 @@ html.cart-empty .summary .totals, html.cart-empty .summary .sum-note, html.cart-
 .order-done .btn { margin-top: 8px; }
 html.no-curators .thanks .co-room .wrap.co-grid { grid-template-areas: "head" "form"; grid-template-columns: minmax(0, 1fr); }
 html.no-curators .thanks .co-panel { max-width: 760px; }
+
+/* Address lookup (Google Places) */
+.co-step label:has(.addr-suggest) { position: relative; }
+.addr-suggest { position: absolute; left: 0; right: 0; top: 100%; z-index: 30; margin: 4px 0 0; padding: 6px 0; list-style: none;
+  background: var(--night); border: 1.5px solid var(--pink); border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.45); }
+.addr-suggest li { padding: 10px 14px; font-size: 15px; font-weight: 400; color: var(--cream); cursor: pointer; }
+.addr-suggest li[aria-selected="true"], .addr-suggest li:hover { background: rgba(255, 95, 162, .14); }
