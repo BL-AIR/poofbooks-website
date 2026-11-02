@@ -173,10 +173,12 @@
   function index(b) {
     // Weighted word lists per field; stems, so "chefs" finds "chef".
     // Author's own keywords (up to 25, D1 032) count like a place the book is set: he knows what it's about.
-    var f = { t: 5, a: 6, p: 4, ak: 4.5, k: 1.4, h: 2 }, ix = {};
+    // Author names are NOT matched (Blair, 2 Nov 2026): "chef" was finding authors called Cook. The finder is for
+    // what a book is about; searching by author is the Cabin's quick search.
+    var f = { t: 5, p: 4, ak: 4.5, k: 1.4, h: 2 }, ix = {};
     function put(k, w) { if (!ix[k] || ix[k] < w) ix[k] = w; }
     function add(text, w) { words(joinText(text)).forEach(function (x) { if (x.length < 2 || STOP[x]) return; var s = stem(x); put(s, w); if (CONCEPT[s]) put(CONCEPT[s], w); }); }
-    add(b.t, f.t); add(b.a, f.a); add((b.pl || []).concat(b.ci || []).join(' '), f.p); add(b.k, f.k); add((b.ak || []).join(' '), f.ak);
+    add(b.t, f.t); add((b.pl || []).concat(b.ci || []).join(' '), f.p); add(b.k, f.k); add((b.ak || []).join(' '), f.ak);
     return ix;
   }
   // So "western", "romance", "crime", "sci-fi" etc. lean towards the right shelf.
