@@ -18,7 +18,7 @@
 /* ---------- Light palette (device setting) ---------- */
 @media (prefers-color-scheme: light) {
   html:not([data-theme="dark"]) {
-    color-scheme: light;
+    color-scheme: only light;   /* "only" stops Safari and Chrome repainting it dark when the device is dark */
     --night: #FCE4EE;            /* page ground: pastel pink */
     --surface: #FFF0F6;          /* cards, pop-ups */
     --surface-raised: #FFF8FB;
@@ -33,7 +33,7 @@
 }
 /* ---------- Light palette (chosen with the switch) ---------- */
 html[data-theme="light"] {
-  color-scheme: light;
+  color-scheme: only light;   /* "only" stops Safari and Chrome repainting it dark when the device is dark */
   --night: #FCE4EE;
   --surface: #FFF0F6;
   --surface-raised: #FFF8FB;
