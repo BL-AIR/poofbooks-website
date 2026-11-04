@@ -3,11 +3,11 @@
    and the checkout panel where a curator's speech box sits. Curators off: just the panel. */
 
 /* Test-mode band (sandbox only; remove at go-live) */
-.test-band { padding: 10px var(--gutter); background: var(--lilac); color: var(--night); font-size: 14px; line-height: 1.5; text-align: center; }
+.test-band { padding: 10px var(--gutter); background: var(--lilac); color: var(--on-pink); font-size: 14px; line-height: 1.5; text-align: center; }
 .test-band p { margin: 0; }
 .test-band code { font-family: ui-monospace, Menlo, monospace; font-weight: 700; white-space: nowrap; }
 .test-band .demo { margin-top: 4px; font-size: 13px; }
-.test-band .demo a { color: var(--night); font-weight: 600; margin: 0 6px; }
+.test-band .demo a { color: var(--on-pink); font-weight: 600; margin: 0 6px; }
 .test-band .demo a[aria-current] { text-decoration: none; background: var(--night); color: var(--lilac); padding: 1px 8px; border-radius: 999px; }
 
 /* The Mailroom */
@@ -15,8 +15,8 @@
 .co-room .room-bg { height: 780px; bottom: auto; object-position: center bottom; opacity: .6; } /* anchored to the floor line, so the floor stays at ~600-650px down at any width */
 .co-room .room-shade { height: 780px; bottom: auto;
   background:
-    linear-gradient(180deg, rgba(24,18,43,0) 72%, var(--night) 100%),
-    linear-gradient(90deg, rgba(24,18,43,.05) 0%, rgba(24,18,43,.3) 34%, rgba(24,18,43,.82) 56%, rgba(24,18,43,.94) 100%); }
+    linear-gradient(180deg, rgba(var(--night-rgb), 0) 72%, var(--night) 100%),
+    linear-gradient(90deg, rgba(var(--night-rgb), .05) 0%, rgba(var(--night-rgb), .3) 34%, rgba(var(--night-rgb), .82) 56%, rgba(var(--night-rgb), .94) 100%); }
 .co-room .room-glow { left: 4%; top: 280px; bottom: auto; }
 
 .co-room .wrap.co-grid { display: grid; grid-template-columns: minmax(260px, 430px) minmax(0, 1fr);
@@ -46,7 +46,7 @@
 .plain-intro { margin: 18px 0 0; max-width: 640px; font-size: 18px; line-height: 1.6; color: var(--muted); }
 
 /* The two boxes: Your order (left, under the Mailroom) and the checkout form (where the curator's box sits) */
-.co-panel, .co-box { padding: clamp(18px, 3vw, 32px); background: rgba(34,26,59,.95); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+.co-panel, .co-box { padding: clamp(18px, 3vw, 32px); background: rgba(var(--surface-rgb), .95); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
 .co-panel { margin-top: 28px; min-width: 0; max-width: 720px; }
 .co-box { margin-top: 28px; position: sticky; top: 16px; }        /* stays in view while the form scrolls */
 
@@ -125,7 +125,7 @@ html.cart-empty .summary .totals, html.cart-empty .summary .sum-note, html.cart-
 .adult .hint { flex-basis: 100%; margin: 0; }
 
 /* The big pink button */
-.pay { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 66px; margin-top: 24px; padding: 16px 28px; border: 0; border-radius: 999px; background: #FF5FA2; color: var(--night); font: inherit; font-size: 21px; font-weight: 800; letter-spacing: .01em; cursor: pointer; box-shadow: 0 14px 30px rgba(255,95,162,.28); }
+.pay { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 66px; margin-top: 24px; padding: 16px 28px; border: 0; border-radius: 999px; background: var(--pink); color: var(--on-pink); font: inherit; font-size: 21px; font-weight: 800; letter-spacing: .01em; cursor: pointer; box-shadow: 0 14px 30px rgba(255,95,162,.28); }
 .pay:hover:not([disabled]) { background: var(--cream); }
 .pay:focus-visible { outline: 3px solid var(--cream); outline-offset: 3px; }
 .pay[disabled] { opacity: .55; cursor: progress; box-shadow: none; }
@@ -157,7 +157,7 @@ html.cart-empty .summary .totals, html.cart-empty .summary .sum-note, html.cart-
   .otter { display: flex; justify-content: center; }
   .otter-stage { width: min(72vw, 300px); min-height: 530px; } /* parcels on the foreground floor (~520px down) */
   .co-room .room-bg, .co-room .room-shade { height: 560px; }
-  .co-room .room-shade { background: linear-gradient(180deg, rgba(24,18,43,.15) 0%, rgba(24,18,43,.4) 60%, rgba(24,18,43,.9) 90%, var(--night) 100%); }
+  .co-room .room-shade { background: linear-gradient(180deg, rgba(var(--night-rgb), .15) 0%, rgba(var(--night-rgb), .4) 60%, rgba(var(--night-rgb), .9) 90%, var(--night) 100%); }
   .co-head { margin-top: 12px; }
   .co-panel, .co-box { margin-left: calc(-1 * var(--gutter) / 2); margin-right: calc(-1 * var(--gutter) / 2); }
   .row.two, .row.three { grid-template-columns: 1fr; }

@@ -2,7 +2,7 @@
 .want { position: relative; margin: 24px 0 0; max-width: 560px; }
 .foyer-title .want { margin-bottom: 28px; }
 .want-input { display: block; width: 100%; box-sizing: border-box; min-height: 8.6em; max-height: 14em; padding: 14px 18px; resize: vertical;
-  border-radius: 18px; border: 1.5px solid var(--line); background: rgba(34,26,59,.94); color: var(--cream);
+  border-radius: 18px; border: 1.5px solid var(--line); background: rgba(var(--surface-rgb), .94); color: var(--cream);
   font: inherit; font-size: 17px; line-height: 1.45; }
 .want-input::placeholder { color: var(--muted); }
 .want-input:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255,95,162,.25); }
@@ -29,7 +29,7 @@
 .f-shelf .shelf-more { margin-top: 24px; }
 
 /* Support note, shown only when the reader asks about suicide. Quiet, not alarming. */
-.want-care { margin: 14px 0 0; padding: 14px 18px; border-radius: 14px; background: rgba(34,26,59,.94); border: 1px solid var(--line); font-size: 15px; line-height: 1.5; }
+.want-care { margin: 14px 0 0; padding: 14px 18px; border-radius: 14px; background: rgba(var(--surface-rgb), .94); border: 1px solid var(--line); font-size: 15px; line-height: 1.5; }
 .want-care[hidden] { display: none; }
 .want-care p { margin: 0 0 8px; }
 .care-lines { margin: 0 0 8px; padding: 0; list-style: none; }

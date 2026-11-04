@@ -3,12 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem('poof-theme')}catch(e){}if(t==='light'||t==='dark')d.setAttribute('data-theme',t);else t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';if(t==='light')d.classList.add('lm')})();</script>
 <!-- Reviewers' submission page: hidden. Not linked, not in the sitemap, noindex, no analytics or cookies.
      Each commissioned reviewer gets a private link (#t=...) made by poofbooks-data/reviews/new_commission.py. -->
 <title>Your review — Poof Books</title>
 <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
 <meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#18122B">
+<meta name="theme-color" content="#18122B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FCE4EE" media="(prefers-color-scheme: light)">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,6 +19,8 @@
 <link rel="stylesheet" href="/assets/css/section.css?v=202610311400">
 <link rel="stylesheet" href="/assets/css/review-submit.css?v=202610292300">
 <script src="/assets/js/review-submit.js?v=202610292300" defer></script>
+<link rel="stylesheet" href="/assets/css/theme.css?v=202611042030">
+<script src="/assets/js/theme.js?v=202611042030" defer></script>
 </head>
 <body data-api="https://poofbooks-reviews.big--daddy.workers.dev">
 <header class="site-header">

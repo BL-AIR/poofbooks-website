@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem('poof-theme')}catch(e){}if(t==='light'||t==='dark')d.setAttribute('data-theme',t);else t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';if(t==='light')d.classList.add('lm')})();</script>
 <!-- Curator page: hidden draft. Not linked, not in sitemap, noindex. -->
 <script src="/assets/js/consent.js"></script>
 <link rel="stylesheet" href="/assets/css/consent.css">
@@ -15,7 +16,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <title>Faghetti Westerns — Poof Books</title>
 <meta name="robots" content="noindex, nofollow, noimageindex">
-<meta name="theme-color" content="#18122B">
+<meta name="theme-color" content="#18122B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FCE4EE" media="(prefers-color-scheme: light)">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -43,6 +45,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .logo { display: none; }
   }
 </style>
+<link rel="stylesheet" href="/assets/css/theme.css?v=202611042030">
+<script src="/assets/js/theme.js?v=202611042030" defer></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

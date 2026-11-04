@@ -82,7 +82,7 @@ html:not(.sound-on) .script { display: none; }
 }
 
 /* First page: a page of the book */
-.page-card { max-width: 680px; padding: clamp(28px, 5vw, 56px); background: var(--cream); color: #2A2238; border-radius: 4px; box-shadow: 0 18px 40px rgba(0,0,0,.4); }
+.page-card { max-width: 680px; padding: clamp(28px, 5vw, 56px); background: #F4EFE6; color: #2A2238; border-radius: 4px; box-shadow: 0 18px 40px rgba(0,0,0,.4); }
 .page-text { font-family: 'Literata', Georgia, serif; font-size: 18px; line-height: 1.8; }
 .page-text p { margin: 0; text-indent: 1.5em; }
 .page-text p:first-child { text-indent: 0; }
@@ -148,7 +148,7 @@ html:not(.sound-on) .script { display: none; }
 /* Formats: plain-English size names, an (i) with the measurements, and a price + Buy on each */
 .ib-table th .fmt-sub { position: relative; display: flex !important; flex-wrap: wrap; align-items: center; gap: 6px; opacity: 1; color: rgba(207,198,232,.8); }
 .dim-i { display: inline-grid; place-items: center; width: 18px; height: 18px; padding: 0; border-radius: 50%; border: 1.5px solid var(--lilac); background: transparent; color: var(--lilac); font: italic 700 11px/1 Georgia, serif; cursor: help; }
-.dim-i:hover, .dim-i[aria-expanded="true"] { background: var(--lilac); color: var(--night); }
+.dim-i:hover, .dim-i[aria-expanded="true"] { background: var(--lilac); color: var(--on-pink); }
 .dim-i:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
 .dim-pop { position: absolute; opacity: 1; left: 0; top: calc(100% + 6px); z-index: 20; width: 220px; padding: 10px 12px; border-radius: 12px; background: var(--surface-raised); border: 1px solid var(--line); box-shadow: 0 14px 30px rgba(0,0,0,.45); font-size: 13px; line-height: 1.45; color: var(--cream); }
 .dim-pop[hidden] { display: none; }

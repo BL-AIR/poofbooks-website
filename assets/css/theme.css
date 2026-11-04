@@ -1,0 +1,114 @@
+/* Poof Books — light and dark mode.
+   Dark (Night) is the house look. Light is pastel pink with Night as the ink.
+
+   Which one shows:
+   - the visitor's own choice from the sun/moon switch (data-theme on <html>, saved as localStorage "poof-theme"), else
+   - their device setting (prefers-color-scheme).
+   Pages should load this file after their own styles. The selectors start with "html", so they
+   outrank the ":root" tokens in section.css and in the standalone pages' own <style> blocks.
+
+   The light block appears twice (once for the media query, once for the switch) because CSS
+   can't OR a media query with a selector. Keep the two copies identical. */
+
+:root {
+  color-scheme: dark;
+  --night-rgb: 24, 18, 43; --surface-rgb: 34, 26, 59; --raised-rgb: 42, 33, 72;
+}
+
+/* ---------- Light palette (device setting) ---------- */
+@media (prefers-color-scheme: light) {
+  html:not([data-theme="dark"]) {
+    color-scheme: light;
+    --night: #FCE4EE;            /* page ground: pastel pink */
+    --surface: #FFF0F6;          /* cards, pop-ups */
+    --surface-raised: #FFF8FB;
+    --rule: #F0C3D5; --line-subtle: #E7B2C7; --line: #B07D99;
+    --pink: #C2185B;             /* the logo's on-light pink */
+    --lilac: #6B4FD8;            /* the logo's on-light lilac */
+    --cream: #18122B;            /* the ink: Night */
+    --muted: #4A3D6E;
+    --on-pink: #FFFFFF;
+    --night-rgb: 252, 228, 238; --surface-rgb: 255, 240, 246; --raised-rgb: 255, 248, 251;
+  }
+}
+/* ---------- Light palette (chosen with the switch) ---------- */
+html[data-theme="light"] {
+  color-scheme: light;
+  --night: #FCE4EE;
+  --surface: #FFF0F6;
+  --surface-raised: #FFF8FB;
+  --rule: #F0C3D5; --line-subtle: #E7B2C7; --line: #B07D99;
+  --pink: #C2185B;
+  --lilac: #6B4FD8;
+  --cream: #18122B;
+  --muted: #4A3D6E;
+  --on-pink: #FFFFFF;
+  --night-rgb: 252, 228, 238; --surface-rgb: 255, 240, 246; --raised-rgb: 255, 248, 251;
+}
+html[data-theme="dark"] { color-scheme: dark; }
+
+/* ---------- Light-mode details ----------
+   ".lm" is added to <html> by theme.js whenever light is showing (either way it was chosen),
+   so the details below need writing only once. Until theme.js runs, the palette above
+   already carries the page, so there is no flash of dark. */
+html.lm .home img[src$="logo.svg"], html.lm img.logo[src$="logo.svg"] { content: url(/assets/logo-on-light.svg); }
+html.lm img[src$="thinker.svg"] { content: url(/assets/thinker-on-light.svg); }
+html.lm img[src$="david.svg"] { content: url(/assets/david-on-light.svg); }
+
+/* Fields: white on pastel pink reads as "type here" */
+html.lm input[type="text"], html.lm input[type="email"], html.lm input[type="search"],
+html.lm input[type="tel"], html.lm input[type="number"], html.lm select, html.lm textarea { background-color: #FFFFFF; }
+html.lm .zform input::placeholder, html.lm input::placeholder { color: #8A7896; }
+
+/* Shadows are softer on a light ground */
+html.lm .view-settings, html.lm .gate-card, html.lm .co-panel, html.lm .co-box,
+html.lm .cur-menu, html.lm .qs-panel, html.lm .gate-band { box-shadow: 0 18px 44px rgba(24, 18, 43, .16); }
+html.lm .switch .knob { background: #FFFFFF; }
+
+/* Stock status chips (book pages) */
+html.lm .status-available { color: #1A6E44; background: rgba(26, 110, 68, .10); }
+html.lm .status-soon { color: var(--lilac); background: rgba(107, 79, 216, .10); }
+html.lm .status-temp { color: #8A5A00; background: rgba(138, 90, 0, .10); }
+html.lm .status-gone { background: rgba(24, 18, 43, .06); }
+html.lm .ib-table th .fmt-sub { color: var(--muted); }
+
+/* Standalone pages (home, About, Privacy…) hard-code a few dark rules */
+html.lm .signup { border-top-color: var(--rule); }
+html.lm footer { border-top-color: var(--rule); }
+
+/* Cookie banner */
+html.lm .cc-banner { --bg-card: #FFF8FB; --text: #18122B; --border: #E7B2C7; --bg: #FFFFFF; --accent: #C2185B; }
+
+/* ---------- Floating sun/moon (pages without the settings gear) ----------
+   On shop pages the choice is the first row of the gear pop-up instead. */
+.theme-toggle { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; padding: 0; border-radius: 50%; cursor: pointer;
+  background: transparent; color: var(--cream); border: 1.5px solid var(--line); }
+.theme-toggle:hover { border-color: var(--pink); color: var(--pink); }
+.theme-toggle:focus-visible { outline: 2px solid var(--lilac); outline-offset: 2px; }
+.theme-toggle svg { width: 21px; height: 21px; }
+.theme-toggle .i-sun { display: none; }
+html.lm .theme-toggle .i-sun { display: none; }
+html:not(.lm) .theme-toggle .i-sun { display: block; }
+html:not(.lm) .theme-toggle .i-moon { display: none; }
+/* In dark the button shows a sun (go light); in light it shows a moon (go dark). */
+
+/* Pages without the shop header get a floating switch, top right */
+.theme-toggle.floating { position: fixed; top: 14px; right: 14px; z-index: 50; width: 42px; height: 42px;
+  background: rgba(var(--night-rgb), .7); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+
+
+/* Reading Rooms in light mode: the room shows almost at full strength (at the dark-mode .55 it
+   turns foggy over pink). It stays clear on the curator's side and fades to pink only behind the words. */
+html.lm .room-bg { opacity: .95; }
+html.lm .room-shade { background: linear-gradient(90deg, rgba(var(--night-rgb), 0) 0%, rgba(var(--night-rgb), 0) 26%, rgba(var(--night-rgb), .86) 40%, rgba(var(--night-rgb), .95) 56%, var(--night) 100%); }
+@media (max-width: 760px) {
+  html.lm .room-shade { background: linear-gradient(180deg, rgba(var(--night-rgb), 0) 0%, rgba(var(--night-rgb), 0) 42%, rgba(var(--night-rgb), .85) 66%, var(--night) 100%); }
+}
+html.lm .co-room .room-bg { opacity: .95; }
+html.lm .co-room .room-shade { background:
+    linear-gradient(180deg, rgba(var(--night-rgb), 0) 72%, var(--night) 100%),
+    linear-gradient(90deg, rgba(var(--night-rgb), 0) 0%, rgba(var(--night-rgb), 0) 24%, rgba(var(--night-rgb), .86) 40%, rgba(var(--night-rgb), .95) 56%, rgba(var(--night-rgb), .96) 100%); }
+@media (max-width: 760px) {
+  html.lm .co-room .room-shade { background: linear-gradient(180deg, rgba(var(--night-rgb), 0) 0%, rgba(var(--night-rgb), 0) 50%, rgba(var(--night-rgb), .85) 85%, var(--night) 100%); }
+}

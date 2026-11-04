@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem('poof-theme')}catch(e){}if(t==='light'||t==='dark')d.setAttribute('data-theme',t);else t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';if(t==='light')d.classList.add('lm')})();</script>
 <!-- Section page: draft. Not in sitemap, noindex. -->
 <script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,c=s.curators!==false,m=typeof s.motion==='boolean'?s.motion:!r,v=(s.voice==='text'||s.voice==='both'||s.voice==='sound')?s.voice:(s.sound===false?'text':'both');if(!c)d.classList.add('no-curators');if(c&&v!=='text')d.classList.add('sound-on');if(c&&v==='sound')d.classList.add('words-off');if(c&&m)d.classList.add('motion-on')})();</script>
 <script src="/assets/js/consent.js"></script>
@@ -17,7 +18,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <title>Cut-Over Criteria by Koala Omugi — Poof Books</title>
 <meta name="description" content="Haruma Seto tends to view the world as one big software program.">
 <meta name="robots" content="noindex, nofollow, noimageindex">
-<meta name="theme-color" content="#18122B">
+<meta name="theme-color" content="#18122B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FCE4EE" media="(prefers-color-scheme: light)">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -33,6 +35,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="stylesheet" href="/assets/css/book.css?v=202610312330">
 <script src="/assets/js/book.js?v=202610292340" defer></script>
 <script src="/assets/js/buy.js?v=202610282015" defer></script>
+<link rel="stylesheet" href="/assets/css/theme.css?v=202611042030">
+<script src="/assets/js/theme.js?v=202611042030" defer></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
