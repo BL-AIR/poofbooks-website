@@ -1,14 +1,17 @@
 /* Poof Books: checkout, looked after by Lil Otter (staff, the Mailroom).
-   - Square's Web Payments SDK draws the card fields; we never build or style our own card inputs.
-   - SANDBOX ONLY for now: Pay checks the card with Square and stops. The card token is never sent
-     anywhere until the payments Worker exists. Public sandbox IDs only (poofbooks-data/square/README.md);
-     never put an access token in this file.
+   - Stripe (since 5 Nov 2026, replacing Square): Elements on the Checkout Sessions API. Our page keeps the cart,
+     details, address and delivery; Stripe draws only the payment box and the currency selector (Adaptive Pricing:
+     cross-border customers can pay in their own currency, with the amount shown before they pay).
+   - Flow: "Continue to payment" -> the payments Worker prices everything and opens a Checkout Session -> the Payment
+     Element appears -> "Pay" confirms with Stripe -> Stripe returns to /checkout/thanks/?session_id=...
+   - Only the PUBLISHABLE key lives here (pk_...). Never put a secret key in this file.
    - Lil Otter's words are in normal spelling; his recorded voice carries the lisp.
    - Preview other moments with ?demo=cart | backorder | confirmed | problem. */
 (function () {
   'use strict';
-  var APP_ID = 'sandbox-sq0idb-7HXAqE7ZD7W34CJAug8Lhg';
-  var LOCATION_ID = 'LV05GKTGY70ZC';
+  // Stripe publishable key (public by design). pk_test_... in the sandbox, pk_live_... at go-live.
+  var STRIPE_PK = 'pk_test_51UIp5DRarfJlhaAL3wOkVFjL3Cd2lmOoTr8H1gYJaATLA7Tygil51E0kYsiKVPCP0aFh2MKnGhzCEae42VOsjN7z003UUDAMY2';
+  var SESSION_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/stripe/session';
   var SHOP_EMAIL = 'BigDaddy@poofbooks.com';
   // Payments Worker: prices the cart itself, charges Square, saves the order and sends Lil Otter's receipt.
   var PAY_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/checkout';
@@ -304,7 +307,7 @@
     }
     var grand = cartTotal + (c || 0) / 100;
     $('[data-grand-total]').replaceChildren(money(grand));
-    $('[data-pay-total]').textContent = aud(grand);        // the Pay button always shows the AUD charge
+    var pt = $('[data-pay-total]'); if (pt) pt.textContent = aud(grand);
     var t = { amount: aud(grand), label: 'Poof Books' };
     walletRequests.forEach(function (r) {
       try { r.update({ total: t, lineItems: [{ label: 'Books', amount: aud(cartTotal) }, { label: 'Delivery', amount: aud((c || 0) / 100) }] }); } catch (e) { /* older SDK */ }
@@ -506,45 +509,7 @@
     return !first;
   }
 
-  /* ---------- Express checkout: Apple Pay and Google Pay ----------
-     The wallet supplies the buyer's name, email and delivery address, so the form isn't needed.
-     Delivery is a placeholder until the shipping rates are in. */
-  function walletRequest(payments) {
-    // Amounts are read live from cartTotal, so a quantity change on the page reaches the wallet sheet.
-    // Wallet sheets get the same delivery options, priced for the address chosen in the wallet.
-    function shipping() {
-      var list = ship.options.length ? ship.options : [{ id: 'standard', label: 'Standard post', cents: 0 }];
-      return list.map(function (o) { return { id: o.id, label: o.label, amount: aud(o.cents / 100) }; });
-    }
-    function cents() { return shipCents() || 0; }
-    function lineItems() { return [{ label: 'Books', amount: aud(cartTotal) }, { label: 'Delivery', amount: aud(cents() / 100) }]; }
-    function total() { return { amount: aud(cartTotal + cents() / 100), label: 'Poof Books' }; }
-    var req = payments.paymentRequest({
-      countryCode: 'AU', currencyCode: 'AUD',
-      total: total(),
-      lineItems: lineItems(),
-      requestBillingContact: true,
-      requestShippingContact: true,
-      shippingOptions: shipping()
-    });
-    try {
-      req.addEventListener('shippingcontactchanged', function (contact) {
-        var c = contact || {};
-        return quoteDelivery({ postcode: c.postalCode || '', country: c.countryCode || 'AU' }).then(function () {
-          if (ship.error) return { error: ship.error };
-          return { shippingOptions: shipping(), lineItems: lineItems(), total: total() };
-        });
-      });
-      req.addEventListener('shippingoptionchanged', function (option) {
-        if (option && option.id) ship.choice = option.id;
-        showTotals();
-        return { lineItems: lineItems(), total: total() };
-      });
-    } catch (e) { /* older SDK: delivery as quoted for the form's address */ }
-    walletRequests.push(req);
-    return req;
-  }
-
+  var walletRequests = [];          // (Square wallets are gone: Stripe's Payment Element shows Apple Pay / Google Pay itself)
   function adultOk(form) {
     var adult = $('[data-adult]');
     if (adult.hidden || form.adult.checked) return true;
@@ -553,120 +518,109 @@
     return false;
   }
 
-  function walletEmail(details) {
-    if (!details) return '';
-    var s = details.shipping && details.shipping.contact, b = details.billing;
-    return (s && s.email) || (b && b.email) || '';
-  }
 
-  function payWithWallet(method, name, form) {
-    if (!adultOk(form)) return;
-    // tokenize() must be the first thing the click does (Apple Pay rejects anything async before it).
-    method.tokenize().then(function (result) {
-      if (result.status === 'OK') {
-        if (!usingRealCart) { sampleOnly(); return; }
-        plainStatus('Taking payment…', 'ok');
-        var c = (result.details && result.details.shipping && result.details.shipping.contact) || {};
-        payViaWorker({
-          sourceId: result.token, paidWith: name, adult: !!(form.adult && form.adult.checked),
-          email: walletEmail(result.details), given: c.givenName || '', family: c.familyName || '',
-          address: { line1: (c.addressLines || [])[0] || '', line2: (c.addressLines || [])[1] || '', city: c.city || '', state: c.state || '', postcode: c.postalCode || '', country: c.countryCode || '' }
-        }).then(function (w) {
-          $('[data-status]').innerHTML = '';
-          PoofCart.clear();
-          goThanks(orderFromWorker(w));
-        }).catch(function (e) { showProblem(e.message); });
-      } else if (result.status !== 'Cancel') {
-        console.warn('[Poof checkout] ' + name + ' not completed', result.status, JSON.stringify(result.errors));
-        showProblem(name + ' didn\'t go through. You can try again, or pay by card below.');
+  /* ---------- Stripe: Payment Element + Currency Selector ---------- */
+  var APPEAR_DARK = { theme: 'night', variables: { colorPrimary: '#FF5FA2', colorBackground: '#18122B', colorText: '#F4EFE6',
+    colorTextSecondary: '#CFC6E8', colorDanger: '#FF6B6B', borderRadius: '12px', fontFamily: 'DM Sans, system-ui, sans-serif' },
+    rules: { '.Input': { border: '1.5px solid #4A3D6E' }, '.Input:focus': { borderColor: '#FF5FA2' } } };
+  var APPEAR_LIGHT = { theme: 'stripe', variables: { colorPrimary: '#C2185B', colorBackground: '#FFFFFF', colorText: '#18122B',
+    colorDanger: '#C62828', borderRadius: '12px', fontFamily: 'DM Sans, system-ui, sans-serif' } };
+  var pay = { stripe: null, checkout: null, actions: null, key: '', els: [] };
+  function payKey(form) {
+    return JSON.stringify([currentCart.map(function (l) { return [l.isbn, l.qty]; }), (shipOption() || {}).id, shipCents(),
+      ['given', 'family', 'email', 'line1', 'line2', 'city', 'state', 'postcode', 'country'].map(function (n) { return form[n].value.trim(); }),
+      !!(form.adult && form.adult.checked), html.classList.contains('no-curators')]);
+  }
+  function resetPayment(form, why) {
+    if (!pay.checkout) return;
+    pay.els.forEach(function (e) { try { e.destroy(); } catch (x) {} });
+    pay.els = []; pay.checkout = null; pay.actions = null; pay.key = '';
+    $('[data-pay-box]').hidden = true;
+    var btn = $('[data-pay]'); btn.disabled = false; btn.textContent = 'Continue to payment';
+    if (why) plainStatus(why, 'ok');
+  }
+  function chargeText(session) {
+    try { return session.total.total.amount; } catch (e) { return ''; }
+  }
+  async function openPayment(form) {
+    var btn = $('[data-pay]');
+    if (!STRIPE_PK || !window.Stripe) { plainStatus('Payments aren\'t switched on yet. You have not been charged.', 'err'); return; }
+    plainStatus('Opening the payment box…', 'ok');
+    var o = shipOption(), res, data;
+    try {
+      res = await fetch(SESSION_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+        items: currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; }),
+        curators: !html.classList.contains('no-curators'), adult: !!(form.adult && form.adult.checked),
+        email: form.email.value.trim(), given: form.given.value.trim(), family: form.family.value.trim(),
+        address: { line1: form.line1.value, line2: form.line2.value, city: form.city.value, state: form.state.value, postcode: form.postcode.value, country: form.country.value },
+        deliveryOption: o && o.id, deliveryCents: o && o.cents }) });
+      data = await res.json();
+    } catch (e) { showProblem('We couldn\'t reach our payment service just now. You have not been charged.'); return; }
+    if (data && data.code === 'DELIVERY_CHANGED' && data.delivery) { ship.options = data.delivery.options || []; renderShip(); }
+    if (!res.ok || !data.ok) { showProblem(data && data.error ? data.error : 'The payment box couldn\'t open. You have not been charged.'); return; }
+    try {
+      pay.stripe = pay.stripe || window.Stripe(STRIPE_PK);
+      pay.checkout = pay.stripe.initCheckoutElementsSdk({
+        clientSecret: data.clientSecret,
+        adaptivePricing: { allowed: true },
+        elementsOptions: { appearance: html.classList.contains('lm') ? APPEAR_LIGHT : APPEAR_DARK }
+      });
+      var cur = pay.checkout.createCurrencySelectorElement(); cur.mount('#currency-selector');
+      var pe = pay.checkout.createPaymentElement(); pe.mount('#payment-element');
+      pay.els = [cur, pe];
+      var loaded = await pay.checkout.loadActions();
+      if (loaded.type !== 'success') throw new Error('loadActions ' + loaded.type);
+      pay.actions = loaded.actions;
+      pay.key = payKey(form);
+      var show = function (session) { var t = chargeText(session); btn.textContent = t ? 'Pay ' + t : 'Pay'; };
+      show(pay.actions.getSession());
+      pay.checkout.on('change', function (session) { show(session); });
+      $('[data-pay-box]').hidden = false; $('[data-status]').innerHTML = '';
+      $('[data-pay-box]').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (e) {
+      console.error('[Poof checkout]', e);
+      showProblem('The payment box couldn\'t open. Please refresh the page. You have not been charged.');
+      resetPayment(form);
+    }
+  }
+  async function confirmPayment(form) {
+    var btn = $('[data-pay]'); btn.disabled = true;
+    plainStatus('Taking payment…', 'ok');
+    try {
+      var r = await pay.actions.confirm();          // on success Stripe goes to /checkout/thanks/?session_id=...
+      if (r && r.type === 'error') {
+        showProblem((r.error && r.error.message) ? r.error.message + ' You have not been charged.' : 'The payment didn\'t go through. You have not been charged.');
+        btn.disabled = false;
       }
-    }).catch(function (e) {
-      console.error('[Poof checkout]', e);
-      showProblem(name + ' didn\'t go through. You can try again, or pay by card below.');
-    });
-  }
-
-  async function startWallets(payments, form) {
-    var express = $('[data-express]'), any = false;
-    try {
-      var applePay = await payments.applePay(walletRequest(payments));   // Safari with Apple Pay set up, on a verified domain
-      var ab = $('#apple-pay-button');
-      ab.hidden = false; any = true;
-      ab.addEventListener('click', function (ev) { ev.preventDefault(); payWithWallet(applePay, 'Apple Pay', form); });
-    } catch (e) { /* not available on this device or browser */ }
-    try {
-      var googlePay = await payments.googlePay(walletRequest(payments));
-      var gb = $('#google-pay-button');
-      gb.hidden = false;
-      await googlePay.attach('#google-pay-button', { buttonColor: 'white', buttonSizeMode: 'fill', buttonType: 'long' });
-      any = true;
-      gb.addEventListener('click', function (ev) { ev.preventDefault(); payWithWallet(googlePay, 'Google Pay', form); });
-    } catch (e) { $('#google-pay-button').hidden = true; }
-    express.hidden = !any;
-  }
-
-  async function startSquare(form) {
-    var btn = $('[data-pay]'), loading = $('[data-card-loading]');
-    if (!window.Square) { loading.textContent = 'The card box couldn\'t load. Check your connection and refresh the page.'; return; }
-    var card, payments;
-    try {
-      payments = window.Square.payments(APP_ID, LOCATION_ID);
     } catch (e) {
       console.error('[Poof checkout]', e);
-      loading.textContent = 'Payments couldn\'t start. Please refresh the page.';
-      return;
+      showProblem('The payment didn\'t go through. You have not been charged.');
+      btn.disabled = false;
     }
-    startWallets(payments, form);
-    try {
-      card = await payments.card({ style: CARD_STYLE });
-      await card.attach('#card-container');
-      loading.hidden = true; btn.disabled = false;
-    } catch (e) {
-      console.error('[Poof checkout]', e);
-      loading.textContent = 'The card box couldn\'t load. Please refresh the page.';
-      return;
-    }
+  }
+  function startStripe(form) {
+    var btn = $('[data-pay]');
+    btn.disabled = false; btn.textContent = 'Continue to payment';
+    // Anything that changes the order after the payment box opened closes it again, so the amount is never stale.
+    form.addEventListener('input', function (ev) { if (pay.checkout && !ev.target.closest('[data-pay-box]')) resetPayment(form, 'Your order changed, so press Continue to payment again.'); });
+    form.addEventListener('change', function (ev) { if (pay.checkout && !ev.target.closest('[data-pay-box]')) resetPayment(form, 'Your order changed, so press Continue to payment again.'); });
     form.addEventListener('submit', async function (ev) {
       ev.preventDefault();
+      if (pay.checkout && pay.actions && pay.key === payKey(form)) { confirmPayment(form); return; }
       if (!checkFields(form)) {
-        // Name the missing boxes: the first one is scrolled into view, which can feel like the form reset.
         var names = { given: 'first name', family: 'last name', email: 'email address', line1: 'street address', city: 'suburb or town', postcode: 'postcode' };
         var missing = [].filter.call(form.querySelectorAll('input.is-error'), function (el) { return names[el.name]; }).map(function (el) { return names[el.name]; });
         plainStatus(missing.length ? 'Nearly there: please fill in your ' + missing.join(', ') + ' (highlighted above).' : 'Please fill in the highlighted boxes.', 'err');
         return;
       }
+      if (!adultOk(form)) return;
       btn.disabled = true;
       var before = shipCents();
       await quoteDelivery(formAddr(form));
       if (ship.error || shipCents() == null) { plainStatus(ship.error || 'Please check your postcode: we need it to work out delivery.', 'err'); btn.disabled = false; return; }
-      if (before !== shipCents()) { plainStatus('Delivery is now A$' + aud(shipCents() / 100) + '. Please check the total and press Pay again.', 'err'); btn.disabled = false; return; }
-      plainStatus('Checking your card with Square…', 'ok');
-      try {
-        var result = await card.tokenize();
-        if (result.status === 'OK') {
-          if (!usingRealCart) { sampleOnly(); btn.disabled = false; return; }
-          plainStatus('Taking payment…', 'ok');
-          try {
-            var w = await payViaWorker({
-              sourceId: result.token, paidWith: cardLabel(result.details), adult: !!(form.adult && form.adult.checked),
-              email: form.email.value.trim(), given: form.given.value.trim(), family: form.family.value.trim(),
-              address: { line1: form.line1.value, line2: form.line2.value, city: form.city.value, state: form.state.value, postcode: form.postcode.value, country: form.country.value }
-            });
-            $('[data-status]').innerHTML = '';
-            PoofCart.clear();
-            goThanks(orderFromWorker(w));
-            return;
-          } catch (err) {
-            showProblem(err.message);
-          }
-        } else {
-          console.warn('[Poof checkout] card not accepted', result.status, JSON.stringify(result.errors));
-          showProblem('Square didn\'t accept that card. Check the number, expiry and security code, or try another card.');
-        }
-      } catch (e) {
-        console.error('[Poof checkout]', e);
-        showProblem('We couldn\'t reach Square just now.');
-      }
+      if (before !== shipCents()) { plainStatus('Delivery is now A$' + aud(shipCents() / 100) + '. Please check the total and press Continue again.', 'err'); btn.disabled = false; return; }
+      if (!usingRealCart) { sampleOnly(); btn.disabled = false; return; }
+      await openPayment(form);
       btn.disabled = false;
     });
   }
@@ -711,6 +665,6 @@
     if (usingRealCart) bindDelivery(form);
     else { ship.options = [{ id: 'standard', label: 'Standard post', cents: 0 }]; renderShip(); }   // sample orders: no quote
     bindAddressLookup(form);
-    startSquare(form);
+    startStripe(form);
   }
 })();

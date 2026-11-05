@@ -1,6 +1,6 @@
 /* Poof Books: currency switcher.
-   Payment is taken in Australian dollars. Other currencies are shown as approximate conversions
-   ("≈ £21"), with a note that the charge is in AUD.
+   Prices are in Australian dollars. Other currencies are shown as approximate conversions ("≈ £21");
+   at payment Stripe's Adaptive Pricing lets overseas customers pay in their own currency.
    Markup it acts on:
      <span class="money" data-aud="39.95">A$39.95</span>   any price (the text is the AUD fallback)
      <p data-fx-note hidden></p>                             shown only when a non-AUD currency is chosen
@@ -51,7 +51,7 @@
       box.innerHTML = '<button type="button" class="cur-btn" aria-haspopup="true" aria-expanded="false" aria-controls="cur-menu">' +
         '<img alt="" width="22" height="16"><span class="cur-code"></span></button>' +
         '<div class="cur-menu" id="cur-menu" hidden><p class="cur-head">Show prices in</p><ul></ul>' +
-        '<p class="cur-foot">You’re always charged in Australian dollars. Other currencies are a guide, converted at European Central Bank rates of ' + niceDate(fx.date) + '.</p></div>';
+        '<p class="cur-foot">Prices are in Australian dollars; other currencies are a guide, converted at European Central Bank rates of ' + niceDate(fx.date) + '. At payment you can choose to pay in Australian dollars or your own currency.</p></div>';
       var ul = box.querySelector('ul');
       fx.currencies.forEach(function (c) {
         var li = document.createElement('li');
@@ -94,7 +94,7 @@
             el.textContent = fmtAUD(aud); el.removeAttribute('title'); el.classList.remove('approx');
           } else {
             el.textContent = '≈ ' + c.symbol + Math.round(aud * c.rate);
-            el.title = 'About ' + c.symbol + Math.round(aud * c.rate) + '. Charged in Australian dollars: ' + fmtAUD(aud) + '.';
+            el.title = 'About ' + c.symbol + Math.round(aud * c.rate) + '. Price in Australian dollars: ' + fmtAUD(aud) + '.';
             el.classList.add('approx');
           }
         });
@@ -102,7 +102,7 @@
           var m = el.closest('[data-aud-context]') || el.parentNode;
           var a = m.querySelector('.money[data-aud]');
           el.hidden = cur === 'AUD';
-          if (cur !== 'AUD') el.textContent = 'Charged in Australian dollars' + (a ? ' (' + fmtAUD(parseFloat(a.dataset.aud)) + ')' : '') + '. Your bank converts at its own rate.';
+          if (cur !== 'AUD') el.textContent = 'Prices are in Australian dollars' + (a ? ' (' + fmtAUD(parseFloat(a.dataset.aud)) + ')' : '') + '. At payment you can choose to pay in your own currency, at the rate shown there.';
         });
       }
       paint();

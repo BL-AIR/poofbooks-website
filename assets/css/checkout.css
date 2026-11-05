@@ -225,3 +225,9 @@ html.no-curators .thanks .co-panel { max-width: 760px; }
   background: var(--night); border: 1.5px solid var(--pink); border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.45); }
 .addr-suggest li { padding: 10px 14px; font-size: 15px; font-weight: 400; color: var(--cream); cursor: pointer; }
 .addr-suggest li[aria-selected="true"], .addr-suggest li:hover { background: rgba(255, 95, 162, .14); }
+
+/* Stripe (5 Nov 2026): currency selector above the Payment Element */
+.pay-box { margin: 8px 0 0; }
+.pay-box[hidden] { display: none; }
+.currency-box { margin: 0 0 16px; }
+.card-box { max-width: none; }
