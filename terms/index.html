@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}if(s.curators===false)d.classList.add('no-curators')})();</script>
 <script>(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem('poof-theme')}catch(e){}if(t==='light'||t==='dark')d.setAttribute('data-theme',t);else t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';if(t==='light')d.classList.add('lm')})();</script>
 <!-- Cookie consent: must load before Google Tag Manager. Sets every optional
      category to "denied" until the visitor chooses (see assets/js/consent.js). -->
@@ -71,6 +72,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .daddy-fig img { height: 170px; width: auto; }
     .daddy-span .toc, .daddy-span .short { clear: both; }
   }
+  /* Curators off (gear setting, localStorage poof-view): plain text page */
+  html.no-curators .daddy-fig { display: none; }
+  html.no-curators main.has-daddy { max-width: 42rem; padding-left: 24px; }
 </style>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611042200">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
