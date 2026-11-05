@@ -57,6 +57,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .help-card { padding: 16px 18px; border: 1px solid var(--rule); border-radius: 10px; }
   .help-card h3 { margin: 0 0 6px; font-size: 17px; color: var(--cream); }
   .help-card p { margin: 0; }
+  /* Big Daddy beside Terms → short version (5 Nov 2026) */
+  .daddy-span { position: relative; }
+  .daddy-fig { margin: 0; pointer-events: none; }
+  .daddy-fig img { display: block; }
+  @media (min-width: 1100px) {
+    main.has-daddy { max-width: calc(42rem + 28rem + 48px); padding-left: calc(28rem + 24px); }
+    .daddy-fig { position: absolute; top: 0; bottom: 0; right: calc(100% + 2rem); width: 26rem; }
+    .daddy-fig img { width: 100%; height: 100%; object-fit: contain; object-position: right center; }
+  }
+  @media (max-width: 1099.98px) {
+    .daddy-fig { float: left; margin: 0 18px 6px 0; }
+    .daddy-fig img { height: 170px; width: auto; }
+    .daddy-span .toc, .daddy-span .short { clear: both; }
+  }
 </style>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611042200">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
@@ -69,7 +83,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header>
   <a href="/" aria-label="Poof Books home"><img src="/assets/logo.svg" width="662" height="170" alt="Poof Books"></a>
 </header>
-<main>
+<main class="has-daddy">
+  <div class="daddy-span">
+  <figure class="daddy-fig"><img src="/assets/curators/cutouts/BigDaddy-hips.webp?v=202611051625" width="906" height="1387" alt="Big Daddy, hands on hips, standing on a tree stump"></figure>
   <h1>Terms of Sale</h1>
   <p class="standfirst">How buying from Poof Books works, including refunds and returns.</p>
   <ul class="toc">
@@ -84,6 +100,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p>Some books are still on their way to us. We mark those, and if one takes too long you can walk away with every cent back.</p>
     <p>The erotica shelf is for grown men only. You'll tick a box to say you're 18 or over.</p>
     <p>And if anything goes wrong, Lil Otter fixes it. That's a promise. The full terms are below. They say the same thing at greater length, and they're the ones that count.</p>
+  </div>
   </div>
 
   <h2 id="terms">1. Who you're buying from</h2>
