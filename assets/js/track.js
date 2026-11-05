@@ -53,8 +53,8 @@
   }
   function cartItem(sell, isbn, qty, shelf) {
     var s = sell[isbn] || {}, mem = (slugs()[isbn] || '').split('|');
-    shelf = shelf || mem[1] || '';
-    var it = { item_id: slugOf(s.u) || mem[0] || (AOS[isbn] ? 'the-art-of-surrender' : isbn), item_name: s.t || (AOS[isbn] ? 'The Art of Surrender' : isbn),
+    shelf = shelf || s.h || mem[1] || '';                 // sellable.json: u = page slug, h = shelf (since 5 Nov 2026)
+    var it = { item_id: s.u || mem[0] || (AOS[isbn] ? 'the-art-of-surrender' : isbn), item_name: s.t || (AOS[isbn] ? 'The Art of Surrender' : isbn),
       item_brand: s.a || (AOS[isbn] ? 'Blair Purvis' : undefined), item_variant: s.f || AOS[isbn], price: s.p != null ? s.p : AOS_PRICE[isbn],
       quantity: qty || 1 };
     if (shelf) it.item_category = SHELVES[shelf] || shelf;
