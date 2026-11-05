@@ -88,13 +88,13 @@
     if (!qs.length) return { list: [] };
     works.forEach(function (w) {
       if (!w._t) { w._t = words(w.t + ' ' + (w.s || '')); w._n = words(w.n.join(' ')); }
-      var total = 0;
+      var total = 0, byT = 0, byN = 0;
       for (var i = 0; i < qs.length; i++) {
-        var s = Math.max(wordScore(qs[i], w._t) * 1.15, wordScore(qs[i], w._n));
+        var st = wordScore(qs[i], w._t) * 1.15, sn = wordScore(qs[i], w._n), s = Math.max(st, sn);
         if (!s) return;                             // every word must match something
-        total += s;
+        total += s; if (st >= sn) byT++; else byN++;
       }
-      res.push({ w: w, score: total });
+      res.push({ w: w, score: total, by: byT && byN ? 'title_author' : byN ? 'author' : 'title' });
     });
     res.sort(function (a, b) { return b.score - a.score || a.w.t.localeCompare(b.w.t); });
     return { list: res.slice(0, MAX) };
@@ -164,6 +164,7 @@
         else msg.textContent = items.length === 1 ? '1 book. Press Enter to open it.' : items.length + ' books.';
         setActive(items.length ? 0 : -1);
         open(true);
+        if (window.PoofTrack) PoofTrack.quickSearch(raw, looksLikeIsbn(raw) || r.isbn ? 'isbn' : r.list.length ? r.list[0].by || 'title' : 'none', items.length);
       }).catch(function () { msg.textContent = 'Search isn’t available right now. Browse the shelves below.'; open(true); });
     }
     var t;

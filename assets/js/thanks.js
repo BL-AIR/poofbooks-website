@@ -102,6 +102,7 @@
             l.author = x.a || (AOS[l.isbn] ? 'Blair Purvis' : '');
           });
           fill(o);
+          (function t(n) { if (window.PoofTrack) PoofTrack.purchase(o); else if (n) setTimeout(function () { t(n - 1); }, 300); })(20);   // GA4 purchase
         });
       }).catch(function () {
         var t = document.querySelector('[data-order]');

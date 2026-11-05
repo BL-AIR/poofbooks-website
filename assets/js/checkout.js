@@ -554,6 +554,7 @@
     if (!STRIPE_PK || !window.Stripe) { plainStatus('Payments aren\'t switched on yet. You have not been charged.', 'err'); return; }
     plainStatus('Opening the payment box…', 'ok');
     var o = shipOption(), res, data;
+    if (window.PoofTrack) PoofTrack.shipping(o && o.label, o && o.cents);
     try {
       res = await fetch(SESSION_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
         items: currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; }),
@@ -591,6 +592,7 @@
       ece.on('confirm', async function (ev) {
         if (payKey(form) !== pay.key) { resetPayment(form, 'Your order changed, so press Continue to payment again.'); return; }
         plainStatus('Taking payment…', 'ok');
+        if (window.PoofTrack) PoofTrack.payment('wallet');
         try {
           var r = await pay.actions.confirm({ expressCheckoutConfirmEvent: ev });
           if (r && r.type === 'error') showProblem((r.error && r.error.message) ? r.error.message + ' You have not been charged.' : 'The payment didn\'t go through. You have not been charged.');
@@ -611,6 +613,7 @@
   async function confirmPayment(form) {
     var btn = $('[data-pay]'); btn.disabled = true;
     plainStatus('Taking payment…', 'ok');
+    if (window.PoofTrack) PoofTrack.payment('card');
     try {
       var r = await pay.actions.confirm();          // on success Stripe goes to /checkout/thanks/?session_id=...
       if (r && r.type === 'error') {

@@ -10,6 +10,8 @@
 (function () {
   'use strict';
   var KEY = 'poof-cart';
+  // Shop and search measurement (track.js, 5 Nov 2026), on every page that has the cart.
+  (function () { var s = document.createElement('script'); s.src = '/assets/js/track.js?v=202611051800'; s.async = true; (document.head || document.documentElement).appendChild(s); })();
 
   function read() {
     try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; }
