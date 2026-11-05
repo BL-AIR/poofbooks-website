@@ -108,7 +108,9 @@
   function shipOption() { return ship.options.filter(function (x) { return x.id === ship.choice; })[0] || ship.options[0] || null; }
 
   function aud(n) { return n.toFixed(2); }
-  function money(n) { var s = document.createElement('span'); s.className = 'money'; s.setAttribute('data-aud', aud(n)); s.textContent = 'A$' + aud(n); return s; }
+  // Always Australian dollars here (no data-aud, so the header's currency guide leaves it alone): the order box shows what
+  // we charge; Stripe offers the customer's own currency at payment.
+  function money(n) { var s = document.createElement('span'); s.className = 'money'; s.textContent = 'A$' + aud(n); return s; }
 
   /* ---------- Lil Otter's voice ---------- */
   function stopVoice() {

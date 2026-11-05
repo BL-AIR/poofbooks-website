@@ -7,7 +7,7 @@
   'use strict';
   var html = document.documentElement, audio = null;
   function $(s) { return document.querySelector(s); }
-  function money(n) { var s = document.createElement('span'); s.className = 'money'; s.setAttribute('data-aud', n.toFixed(2)); s.textContent = 'A$' + n.toFixed(2); return s; }
+  function money(n) { var s = document.createElement('span'); s.className = 'money'; s.textContent = 'A$' + n.toFixed(2); return s; }
 
   var SAMPLE = {
     ref: 'TEST-SAMPLE', test: true, email: 'boss@example.com', name: 'Sample Reader',
