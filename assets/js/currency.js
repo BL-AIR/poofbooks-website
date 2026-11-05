@@ -102,7 +102,7 @@
           var m = el.closest('[data-aud-context]') || el.parentNode;
           var a = m.querySelector('.money[data-aud]');
           el.hidden = cur === 'AUD';
-          if (cur !== 'AUD') el.textContent = 'Prices are in Australian dollars' + (a ? ' (' + fmtAUD(parseFloat(a.dataset.aud)) + ')' : '') + '. At payment you can choose to pay in your own currency, at the rate shown there.';
+          if (cur !== 'AUD') el.textContent = (a ? fmtAUD(parseFloat(a.dataset.aud)) + ' in Australian dollars' : 'Prices in Australian dollars') + '. Pay in your own currency at checkout.';
         });
       }
       paint();
