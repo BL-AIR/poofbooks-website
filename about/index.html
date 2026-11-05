@@ -48,6 +48,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   footer { padding: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: center; font-size: 14px; color: var(--muted); }
   footer a { color: var(--muted); }
   footer a:hover { color: var(--pink); }
+  /* Professor Pansy pointing at the heading (5 Nov 2026) */
+  .pansy-span { position: relative; }
+  .pansy-fig { margin: 0; pointer-events: none; }
+  .pansy-fig img { display: block; width: 100%; height: auto; }
+  @media (min-width: 1100px) {
+    main.has-pansy { max-width: calc(42rem + 28rem + 48px); padding-left: calc(28rem + 24px); }
+    .pansy-fig { position: absolute; top: 28px; right: calc(100% + 10px); width: 27rem; }
+  }
+  @media (max-width: 1099.98px) {
+    .pansy-fig { float: left; margin: 0 14px 6px 0; }
+    .pansy-fig img { height: 150px; width: auto; }
+    .pansy-span .clear { clear: both; }
+  }
 </style>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611042200">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
@@ -60,11 +73,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header>
   <a href="/" aria-label="Poof Books home"><img src="/assets/logo.svg" width="662" height="170" alt="Poof Books"></a>
 </header>
-<main>
+<main class="has-pansy">
+  <div class="pansy-span">
+  <figure class="pansy-fig"><img src="/assets/curators/cutouts/Pansy-pointer.webp?v=202611051640" width="1303" height="1375" alt="Professor Pansy squinting through his spectacles and pointing his stick at the heading"></figure>
   <h1>About this site</h1>
   <p class="standfirst">Who we are, where our book information comes from, and how to put it right when it&#x2019;s wrong.</p>
+  </div>
 
-  <p>Poof Books is an online bookshop for gay men, curated in Melbourne. We want more gay men reading more gay literature, especially men who don&#x2019;t read much yet, and we try to help each reader find the particular book he&#x2019;ll love.</p>
+  <p class="clear">Poof Books is an online bookshop for gay men, curated in Melbourne. We want more gay men reading more gay literature, especially men who don&#x2019;t read much yet, and we try to help each reader find the particular book he&#x2019;ll love.</p>
   <p>We have expansion plans to include new dedicated sites catering for the other wonderful letters in our community alphabet, but we need to get this one humming along first; we also need to find partners that represent those particular readers.</p>
   <p>Our curators are illustrated and voiced with AI tools. The books, and the choices, are human.</p>
 
