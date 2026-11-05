@@ -57,6 +57,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .help-card { padding: 16px 18px; border: 1px solid var(--rule); border-radius: 10px; }
   .help-card h3 { margin: 0 0 6px; font-size: 17px; color: var(--cream); }
   .help-card p { margin: 0; }
+  /* Lil Otter beside Help → Delivery (5 Nov 2026) */
+  .otter-span { position: relative; }
+  .otter-fig { margin: 0; pointer-events: none; }
+  .otter-fig img { display: block; }
+  @media (min-width: 1100px) {
+    main.has-otter { max-width: calc(42rem + 28rem + 48px); padding-left: calc(28rem + 24px); }
+    .otter-fig { position: absolute; top: 0; bottom: 0; right: calc(100% + 2rem); width: 26rem; }
+    .otter-fig img { width: 100%; height: 100%; object-fit: contain; object-position: right center; }
+  }
+  @media (max-width: 1099.98px) {
+    .otter-fig { float: left; margin: 0 18px 6px 0; }
+    .otter-fig img { height: 170px; width: auto; }
+    .otter-span .help-grid { clear: both; }
+  }
 </style>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611042200">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
@@ -69,7 +83,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header>
   <a href="/" aria-label="Poof Books home"><img src="/assets/logo.svg" width="662" height="170" alt="Poof Books"></a>
 </header>
-<main>
+<main class="has-otter">
+  <div class="otter-span">
+  <figure class="otter-fig"><img src="/assets/curators/cutouts/LilOtter-hips.webp?v=202611051615" width="668" height="1379" alt="Lil Otter, hands on hips, standing on a stack of parcels"></figure>
   <h1>Help</h1>
   <p class="standfirst">Who to write to, and what to expect.</p>
 
@@ -92,6 +108,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p>You'll see the delivery options and their prices at checkout, worked out for your address and your books, before you pay. Within Australia we use Australia Post (Parcel Post or Express Post). For the United States, books are sent from our distributor's US warehouse. Other countries are priced at checkout too.</p>
   <p>A multi-book order may arrive in more than one parcel, because some books come straight from our distributors. You won't pay extra for that.</p>
   <p>If you're outside Australia, your country may charge import taxes or duties when the parcel arrives. Those are set by your government or carrier, not by us.</p>
+  </div>
 
   <h2 id="payment">Paying</h2>
   <p>Prices are set in Australian dollars. At checkout you may be able to pay in your own currency, with the amount and rate shown before you pay. We never see or store your full card details.</p>
