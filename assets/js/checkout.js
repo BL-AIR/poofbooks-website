@@ -535,7 +535,7 @@
     if (!pay.checkout) return;
     pay.els.forEach(function (e) { try { e.destroy(); } catch (x) {} });
     pay.els = []; pay.checkout = null; pay.actions = null; pay.key = '';
-    $('[data-pay-box]').hidden = true;
+    $('[data-pay-box]').hidden = true; $('[data-wallets]').hidden = true;
     var btn = $('[data-pay]'); btn.disabled = false; btn.textContent = 'Continue to payment';
     if (why) plainStatus(why, 'ok');
   }
@@ -566,11 +566,29 @@
         elementsOptions: { appearance: html.classList.contains('lm') ? APPEAR_LIGHT : APPEAR_DARK }
       });
       var cur = pay.checkout.createCurrencySelectorElement(); cur.mount('#currency-selector');
+      // Apple Pay / Google Pay / Link buttons: the address is already on the form and delivery priced, so the
+      // wallet only pays (Stripe can't reprice delivery from a wallet's address with Checkout Sessions).
+      var wallets = $('[data-wallets]'); wallets.hidden = true;
+      var ece = pay.checkout.createExpressCheckoutElement({
+        buttonType: { applePay: 'buy', googlePay: 'buy' },
+        buttonTheme: { applePay: html.classList.contains('lm') ? 'black' : 'white' },
+        buttonHeight: 48
+      });
+      ece.on('availablepaymentmethodschange', function (ev) { wallets.hidden = !(ev && ev.paymentMethods); });
+      ece.mount('#express-checkout');
       var pe = pay.checkout.createPaymentElement(); pe.mount('#payment-element');
-      pay.els = [cur, pe];
+      pay.els = [cur, ece, pe];
       var loaded = await pay.checkout.loadActions();
       if (loaded.type !== 'success') throw new Error('loadActions ' + loaded.type);
       pay.actions = loaded.actions;
+      ece.on('confirm', async function (ev) {
+        if (payKey(form) !== pay.key) { resetPayment(form, 'Your order changed, so press Continue to payment again.'); return; }
+        plainStatus('Taking payment…', 'ok');
+        try {
+          var r = await pay.actions.confirm({ expressCheckoutConfirmEvent: ev });
+          if (r && r.type === 'error') showProblem((r.error && r.error.message) ? r.error.message + ' You have not been charged.' : 'The payment didn\'t go through. You have not been charged.');
+        } catch (e) { console.error('[Poof checkout]', e); showProblem('The payment didn\'t go through. You have not been charged.'); }
+      });
       pay.key = payKey(form);
       var show = function (session) { var t = chargeText(session); btn.textContent = t ? 'Pay ' + t : 'Pay'; };
       show(pay.actions.getSession());

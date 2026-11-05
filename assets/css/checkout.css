@@ -231,3 +231,9 @@ html.no-curators .thanks .co-panel { max-width: 760px; }
 .pay-box[hidden] { display: none; }
 .currency-box { margin: 0 0 16px; }
 .card-box { max-width: none; }
+
+/* Apple Pay / Google Pay buttons above the card form (Stripe Express Checkout Element) */
+.wallet-box { margin: 0 0 16px; }
+.wallet-box[hidden] { display: none; }
+.wallet-or { display: flex; align-items: center; gap: 12px; margin: 16px 0 0; font-size: 14px; opacity: .75; }
+.wallet-or::before, .wallet-or::after { content: ""; flex: 1; height: 1px; background: currentColor; opacity: .3; }
