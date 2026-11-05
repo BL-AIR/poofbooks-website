@@ -48,6 +48,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   footer { padding: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: center; font-size: 14px; color: var(--muted); }
   footer a { color: var(--muted); }
   footer a:hover { color: var(--pink); }
+  /* Detective Dick beside Privacy → Looker List (5 Nov 2026) */
+  .dick-span { position: relative; }
+  .dick-fig { margin: 0; pointer-events: none; }
+  .dick-fig img { display: block; }
+  @media (min-width: 1100px) {
+    main.has-dick { max-width: calc(42rem + 28rem + 48px); padding-left: calc(28rem + 24px); }
+    .dick-fig { position: absolute; top: 0; bottom: 0; right: calc(100% + 2rem); width: 26rem; }
+    .dick-fig img { width: 100%; height: 100%; object-fit: contain; object-position: right center; }
+  }
+  @media (max-width: 1099.98px) {
+    .dick-fig { float: left; margin: 0 18px 6px 0; }
+    .dick-fig img { height: 170px; width: auto; }
+    .dick-span .clear { clear: both; }
+  }
 </style>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611042200">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
@@ -60,17 +74,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header>
   <a href="/" aria-label="Poof Books home"><img src="/assets/logo.svg" width="662" height="170" alt="Poof Books"></a>
 </header>
-<main>
+<main class="has-dick">
+  <div class="dick-span">
+  <figure class="dick-fig"><img src="/assets/curators/cutouts/Dick-magnifier.webp?v=202611051630" width="868" height="1295" alt="Detective Dick peering at you through his magnifying glass"></figure>
   <h1>Privacy</h1>
   <p class="standfirst">What this site collects, which is very little.</p>
 
-  <p>The shop is still on its way. There's no checkout yet and no advertising, and you don't need an account to browse.</p>
-  <p>It does, however, measure visits, but only if you say so, and it has a mailing list you can choose to join.</p>
+  <p class="clear">There's no advertising, and you don't need an account to browse or to buy. When you order, we keep what we need to get your books to you, and nothing more.</p>
+  <p>The site also measures visits, but only if you say so, and it has a mailing list you can choose to join.</p>
 
   <h2 id="mailing-list">The Looker List</h2>
   <p>If you join the Poof Books Looker List, we keep your first name and email address so we can tell you when the shop opens and send the occasional early look at the stock. That's all the list is for.</p>
   <p>The list is run on Zoho Campaigns, and your details are also kept in our Zoho CRM so we can keep track of who has asked to hear from us. Zoho stores them in its Australian data centre. Nobody joins without confirming: the first email asks you to click a link, and until you do, you're not on the list.</p>
   <p>Every email has an unsubscribe link at the foot. Your address is never sold, never traded, and never passed to anyone except the service that delivers the emails. If you'd like your details deleted altogether, write to the address at the end of this page.</p>
+  </div>
+
+  <h2 id="orders">Your orders</h2>
+  <p>When you buy from us, the checkout asks for your name, email address and delivery address. If your order includes a book from Exquisite Erotica, it also records that you ticked the box to say you're 18 or over. We use these to send your books, to email your receipt and tracking details, and to help if something goes wrong. Ordering doesn't put you on the Looker List; that's a separate choice.</p>
+  <p>Your order details are kept in our order database, hosted by Cloudflare. We keep order records for five years, because Australian tax law requires it, and then delete them.</p>
+  <p>To deliver an order, we pass your name and delivery address to whoever sends the parcel: Australia Post, or the book distributor that ships it straight to you (for example, Ingram in the United States). They use it only to deliver. Receipts and order emails are sent for us by ZeptoMail, Zoho's email service, from <a href="mailto:LilOtter@poofbooks.com">LilOtter@poofbooks.com</a>.</p>
+
+  <h2 id="payments">Payments</h2>
+  <p>Payments are handled by Stripe. Your card details go straight from the payment form to Stripe; we never see or store your full card number. We receive only what we need to match a payment to an order: the amount, the currency you paid in, the card type and its last four digits. If you pay with Apple Pay, Google Pay or Link, that also goes through Stripe.</p>
+  <p>If you choose to pay in your own currency, Stripe works out the conversion. Stripe also uses payment details to detect fraud, and may store and process them outside Australia. Stripe's handling of your data is governed by its own privacy policy.</p>
 
   <h2 id="reviews">Reader reviews</h2>
   <p>Book pages carry reader reviews and star ratings, run on Hyvor Talk. Reading them stores nothing.</p>
@@ -94,6 +120,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <tr><td>Essential (always on)</td><td>This site</td><td>Your cookie choice, kept in your browser only</td><td>12 months</td></tr>
         <tr><td>Essential (always on)</td><td>This site (<code>poof-view</code>)</td><td>Your view settings: whether the curators, their voices and their movement are on. Kept in your browser only</td><td>Until you clear it</td></tr>
         <tr><td>Essential (always on)</td><td>This site (<code>poof-adult</code>)</td><td>That you've told us you're an adult, so the notice on the Exquisite Erotica shelf doesn't ask again. Kept in your browser only</td><td>Until you clear it</td></tr>
+        <tr><td>Essential (always on)</td><td>This site (<code>poof-cart</code>, <code>poof-currency</code>, <code>poof-theme</code>)</td><td>The books in your cart, the currency you browse in, and light or dark mode. Kept in your browser only</td><td>Until you clear it</td></tr>
+        <tr><td>Essential (checkout only)</td><td>Stripe (<code>__stripe_mid</code>, <code>__stripe_sid</code>)</td><td>Set by Stripe on the checkout page to detect and prevent card fraud</td><td>1 year and 30 minutes</td></tr>
         <tr><td>Essential (only if you post)</td><td>Hyvor Talk (reader reviews)</td><td>If you sign in to post a review or rating, keeps you signed in. Nothing is stored if you only read reviews</td><td>Until you sign out</td></tr>
         <tr><td>Statistics</td><td>Google Analytics (<code>_ga</code>, <code>_ga_*</code>)</td><td>A random ID that tells one visit from the next</td><td>Up to 2 years</td></tr>
         <tr><td>Statistics</td><td>Microsoft Clarity (<code>_clck</code>, <code>_clsk</code>)</td><td>A random ID linking the pages of one visit</td><td>Up to 1 year</td></tr>
@@ -110,19 +138,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p>The site is hosted by GitHub Pages. Like every web server, GitHub's receives the ordinary information your browser sends in order to deliver a page: your IP address, the page you asked for, the time, and your browser type. GitHub uses this to serve the site and to defend it against attack. We have no access to those logs and no ability to identify you from them. GitHub's own privacy statement covers what they do with it.</p>
 
   <h2>Your rights</h2>
-  <p>If you're in Australia, the UK, the European Union, or anywhere with similar laws, you have the right to ask what information we hold about you, to have it corrected, and to have it deleted. Given how little there is, this is usually a short conversation.</p>
+  <p>If you're in Australia, the UK, the European Union, or anywhere with similar laws, you have the right to ask what information we hold about you, to have it corrected, and to have it deleted (apart from order records we must keep for tax purposes). Given how little there is, this is usually a short conversation.</p>
 
   <h2>Children</h2>
   <p>Nothing here is directed at children, and we don't knowingly collect anything from anyone under the age required by their local law.</p>
-  <p>One shelf, Exquisite Erotica, holds explicit fiction written for adults. It asks visitors to confirm they're adults before going in, and when the shop opens, orders that include those books will ask the buyer to confirm they're 18 or over. That's a self-declaration, not an identity check.</p>
+  <p>One shelf, Exquisite Erotica, holds explicit fiction written for adults. It asks visitors to confirm they're adults before going in, and orders that include those books ask the buyer to confirm they're 18 or over. That's a self-declaration, not an identity check.</p>
 
   <h2>Changes</h2>
-  <p>When the shop opens, with orders or accounts, this page will be updated to say so before that happens, not after. It's kept in the same public repository as the site itself, so its history is a matter of public record.</p>
+  <p>If we start collecting anything new, such as customer accounts, this page will be updated to say so before that happens, not after. It's kept in the same public repository as the site itself, so its history is a matter of public record.</p>
 
   <h2>Who we are</h2>
-  <p>Poof Books. Questions about privacy, or anything else, go to <a href="mailto:BigDaddy@poofbooks.com">BigDaddy@poofbooks.com</a>.</p>
+  <p>Poof Books, an online bookshop run from Melbourne. The business behind it is named in our <a href="/terms/">Terms of Sale</a>. Questions about privacy, or anything else, go to <a href="mailto:BigDaddy@poofbooks.com">BigDaddy@poofbooks.com</a>.</p>
 
-  <p class="updated">Last updated 26 October 2026.</p>
+  <p class="updated">Last updated 5 November 2026.</p>
 </main>
 <footer>
   <a href="/">poofbooks.com</a>
