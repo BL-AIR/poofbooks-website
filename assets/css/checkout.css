@@ -237,3 +237,6 @@ html.no-curators .thanks .co-panel { max-width: 760px; }
 .wallet-box[hidden] { display: none; }
 .wallet-or { display: flex; align-items: center; gap: 12px; margin: 16px 0 0; font-size: 14px; opacity: .75; }
 .wallet-or::before, .wallet-or::after { content: ""; flex: 1; height: 1px; background: currentColor; opacity: .3; }
+
+/* thank-you page: Australian-dollar total beside a foreign-currency charge */
+.total-aud { font-size: .7em; font-weight: 400; opacity: .75; }

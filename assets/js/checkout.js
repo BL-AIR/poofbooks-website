@@ -541,8 +541,13 @@
     var btn = $('[data-pay]'); btn.disabled = false; btn.textContent = 'Continue to payment';
     if (why) plainStatus(why, 'ok');
   }
+  // Stripe writes Australian (and US, Canadian) dollars as a bare "$"; say which dollar, as the order box does.
+  var DOLLAR = { aud: 'A$', usd: 'US$', cad: 'CA$', nzd: 'NZ$' };
   function chargeText(session) {
-    try { return session.total.total.amount; } catch (e) { return ''; }
+    var t = ''; try { t = session.total.total.amount || ''; } catch (e) { return ''; }
+    var c = String((session && session.currency) || '').toLowerCase();
+    if (/^\$/.test(t) && DOLLAR[c]) t = DOLLAR[c] + t.slice(1);
+    return t;
   }
   async function openPayment(form) {
     var btn = $('[data-pay]');

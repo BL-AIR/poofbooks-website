@@ -69,7 +69,12 @@
     var d = $('[data-delivery]');
     if (typeof o.delivery === 'number') d.replaceChildren(money(o.delivery));
     else d.innerHTML = '<span class="gap-inline">rates to come</span>';
-    $('[data-total]').replaceChildren(money(o.total || 0));
+    var tot = $('[data-total]');
+    if (o.charged && o.charged.currency && o.charged.currency !== 'AUD' && o.charged.text) {
+      // Paid in his own currency: that is the headline; our Australian-dollar total sits beside it.
+      var small = document.createElement('span'); small.className = 'total-aud'; small.textContent = ' (A$' + (o.total || 0).toFixed(2) + ')';
+      tot.replaceChildren(document.createTextNode(o.charged.text), small);
+    } else tot.replaceChildren(money(o.total || 0));
     var ad = $('[data-address]');
     [o.name].concat(o.address || []).filter(Boolean).forEach(function (x, i) {
       if (i) ad.appendChild(document.createElement('br'));
