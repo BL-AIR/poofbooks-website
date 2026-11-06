@@ -27,6 +27,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
 <link rel="stylesheet" href="/assets/css/section.css?v=202611042100">
+<link rel="stylesheet" href="/assets/css/bestsellers.css?v=202611061245">
+<script src="/assets/js/bestsellers.js?v=202611061245" defer></script>
 <script src="/assets/js/view-settings.js?v=202610290945" defer></script>
 <script src="/assets/js/search.js?v=202611051800" defer></script>
 <script src="/assets/js/cart.js?v=202611051800" defer></script>
@@ -198,7 +200,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </section>
 
   <section class="wrap looker" aria-labelledby="looker">
-    <div class="cabin-duo">
+    <div class="cabin-duo cabin-trio">
     <div class="looker-band posted-band">
       <div class="posted-text">
         <div><h2 id="looker">The Poof Books Looker List</h2><p>Be first through the door when the shop opens, with the odd early look at what's going on the shelves. Tick the shelves you fancy and the crew will keep you posted. Nothing else.</p></div>
@@ -296,6 +298,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <p class="signup-fine">A confirmation email comes first; you're not on the list until you click the link in it (check your spam folder if it doesn't arrive). Unsubscribe from the foot of any email. <a href="/privacy/#mailing-list">Privacy</a>.</p>
       <p class="signup-fine feedback"><span class="c-on">Give feedback to Big Daddy by sending email to:</span><span class="c-off">Feedback:</span> <a href="mailto:BigDaddy@poofbooks.com">BigDaddy@poofbooks.com</a></p>
     </div>
+    <aside class="sellers-band posted-band" id="sellers" aria-labelledby="sellers-h">
+      <h2 id="sellers-h">Best Sellers</h2>
+      <p class="sellers-tag">Look which poof book stood on the Top Ten Sellers List this month.</p>
+      <ol class="sellers-list"></ol>
+      <p class="sellers-empty" hidden>The first Top Ten goes up at the start of next month, once the shop has a full month of sales behind it.</p>
+      <nav class="sellers-nav" aria-label="Best Sellers by month">
+        <button type="button" data-step="-1" aria-label="Previous month" disabled>&#8249;</button>
+        <span class="sellers-at" aria-live="polite"></span>
+        <button type="button" data-step="1" aria-label="Next month" disabled>&#8250;</button>
+      </nav>
+    </aside>
     <aside class="clubs-band posted-band" aria-labelledby="clubs-h">
       <h2 id="clubs-h">Book Clubs Bulletin Boards</h2>
       <p>Run a book club for gay men? We&#x2019;re pinning up clubs from everywhere: when you meet, what you&#x2019;re reading and how to join. Tell us your picks and we&#x2019;ll make sure they&#x2019;re on our shelves.</p>
