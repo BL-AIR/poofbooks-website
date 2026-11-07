@@ -18,11 +18,11 @@
     key: 'poofbooks-consent',
     privacyUrl: '/privacy/#cookies',
     title: 'Cookies on this site',
-    intro: 'We use cookies to see which pages people visit. Nothing optional runs until you choose.',
+    intro: 'We use cookies to see which pages people visit and, if you agree, to measure our advertising. Nothing optional runs until you choose.',
     statistics: 'Statistics — Google Analytics and Microsoft Clarity show us which pages are read and how the site is used. Anonymous.',
-    marketing: 'Marketing — not used on this site at present. If advertising tools are ever added, they run only if this is on.'
+    marketing: 'Marketing — the Meta (Facebook and Instagram) pixel tells Meta you visited, so we can measure and target our ads. Off unless you turn it on.'
   };
-  var VERSION = 1;
+  var VERSION = 2;
   var MAX_AGE_DAYS = 365;
 
   window.dataLayer = window.dataLayer || [];
