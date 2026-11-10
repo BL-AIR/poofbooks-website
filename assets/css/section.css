@@ -168,7 +168,11 @@ a.book:hover .t { color: var(--pink); }
 .site-footer nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 .site-footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
 .site-footer a:hover { color: var(--pink); }
-.ai-line { flex-basis: 100%; }
+.site-footer .wrap > span:first-child { flex-basis: 100%; }
+.ai-line { flex: 1 1 auto; }
+.foot-right { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px 24px; margin-left: auto; }
+.social { display: inline-flex; align-items: center; gap: 16px; }
+.site-footer .social a { display: inline-flex; text-decoration: none; }
 
 /* Foyer (Big Daddy's page) */
 .foyer-title .tagline { margin: 12px 0 0; font-size: 22px; font-weight: 600; color: var(--lilac); }
