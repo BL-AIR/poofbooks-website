@@ -52,3 +52,7 @@ Master logo files live in the `Logos` folder alongside this repo.
 ## Thank-you page
 
 `checkout/thanks/index.html` + `assets/js/thanks.js`. Reached only after a payment: `checkout.js` stores the order in sessionStorage `poof-last-order` and redirects; without it the page returns to `/checkout/`. Lil Otter's speech matches `assets/audio/lil-otter-thanks.mp3`, with the customer's email in place of "your inbox". `?demo=1` shows a sample order in test mode.
+
+## Footer
+
+Every page's footer carries the legal links (right-aligned on the same line as the AI statement) and the Facebook, Instagram and YouTube icons. Don't edit it by hand: `poofbooks-data/review-queue/footer_social.py` rewrites it on every page and template (CSS in `assets/css/section.css`: `.foot-right`, `.social`). Update the social links in that script and rerun it.
