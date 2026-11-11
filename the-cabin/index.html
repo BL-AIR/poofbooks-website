@@ -42,14 +42,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <style>
 /* ABA member badge (Blair, 11 Nov 2026). White logo on the dark theme, blue on the light theme. */
 .cabin-member { padding-top: 0; padding-bottom: 64px; text-align: center; }
-.member-badge { display: inline-flex; align-items: center; gap: 20px; color: var(--muted); font-size: 14px; line-height: 1.5; text-decoration: none; text-align: left; }
-.member-badge:hover { color: var(--pink); }
-.member-badge img { height: 80px; width: auto; display: block; }
+.member-badge { display: inline-flex; align-items: center; gap: 28px; text-align: left; }
+.member-badge a { text-decoration: none; }
+.mb-text { color: var(--muted); font-size: 14px; line-height: 1.5; }
+.mb-text:hover { color: var(--pink); }
+.member-badge img { height: 96px; width: auto; display: block; }
 .member-badge .mb-light { display: none; }
 @media (prefers-color-scheme: light) { html:not([data-theme="dark"]) .member-badge .mb-dark { display: none; } html:not([data-theme="dark"]) .member-badge .mb-light { display: block; } }
 html[data-theme="light"] .member-badge .mb-dark { display: none; }
 html[data-theme="light"] .member-badge .mb-light { display: block; }
-@media (max-width: 560px) { .member-badge { flex-direction: column; text-align: center; gap: 12px; } }
+@media (max-width: 560px) { .member-badge { flex-wrap: wrap; justify-content: center; text-align: center; gap: 16px 24px; } .member-badge img { height: 80px; } .mb-text { flex-basis: 100%; } }
 </style>
 </head>
 <body>
@@ -331,11 +333,16 @@ html[data-theme="light"] .member-badge .mb-light { display: block; }
   </section>
 
   <section class="wrap cabin-member" aria-label="Trade membership">
-    <a class="member-badge" href="https://loveyourbookshop.org.au/" target="_blank" rel="noopener">
-      <img class="mb-dark" src="/assets/aba-member-white.png" width="198" height="158" alt="Australian Booksellers Association" loading="lazy">
-      <img class="mb-light" src="/assets/aba-member-blue.png" width="198" height="159" alt="Australian Booksellers Association" loading="lazy">
-      <span>Poof Books is a proud member of the<br>Australian Booksellers Association.</span>
-    </a>
+    <div class="member-badge">
+      <a class="mb-logo" href="https://loveyourbookshop.org.au/" target="_blank" rel="noopener" aria-label="Australian Booksellers Association">
+        <img class="mb-dark" src="/assets/aba-member-white.png" width="186" height="141" alt="Australian Booksellers Association" loading="lazy">
+        <img class="mb-light" src="/assets/aba-member-blue.png" width="186" height="141" alt="Australian Booksellers Association" loading="lazy">
+      </a>
+      <a class="mb-logo" href="https://loveyourbookshop.org.au/" target="_blank" rel="noopener" aria-label="Love Your Bookshop">
+        <img src="/assets/lyb-logo.png" width="579" height="590" alt="Love Your Bookshop" loading="lazy">
+      </a>
+      <a class="mb-text" href="https://loveyourbookshop.org.au/" target="_blank" rel="noopener">Poof Books is a proud member of the<br>Australian Booksellers Association.</a>
+    </div>
   </section>
 </main>
 
