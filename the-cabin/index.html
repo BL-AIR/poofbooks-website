@@ -39,6 +39,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="/assets/js/trunk-plate.js?v=202611011047" defer></script>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611042200">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
+<style>
+/* ABA member badge (Blair, 11 Nov 2026). White logo on the dark theme, blue on the light theme. */
+.cabin-member { padding-top: 0; padding-bottom: 64px; text-align: center; }
+.member-badge { display: inline-flex; align-items: center; gap: 20px; color: var(--muted); font-size: 14px; line-height: 1.5; text-decoration: none; text-align: left; }
+.member-badge:hover { color: var(--pink); }
+.member-badge img { height: 80px; width: auto; display: block; }
+.member-badge .mb-light { display: none; }
+@media (prefers-color-scheme: light) { html:not([data-theme="dark"]) .member-badge .mb-dark { display: none; } html:not([data-theme="dark"]) .member-badge .mb-light { display: block; } }
+html[data-theme="light"] .member-badge .mb-dark { display: none; }
+html[data-theme="light"] .member-badge .mb-light { display: block; }
+@media (max-width: 560px) { .member-badge { flex-direction: column; text-align: center; gap: 12px; } }
+</style>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -316,6 +328,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <a class="btn clubs-btn" href="mailto:BigDaddy@poofbooks.com?subject=BOOK%20CLUBS%3A%20&body=Hi%20Big%20Daddy%2C%0A%0APlease%20pin%20our%20book%20club%20on%20the%20Poof%20Books%20bulletin%20board.%0A%0AClub%20name%3A%20%0ACountry%20and%20city%3A%20%0AMeeting%20schedule%20%28e.g.%20monthly%2C%20weekly%29%3A%20%0AContact%20email%3A%20%0AWebsite%20%28if%20any%29%3A%20%0A%0AWhat%20we%27re%20reading%20next%20%28optional%29%3A%20%0A">Email Big Daddy</a>
     </aside>
     </div>
+  </section>
+
+  <section class="wrap cabin-member" aria-label="Trade membership">
+    <a class="member-badge" href="https://www.aba.org.au" target="_blank" rel="noopener">
+      <img class="mb-dark" src="/assets/aba-member-white.png" width="198" height="158" alt="Australian Booksellers Association" loading="lazy">
+      <img class="mb-light" src="/assets/aba-member-blue.png" width="198" height="159" alt="Australian Booksellers Association" loading="lazy">
+      <span>Poof Books is a proud member of the<br>Australian Booksellers Association.</span>
+    </a>
   </section>
 </main>
 
