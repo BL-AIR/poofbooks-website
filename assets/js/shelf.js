@@ -117,6 +117,7 @@
       c._words = c.dataset.words ? +c.dataset.words : null;
       c._price = c.dataset.price ? parseFloat(c.dataset.price) : Infinity;
       c._pick = c.dataset.pick === '1';
+      c._pos = c.dataset.pos ? +c.dataset.pos : null;   // picks-first order, worked out when the site is built
       c._nocover = c.dataset.nocover === '1' ? 1 : 0;
       c._adapt = ' ' + (c.dataset.adapt || '') + ' ';
       c._pub = c.dataset.pub || '';   // books with no cover art sit at the bottom, whatever the sort (Blair, 30 Oct 2026)
@@ -361,7 +362,7 @@
         author: function (a, b) { return a._author.localeCompare(b._author) || a._title.localeCompare(b._title); },
         price: function (a, b) { return a._price - b._price || a._title.localeCompare(b._title); },
         match: function (a, b) { return (b._score - a._score) || (b._pick - a._pick) || (b._date || '').localeCompare(a._date || '') || a._i - b._i; },
-        pick: function (a, b) { return (b._pick - a._pick) || (b._date || '').localeCompare(a._date || '') || a._i - b._i; }
+        pick: function (a, b) { return (a._pos !== null && b._pos !== null && a._pos - b._pos) || (b._pick - a._pick) || (b._date || '').localeCompare(a._date || '') || a._i - b._i; }
       }[sort] || null;
       cards = cards.slice().sort(function (a, b) { return (a._nocover - b._nocover) || (by ? by(a, b) : a._i - b._i); });
       cards.forEach(function (c) { c._grid.appendChild(c); });   // in the order now shown, each in its own grid
