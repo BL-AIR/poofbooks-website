@@ -68,7 +68,13 @@ export function mountLookInside(root, preview, opts = {}) {
       if (my !== token) return;
       const base = pg.getViewport({ scale: 1 });
       const avail = Math.max(240, stage.clientWidth - 2);
-      const scale = (avail / base.width) * zoom;
+      // At normal size the whole page shows with no scroll bar (Blair, 14 Nov 2026): fit the width on the page, and in full screen
+      // fit the whole page to the screen. Zooming in brings scrolling back.
+      const fs = document.fullscreenElement === shell;
+      let scale = avail / base.width;
+      if (fs) scale = Math.min(scale, Math.max(200, window.innerHeight - 150) / base.height);
+      scale *= zoom;
+      stage.classList.toggle('li-fit', zoom === 1);
       const dpr = window.devicePixelRatio || 1;
       const vp = pg.getViewport({ scale: scale * dpr });
       canvas.width = Math.floor(vp.width); canvas.height = Math.floor(vp.height);

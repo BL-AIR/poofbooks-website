@@ -30,3 +30,4 @@
 .li-fold .li { border: 0; border-top: 1px solid var(--line-subtle, #3A2F57); border-radius: 0 0 12px 12px; background: transparent; max-width: none; padding: 12px 16px 16px; }
 @media (prefers-reduced-motion: reduce) { .li-fold > summary::after { transition: none; } }
 .look-inside { margin-top: 1.25rem; }
+.li-stage.li-fit, .li:fullscreen .li-stage.li-fit { max-height: none; overflow: hidden; }

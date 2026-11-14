@@ -3,7 +3,7 @@
 // so no API call is made per page view. The PDF viewer (PDF.js) is only downloaded on pages that have a preview.
 const nodes = document.querySelectorAll('.look-inside[data-preview]');
 if (nodes.length) {
-  import('/assets/look-inside/look-inside.js?v=202611142340').then(({ mountLookInside }) => {
+  import('/assets/look-inside/look-inside.js?v=202611150000').then(({ mountLookInside }) => {
     nodes.forEach((n) => { try { mountLookInside(n, JSON.parse(n.dataset.preview)); } catch (e) { n.hidden = true; } });
   });
 }
