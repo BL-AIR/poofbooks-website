@@ -38,7 +38,57 @@ export function mountLookInside(root, preview, opts = {}) {
     const body = el('div', { class: 'li-prose' });
     paras.forEach((p) => body.append(el('p', {}, p)));
     d.append(body);
-    return d;
+    const wrap = el('div', { class: 'li-text-wrap' }, d);
+    const lb = listenButton();
+    if (lb) wrap.append(lb);
+    return wrap;
+  };
+
+  // Listen (Blair, 14 Nov 2026). A recording (preview.audioUrl, e.g. ElevenLabs) wins; otherwise the reader's own browser voice
+  // (Web Speech API: free, no account; quality depends on the device) reads the text version, which holds only the story pages.
+  let stopListening = () => {};
+  const listenButton = () => {
+    const synth = window.speechSynthesis;
+    if (!preview.audioUrl && !(synth && window.SpeechSynthesisUtterance)) return null;
+    const btn = el('button', { type: 'button', class: 'li-btn li-listen', 'aria-pressed': 'false' }, 'Listen');
+    const show = (state) => { btn.textContent = state === 'playing' ? 'Pause' : state === 'paused' ? 'Resume' : 'Listen'; btn.setAttribute('aria-pressed', state === 'playing' ? 'true' : 'false'); };
+    if (preview.audioUrl) {
+      const audio = new Audio(); audio.preload = 'none';
+      audio.addEventListener('ended', () => show('idle')); audio.addEventListener('pause', () => { if (!audio.ended) show(audio.currentTime ? 'paused' : 'idle'); });
+      audio.addEventListener('play', () => show('playing'));
+      btn.onclick = () => { if (!audio.src) audio.src = preview.audioUrl; if (audio.paused) audio.play().catch(() => show('idle')); else audio.pause(); };
+      stopListening = () => { audio.pause(); try { audio.currentTime = 0; } catch (e) {} show('idle'); };
+      return btn;
+    }
+    // Browser voice: speak sentence by sentence (long utterances get cut off in some browsers). Accents are stripped for the voice only
+    // (ḥammām → hammam), which most voices handle better; the text on screen is unchanged.
+    const plainSay = (t) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
+    const chunks = paras.flatMap((p) => (plainSay(p).match(/[^.!?…]+[.!?…]+["')\]]*\s*|[^.!?…]+$/g) || [plainSay(p)]).map((x) => x.trim()).filter(Boolean));
+    const pickVoice = () => {
+      const vs = synth.getVoices().filter((v) => /^en/i.test(v.lang));
+      const good = (v) => /premium|enhanced|natural|neural|siri|google/i.test(v.name);
+      const by = (lang) => vs.filter((v) => v.lang.replace('_', '-').toLowerCase().startsWith(lang));
+      return [...by('en-au'), ...by('en-gb'), ...vs].sort((a, b) => good(b) - good(a))[0] || null;
+    };
+    let i = 0, state = 'idle', run = 0;
+    const speakNext = (my) => {
+      if (my !== run || state !== 'playing') return;
+      if (i >= chunks.length) { state = 'idle'; i = 0; show(state); return; }
+      const u = new SpeechSynthesisUtterance(chunks[i]);
+      const v = pickVoice(); if (v) { u.voice = v; u.lang = v.lang; } else u.lang = 'en-AU';
+      u.rate = 0.95;
+      u.onend = () => { if (my === run && state === 'playing') { i++; speakNext(my); } };
+      u.onerror = (e) => { if (e.error !== 'interrupted' && e.error !== 'canceled' && my === run) { state = 'idle'; show(state); } };
+      synth.speak(u);
+    };
+    btn.onclick = () => {
+      if (state === 'playing') { state = 'paused'; run++; synth.cancel(); }      // pause = stop after this sentence's start; resume repeats it
+      else { state = 'playing'; synth.cancel(); speakNext(++run); }
+      show(state);
+    };
+    stopListening = () => { run++; state = 'idle'; i = 0; synth.cancel(); show(state); };
+    window.addEventListener('pagehide', () => stopListening());
+    return btn;
   };
 
   const start = () => {
@@ -111,6 +161,6 @@ export function mountLookInside(root, preview, opts = {}) {
       shell.append(el('div', { class: 'li-gate' }, el('p', {}, 'These pages are for adult readers (18+).'), btn));
     } else start();
   };
-  fold.addEventListener('toggle', () => { if (fold.open) init(); });
+  fold.addEventListener('toggle', () => { if (fold.open) init(); else stopListening(); });
   if (opts.open) fold.open = true;
 }

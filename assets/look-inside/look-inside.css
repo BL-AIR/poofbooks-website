@@ -31,3 +31,8 @@
 @media (prefers-reduced-motion: reduce) { .li-fold > summary::after { transition: none; } }
 .look-inside { margin-top: 1.25rem; }
 .li-stage.li-fit, .li:fullscreen .li-stage.li-fit { max-height: none; overflow: hidden; }
+.li-text-wrap { position: relative; margin-top: 12px; }
+.li-text-wrap .li-text { margin-top: 0; }
+.li-text-wrap .li-text > summary { padding-right: 120px; }
+.li-listen { position: absolute; top: 0; right: 0; }
+.li-listen[aria-pressed="true"] { background: var(--lilac, #B9A3FF); color: var(--on-pink, #18122B); }
