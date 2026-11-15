@@ -556,3 +556,17 @@ html.gate-open.gate-page:not(.gate-modal-open) .gate-modal { background: var(--n
     0 0 0 3px var(--pink), 0 0 28px 8px rgba(255, 95, 162, .85), 0 0 60px 18px rgba(255, 95, 162, .45); }
 .trunk-plate:hover span, .trunk-plate:focus-visible span { color: #7a0f3f;
   text-shadow: 0 0 10px rgba(255, 95, 162, .9), 0 0 22px rgba(255, 95, 162, .6), 0 2px 0 rgba(255, 226, 165, .4); }
+
+/* Stand-in cover for books with no cover image (Blair, 15 Nov 2026). Design System component StandInCover; colours are the shelf-* tokens, set inline per book. */
+.sic { position: relative; display: block; width: 100%; aspect-ratio: 2 / 3; border-radius: 4px; overflow: hidden; color: #F4EFE6; text-align: center; container-type: inline-size; box-shadow: 0 10px 22px rgba(0,0,0,.35); }
+.sic::before { content: ""; position: absolute; inset: 8%; border: 1px solid rgba(244,239,230,.35); border-radius: 2px; pointer-events: none; }
+.sic .tt { position: absolute; left: 12%; right: 12%; top: 14%; display: block; }
+.sic .ti { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5; overflow: hidden; font-weight: 800; font-size: 11.5cqi; line-height: 1.12; letter-spacing: -0.01em; overflow-wrap: anywhere; hyphens: auto; }
+.sic .au { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; margin-top: 6cqi; font-weight: 400; font-size: 7.5cqi; line-height: 1.3; }
+.sic .mo { position: absolute; left: 50%; bottom: 19%; width: 18cqi; height: 18cqi; transform: translateX(-50%); opacity: .55; display: block; }
+.sic .mo svg, .qs-nocover svg { width: 100%; height: 100%; fill: none; stroke: #F4EFE6; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sic .band { position: absolute; left: 0; right: 0; bottom: 0; display: block; padding: 4.5cqi 0; background: #FF5FA2; color: #18122B; font-size: 6.4cqi; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+.cover-frame .sic-face { position: absolute; inset: 0; }
+.cover-frame .sic-face .sic { height: 100%; }
+.qs-nocover { display: flex !important; align-items: center; justify-content: center; }
+.qs-nocover svg { width: 22px; height: 22px; opacity: .8; }

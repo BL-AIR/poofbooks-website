@@ -151,6 +151,13 @@
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   function adultOk() { try { return localStorage.getItem('poof-adult') === 'yes'; } catch (e) { return false; } }
 
+  // Stand-in cover for books with no cover image (Design System StandInCover, 15 Nov 2026).
+  var POOF_SIC = {"faghetti-westerns": ["#8A4B1F", "<path d=\"M3 16c3 2.2 15 2.2 18 0\"/><path d=\"M6.5 15.5c0-5 1.3-8.5 3.3-8.5 1 0 1.4.8 2.2.8s1.2-.8 2.2-.8c2 0 3.3 3.5 3.3 8.5\"/>"], "rollicking-romances": ["#9C2846", "<circle cx=\"12\" cy=\"14\" r=\"6.5\"/><path d=\"M9.5 7.8 10 5l2 1.6L14 5l.5 2.8\"/>"], "conniving-crimes": ["#4F5B6E", "<circle cx=\"10\" cy=\"10\" r=\"6\"/><path d=\"m14.5 14.5 6 6\"/>"], "exquisite-erotica": ["#8A2A5E", "<path d=\"M19.5 4.5C11 5 6 10.5 5 19.5c7-1 12.5-6 14.5-15Z\"/><path d=\"m5 19.5 8.5-8.5\"/>"], "fabulous-fables": ["#2F5634", "<path d=\"M3.5 12.5a8.5 6.5 0 0 1 17 0Z\"/><path d=\"M10 12.5v5.5a2 2 0 0 0 4 0v-5.5\"/><circle cx=\"9\" cy=\"9.3\" r=\".8\"/><circle cx=\"14.5\" cy=\"8.4\" r=\".8\"/>"], "luminous-literature": ["#7A5A12", "<path d=\"M3 6.5c3-1 6-1 9 .8 3-1.8 6-1.8 9-.8V18c-3-1-6-1-9 .8-3-1.8-6-1.8-9-.8Z\"/><path d=\"M12 7.3v11.5\"/>"], "supernova-adventures": ["#135560", "<circle cx=\"12\" cy=\"12\" r=\"5.5\"/><g transform=\"rotate(-20 12 12)\"><path d=\"M2 12A10 3.2 0 0 1 7.28 9.18\"/><path d=\"M16.72 9.18A10 3.2 0 0 1 22 12\"/><path d=\"M2 12A10 3.2 0 0 0 22 12\"/></g>"], "no-nonsense-non-fiction": ["#36528C", "<path d=\"m2.5 9 9.5-4 9.5 4-9.5 4Z\"/><path d=\"M6.5 10.8v4.2c3 2 8 2 11 0v-4.2\"/><path d=\"M21.5 9v5\"/>"]};
+  function standin(b) {
+    var s = POOF_SIC[b.h] || ['#4A3D6E', ''];
+    return '<span class="sic" style="background:' + s[0] + '" role="img" aria-label="No cover available for ' + esc(b.t) + '"><span class="tt"><span class="ti">' + esc(b.t) + '</span><span class="au">' + esc(b.a || '') + '</span></span>' +
+      (s[1] ? '<span class="mo"><svg viewBox="0 0 24 24" aria-hidden="true">' + s[1] + '</svg></span>' : '') + '<span class="band">Cover coming soon</span></span>';
+  }
   function cardHtml(b) {
     var src = b.cv || '', img = '';
     if (src) {
@@ -159,6 +166,7 @@
       img = '<img ' + (veil ? 'data-src' : 'src') + '="' + esc(src) + '"' + (veil ? set.replace(' srcset=', ' data-srcset=') : set) +
         ' width="800" height="1200" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">';
     }
+    if (!src) img = standin(b);
     var year = b.f || (b.d || '').slice(0, 4);
     var a = '<a class="book" href="/books/' + esc(b.s) + '/" data-title="' + esc(b.t) + '" data-author="' + esc(b.a) + '" data-date="' + esc(b.d) + '"' +
       (b.f ? ' data-first="' + b.f + '"' : '') + (b.pb ? ' data-pub="' + b.pb + '"' : '') + (b.pl ? ' data-places="' + esc(b.pl.join('|')) + '"' : '') +
