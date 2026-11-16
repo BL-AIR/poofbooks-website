@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}if(s.curators===false)d.classList.add('no-curators')})();</script>
+<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}var c=s.curators!==false,v=(s.voice==='text'||s.voice==='both'||s.voice==='sound')?s.voice:(s.sound===false?'text':'both');if(!c)d.classList.add('no-curators');if(c&&v!=='text')d.classList.add('sound-on');if(c&&v==='sound')d.classList.add('words-off')})();</script>
 <script>(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem('poof-theme')}catch(e){}if(t==='light'||t==='dark')d.setAttribute('data-theme',t);else t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';if(t==='light')d.classList.add('lm')})();</script>
 <!-- Cookie consent: must load before Google Tag Manager. Sets every optional
      category to "denied" until the visitor chooses (see assets/js/consent.js). -->
@@ -65,12 +65,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .daddy-fig img { display: block; }
   @media (min-width: 1100px) {
     main.has-daddy { max-width: calc(42rem + 28rem + 48px); padding-left: calc(28rem + 24px); }
-    .daddy-fig { position: absolute; top: 0; bottom: 0; right: calc(100% + 2rem); width: 26rem; }
-    .daddy-fig img { width: 100%; height: 100%; object-fit: contain; object-position: right center; }
+    .daddy-fig { position: absolute; top: 0; right: calc(100% + 2rem); width: 26rem; text-align: center; }
+    .daddy-fig img { width: 100%; height: auto; max-height: 640px; object-fit: contain; }
   }
   @media (max-width: 1099.98px) {
-    .daddy-fig { float: left; margin: 0 18px 6px 0; }
-    .daddy-fig img { height: 170px; width: auto; }
+    .daddy-fig { float: left; margin: 0 18px 6px 0; width: 140px; text-align: center; }
+    .daddy-fig img { height: 170px; width: auto; margin: 0 auto; }
+    .daddy-fig .loft-hear-btn { min-height: 40px; padding: 8px 14px; font-size: 13px; line-height: 1.25; text-align: left; border-radius: 18px; }
     .daddy-span .toc, .daddy-span .short { clear: both; }
   }
   /* Curators off (gear setting, localStorage poof-view): plain text page */
@@ -108,8 +109,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   main.has-daddy > *:not(.loft-room) { position: relative; z-index: 1; }
   @media (max-width: 1099.98px) { .loft-room { height: 360px; } .loft-room::after { background: linear-gradient(180deg, rgba(var(--night-rgb, 24,18,43), .2) 0%, rgba(var(--night-rgb, 24,18,43), .6) 50%, var(--night) 100%); } }
   html.no-curators .loft-room { display: none; }
-  .loft-hear { margin: 14px 0 0 !important; }
-  .loft-hear-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 18px; border-radius: 999px; border: 0; background: var(--lilac); color: var(--on-pink, #18122B); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .loft-hear { margin: 12px 0 0 !important; pointer-events: auto; }
+  html:not(.sound-on) .sound-only { display: none !important; }
+  html.words-off .short { display: none; }
+  html.words-off .daddy-span .toc { clear: both; }
+  .loft-hear-btn { box-shadow: 0 10px 24px rgba(0,0,0,.35); display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 18px; border-radius: 999px; border: 0; background: var(--lilac); color: var(--on-pink, #18122B); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .loft-hear-btn svg { flex-shrink: 0; }
   .loft-hear-btn:hover { background: var(--pink); }
   .loft-hear-btn[aria-pressed="true"] { background: var(--pink); }
   .loft-hear-btn:focus-visible { outline: 3px solid var(--lilac); outline-offset: 2px; }
@@ -128,29 +133,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <main class="has-daddy">
   <div class="loft-room" aria-hidden="true"><img src="/assets/rooms/loft.webp" width="1280" height="720" alt=""></div>
   <div class="daddy-span">
-  <figure class="daddy-fig"><img src="/assets/curators/cutouts/TolstaySmythe.webp?v=202611171025" width="788" height="1387" alt="J.T.P.Q.R. Tolstay-Smythe, novelist, in shirtsleeves and braces, holding his manuscript and a fountain pen beside his typewriter"></figure>
+  <figure class="daddy-fig"><img src="/assets/curators/cutouts/TolstaySmythe.webp?v=202611171025" width="788" height="1387" alt="J.T.P.Q.R. Tolstay-Smythe, novelist, in shirtsleeves and braces, holding his manuscript and a fountain pen beside his typewriter"><p class="loft-hear sound-only"><button class="loft-hear-btn" type="button" data-audio="/assets/audio/TolstaySmythe.mp3?v=202611171031" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg><span>Hear J.T.P.Q.R. Tolstay&#8209;Smythe</span></button></p></figure>
+  <script>
+  (function () {
+    var b = document.querySelector('.loft-hear-btn'); if (!b) return;
+    var a = null;
+    function stop() { if (a) { a.pause(); a = null; } b.setAttribute('aria-pressed', 'false'); b.lastChild.textContent = 'Hear J.T.P.Q.R. Tolstay\u2011Smythe'; }
+    b.addEventListener('click', function () {
+      if (a) { stop(); return; }
+      a = new Audio(b.getAttribute('data-audio')); b.setAttribute('aria-pressed', 'true'); b.lastChild.textContent = 'Stop';
+      a.addEventListener('ended', stop); a.play().catch(stop);
+    });
+  })();
+  </script>
   <h1>The Loft</h1>
   <p class="standfirst">For authors who write books for and about men who love men. Authors only: it takes an author to bring an author up the stairs.</p>
 
   <div class="short">
     <p class="who">A word from J.T.P.Q.R. Tolstay-Smythe</p>
     <p>Ah, you found the stairs. Mind the manuscripts. I'm J.T.P.Q.R. Tolstay-Smythe (yes, all of it), author of <em>Scandal at Sea</em>, and at the moment wrestling my new novel, <em>My Man Max</em>, into shape. The Loft is for authors, and there's only one rule: no one comes up here unless another author brings them. If someone sent you up, welcome. Put your name on the Author List below and you're one of us, and the next author up those stairs is yours to invite.</p>
-    <p class="loft-hear"><button class="loft-hear-btn" type="button" data-audio="/assets/audio/TolstaySmythe.mp3?v=202611171031" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg><span>Hear J.T.</span></button></p>
-    <script>
-    (function () {
-      var b = document.querySelector('.loft-hear-btn'); if (!b) return;
-      var s = {}; try { s = JSON.parse(localStorage.getItem('poof-view') || '{}') || {}; } catch (e) {}
-      var v = (s.voice === 'text' || s.voice === 'both' || s.voice === 'sound') ? s.voice : (s.sound === false ? 'text' : 'both');
-      if (s.curators === false || v === 'text') { b.parentNode.hidden = true; return; }
-      var a = null;
-      function stop() { if (a) { a.pause(); a = null; } b.setAttribute('aria-pressed', 'false'); b.lastChild.textContent = 'Hear J.T.'; }
-      b.addEventListener('click', function () {
-        if (a) { stop(); return; }
-        a = new Audio(b.getAttribute('data-audio')); b.setAttribute('aria-pressed', 'true'); b.lastChild.textContent = 'Stop';
-        a.addEventListener('ended', stop); a.play().catch(stop);
-      });
-    })();
-    </script>
   </div>
 
   <h2 id="author-list">What the Author List is for</h2>
