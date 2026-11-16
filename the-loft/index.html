@@ -108,6 +108,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   main.has-daddy > *:not(.loft-room) { position: relative; z-index: 1; }
   @media (max-width: 1099.98px) { .loft-room { height: 360px; } .loft-room::after { background: linear-gradient(180deg, rgba(var(--night-rgb, 24,18,43), .2) 0%, rgba(var(--night-rgb, 24,18,43), .6) 50%, var(--night) 100%); } }
   html.no-curators .loft-room { display: none; }
+  .loft-hear { margin: 14px 0 0 !important; }
+  .loft-hear-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 18px; border-radius: 999px; border: 0; background: var(--lilac); color: var(--on-pink, #18122B); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .loft-hear-btn:hover { background: var(--pink); }
+  .loft-hear-btn[aria-pressed="true"] { background: var(--pink); }
+  .loft-hear-btn:focus-visible { outline: 3px solid var(--lilac); outline-offset: 2px; }
 </style>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611042200">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
@@ -130,6 +135,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="short">
     <p class="who">A word from J.T.P.Q.R. Tolstay-Smythe</p>
     <p>Ah, you found the stairs. Mind the manuscripts. I'm J.T.P.Q.R. Tolstay-Smythe (yes, all of it), author of <em>Scandal at Sea</em>, and at the moment wrestling my new novel, <em>My Man Max</em>, into shape. The Loft is for authors, and there's only one rule: no one comes up here unless another author brings them. If someone sent you up, welcome. Put your name on the Author List below and you're one of us, and the next author up those stairs is yours to invite.</p>
+    <p class="loft-hear"><button class="loft-hear-btn" type="button" data-audio="/assets/audio/TolstaySmythe.mp3?v=202611171031" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg><span>Hear J.T.</span></button></p>
+    <script>
+    (function () {
+      var b = document.querySelector('.loft-hear-btn'); if (!b) return;
+      var s = {}; try { s = JSON.parse(localStorage.getItem('poof-view') || '{}') || {}; } catch (e) {}
+      var v = (s.voice === 'text' || s.voice === 'both' || s.voice === 'sound') ? s.voice : (s.sound === false ? 'text' : 'both');
+      if (s.curators === false || v === 'text') { b.parentNode.hidden = true; return; }
+      var a = null;
+      function stop() { if (a) { a.pause(); a = null; } b.setAttribute('aria-pressed', 'false'); b.lastChild.textContent = 'Hear J.T.'; }
+      b.addEventListener('click', function () {
+        if (a) { stop(); return; }
+        a = new Audio(b.getAttribute('data-audio')); b.setAttribute('aria-pressed', 'true'); b.lastChild.textContent = 'Stop';
+        a.addEventListener('ended', stop); a.play().catch(stop);
+      });
+    })();
+    </script>
   </div>
 
   <h2 id="author-list">What the Author List is for</h2>
