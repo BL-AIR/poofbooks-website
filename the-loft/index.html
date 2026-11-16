@@ -99,6 +99,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .zform select { width: 100%; padding: 12px 14px; font: inherit; font-size: 16px; color: var(--cream); background: var(--night); border: 1px solid rgba(185,163,255,0.45); border-radius: 10px; }
   .zform select:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255,95,162,.25); }
   .zform select:invalid, .zform select.empty { color: #8E84AE; }
+  /* The Loft: the room behind Big Daddy, like the shelves' Reading Rooms (17:19, take 2) */
+  html, body { overflow-x: clip; }
+  main.has-daddy { position: relative; }
+  .loft-room { position: absolute; left: 50%; width: 100vw; transform: translateX(-50%); top: 0; height: 640px; overflow: hidden; z-index: 0; pointer-events: none; }
+  .loft-room img { width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+  .loft-room::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(var(--night-rgb, 24,18,43), .1) 0%, rgba(var(--night-rgb, 24,18,43), .45) 55%, var(--night) 100%), linear-gradient(90deg, rgba(var(--night-rgb, 24,18,43), 0) 30%, rgba(var(--night-rgb, 24,18,43), .7) 60%, rgba(var(--night-rgb, 24,18,43), .7) 100%); }
+  main.has-daddy > *:not(.loft-room) { position: relative; z-index: 1; }
+  @media (max-width: 1099.98px) { .loft-room { height: 360px; } .loft-room::after { background: linear-gradient(180deg, rgba(var(--night-rgb, 24,18,43), .2) 0%, rgba(var(--night-rgb, 24,18,43), .6) 50%, var(--night) 100%); } }
+  html.no-curators .loft-room { display: none; }
 </style>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611042200">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
@@ -112,6 +121,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="/" aria-label="Poof Books home"><img src="/assets/logo.svg" width="662" height="170" alt="Poof Books"></a>
 </header>
 <main class="has-daddy">
+  <div class="loft-room" aria-hidden="true"><img src="/assets/rooms/loft.webp" width="1280" height="720" alt=""></div>
   <div class="daddy-span">
   <figure class="daddy-fig"><img src="/assets/curators/cutouts/BigDaddy-hips.webp?v=202611051625" width="906" height="1387" alt="Big Daddy, hands on hips, standing on a tree stump"></figure>
   <h1>The Loft</h1>
