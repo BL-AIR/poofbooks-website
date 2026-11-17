@@ -529,15 +529,24 @@
     colorDanger: '#C62828', borderRadius: '12px', fontFamily: 'DM Sans, system-ui, sans-serif' } };
   var pay = { stripe: null, checkout: null, actions: null, key: '', els: [] };
   // Detective Dick's case (open-a-case/found/ stores {ref, isbn}); sent only while that book is in the cart.
-  // Where this sale came from (17 Nov 2026). The iPhone/iPad app opens /checkout/?add=<ISBN>&utm_source=app&utm_medium=ios&utm_campaign=buy.
+  // Where this sale came from (17 Nov 2026). The iPhone/iPad app already tags every link it opens with
+  // utm_source=poofbooks_app&utm_medium=app&utm_term=iphone|ipad (the same tags Google Analytics reports), so that is what counts as the
+  // app; for checkout it adds add=<ISBN>. Android will use utm_term=android. (utm_source=app with utm_medium=ios|android also works.)
   // We remember it on this device for 7 days and send it with the order, so our own records (not Google Analytics) say 'ios'.
-  // Anything else is 'website'. Android will be utm_medium=android. A source only counts while the cart has something in it.
+  // Anything else is 'website'. A source only counts while the cart has something in it.
   var SOURCES = { ios: 1, android: 1 };
+  function appPlatform(q) {
+    var src = (q.get('utm_source') || '').toLowerCase(), med = (q.get('utm_medium') || '').toLowerCase(), term = (q.get('utm_term') || '').toLowerCase();
+    if (src === 'app' && SOURCES[med]) return med;
+    if (src !== 'poofbooks_app') return '';
+    if (term === 'android') return 'android';
+    return 'ios';                                  // iphone, ipad, or no term: the iOS app is the only one so far
+  }
   function noteArrival() {
     try {
       var q = new URLSearchParams(location.search), add = (q.get('add') || '').replace(/[^0-9]/g, '');
-      var src = (q.get('utm_source') || '').toLowerCase(), med = (q.get('utm_medium') || '').toLowerCase();
-      if (src === 'app' && SOURCES[med]) localStorage.setItem('poof-src', JSON.stringify({ s: med, t: Date.now() }));
+      var plat = appPlatform(q);
+      if (plat) localStorage.setItem('poof-src', JSON.stringify({ s: plat, t: Date.now() }));
       if (/^97[89]\d{10}$/.test(add) && window.PoofCart && line(add, 1) && !PoofCart.items().some(function (i) { return i.isbn === add; })) PoofCart.add(add, 1);
       if (q.has('add')) { q.delete('add'); history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q.toString() : '') + location.hash); }   // a reload must not add it again; utm_* stay for analytics
     } catch (e) {}
