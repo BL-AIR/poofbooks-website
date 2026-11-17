@@ -205,7 +205,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       if (!s && w) s = { a: (w.a || []).join(', '), c: w.c, u: (w.u || '').replace(/^\/books\/|\/$/g, ''), s: 'available' };
       $('title').value = $('title').value || b.title;
       if (s) { $('author').value = $('author').value || s.a || ''; if (!hand) $('avail').value = s.s === 'back' ? 'back' : 'available';
-        if (!$('cover').value && s.c) { $('cover').value = s.c.replace('front-240.webp', 'front-480.webp'); $('credit').value = ''; showCover(); }
+        if (!$('cover').value && s.c) pickCover([s.c.replace('front-240.webp', 'front-480.webp'), s.c.replace('front-240.webp', 'front.webp'), s.c]);
         if (s.u && !$('blurb').value) fetch('/books/' + s.u + '/').then(function (r) { return r.text(); }).then(function (h) {
           var d = new DOMParser().parseFromString(h, 'text/html'), p = d.querySelector('#about .prose');
           if (p) $('blurb').value = Array.from(p.querySelectorAll('p')).map(function (x) { return x.textContent.trim(); }).filter(Boolean).join('\n\n');
@@ -214,6 +214,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       msg('bmsg', b.title + ' \u00b7 ' + b.format + ' \u00b7 A$' + (b.priceCents / 100).toFixed(2) + (r[0][isbn] || hand ? ' \u00b7 can go in the cart' : ' \u00b7 NOT in the site build yet: rebuild and push before sending'), !!(r[0][isbn] || hand));
     }).catch(function () { msg('bmsg', 'Couldn\u2019t look that up.'); });
   });
+  // Not every cover in our R2 store has every size: use the first that actually loads (480px, then full size, then 240px).
+  function pickCover(list) {
+    var url = list.shift(); if (!url) return;
+    var img = new Image();
+    img.onload = function () { $('cover').value = url; $('credit').value = ''; showCover(); };
+    img.onerror = function () { pickCover(list); };
+    img.src = url;
+  }
   function showCover() { var c = $('cover').value.trim(); $('cprev').hidden = !c; if (c) $('cprev').src = c; }
   $('cover').addEventListener('change', showCover);
   $('ol').addEventListener('click', function () {
