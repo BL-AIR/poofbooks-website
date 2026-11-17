@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,c=s.curators!==false,m=typeof s.motion==='boolean'?s.motion:!r,v=(s.voice==='text'||s.voice==='both'||s.voice==='sound')?s.voice:(s.sound===false?'text':'both');if(!c)d.classList.add('no-curators');if(c&&v!=='text')d.classList.add('sound-on');if(c&&v==='sound')d.classList.add('words-off');if(c&&m)d.classList.add('motion-on')})();</script>
+<script>(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem('poof-theme')}catch(e){}if(t==='light'||t==='dark')d.setAttribute('data-theme',t);else t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';if(t==='light')d.classList.add('lm')})();</script>
+<!-- Cookie consent: must load before Google Tag Manager. Sets every optional
+     category to "denied" until the visitor chooses (see assets/js/consent.js). -->
+<script src="/assets/js/consent.js"></script>
+<link rel="stylesheet" href="/assets/css/consent.css">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WRD3V23L');</script>
+<!-- End Google Tag Manager -->
+<title>Case File — Poof Books</title>
+<meta name="description" content="Private.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#18122B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FCE4EE" media="(prefers-color-scheme: light)">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,800&display=swap">
+<link rel="stylesheet" href="/assets/css/section.css?v=202611151345">
+<script src="/assets/js/view-settings.js?v=202610290945" defer></script>
+<script src="/assets/js/cart.js?v=202611051800" defer></script>
+<script src="/assets/js/currency.js?v=202611051400" defer></script>
+<style>
+  :root { --night: #18122B; --pink: #FF5FA2; --lilac: #B9A3FF; --cream: #F4EFE6; --muted: #CFC6E8; --rule: #2E2546; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--night); color: var(--cream); font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; line-height: 1.65; }
+  main { max-width: 42rem; margin: 0 auto; padding: 48px 24px 64px; }
+  h1 { margin: 0 0 8px; font-size: clamp(30px, 5vw, 42px); font-weight: 800; line-height: 1.15; color: var(--pink); }
+  .standfirst { margin: 0 0 40px; font-size: 18px; color: var(--muted); }
+  h2 { margin: 44px 0 12px; font-size: 20px; font-weight: 800; color: var(--lilac); scroll-margin-top: 24px; }
+  p { margin: 0 0 16px; }
+  a { color: var(--pink); text-underline-offset: 3px; }
+  a:hover { color: var(--lilac); }
+  .table-wrap { overflow-x: auto; margin: 8px 0 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 32rem; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--rule); }
+  th { color: var(--muted); font-weight: 600; }
+  code { font-size: 0.92em; color: var(--lilac); }
+  .updated { margin-top: 48px; color: var(--muted); font-size: 14px; }
+  footer { padding: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: center; font-size: 14px; color: var(--muted); }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--pink); }
+    /* Detective Dick, Open a Case (17 Nov 2026) */
+  .dick-span { position: relative; }
+  .dick-fig { margin: 0; pointer-events: none; }
+  .dick-fig img { display: block; }
+  @media (min-width: 1100px) {
+    main.has-dick { max-width: calc(42rem + 28rem + 48px); padding-left: calc(28rem + 24px); }
+    .dick-span { min-height: 560px; }
+    .dick-fig { position: absolute; top: 0; bottom: 0; right: calc(100% + 2rem); width: 26rem; }
+    .dick-fig img { width: 100%; height: 100%; max-height: 640px; object-fit: contain; object-position: right top; }
+  }
+  @media (max-width: 1099.98px) {
+    .dick-fig { float: left; margin: 0 18px 6px 0; }
+    .dick-fig img { height: 170px; width: auto; }
+    .dick-span .clear { clear: both; }
+  }
+  html.no-curators .dick-fig { display: none; }
+  html.no-curators main.has-dick { max-width: 42rem; padding-left: 24px; }
+    /* Case File: Big Daddy's private page for Detective Dick's replies (17 Nov 2026). noindex; never linked. */
+  main.cf { max-width: 60rem; }
+  .cf fieldset { margin: 0 0 18px; padding: 18px 20px; border: 1px solid rgba(185,163,255,0.35); border-radius: 14px; }
+  .cf legend { padding: 0 6px; font-weight: 800; color: var(--lilac); }
+  .cf label { display: block; margin: 10px 0 0; font-size: 14px; font-weight: 600; color: var(--muted); }
+  .cf input[type=text], .cf input[type=email], .cf input[type=password], .cf textarea, .cf select { display: block; width: 100%; margin-top: 4px; padding: 10px 12px; font: inherit; font-size: 15px; color: var(--cream); background: var(--night); border: 1px solid rgba(185,163,255,0.45); border-radius: 10px; }
+  .cf textarea { min-height: 90px; }
+  .cf .row { display: flex; gap: 12px; flex-wrap: wrap; } .cf .row > * { flex: 1 1 200px; }
+  .cf .radios label { display: inline-flex; gap: 6px; align-items: center; margin-right: 18px; color: var(--cream); }
+  .cf button { margin: 12px 10px 0 0; padding: 10px 18px; font: inherit; font-weight: 800; color: var(--night); background: var(--pink); border: 0; border-radius: 10px; cursor: pointer; }
+  .cf button.alt { background: var(--lilac); }
+  .cf .msg { margin: 10px 0 0; font-size: 14px; }
+  .cf .msg.err { color: var(--pink); } .cf .msg.ok { color: #7EE0A1; }
+  .cf ul.cases { list-style: none; margin: 10px 0 0; padding: 0; max-height: 260px; overflow: auto; }
+  .cf ul.cases li { padding: 8px 10px; border-bottom: 1px solid var(--rule); cursor: pointer; font-size: 14px; }
+  .cf ul.cases li:hover { background: rgba(185,163,255,0.10); } .cf ul.cases li.done { opacity: .5; }
+  .cf .cover-prev { max-width: 110px; margin-top: 8px; border-radius: 6px; }
+  .cf iframe { width: 100%; height: 900px; border: 1px solid var(--rule); border-radius: 12px; background: #18122B; margin-top: 12px; }
+  [hidden] { display: none !important; }
+</style>
+<link rel="stylesheet" href="/assets/css/theme.css?v=202611042200">
+<script src="/assets/js/theme.js?v=202611042030" defer></script>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<header class="site-header">
+  <div class="wrap">
+    <a class="home" href="/the-cabin/" aria-label="Poof Books: back to the Cabin"><img src="/assets/logo.svg" width="662" height="170" alt="Poof Books"></a>
+    <nav class="sections" aria-label="Sections">
+        <a href="/faghetti-westerns/">Faghetti Westerns</a>
+        <a href="/rollicking-romances/">Rollicking Romances</a>
+        <a href="/conniving-crimes/">Conniving Crimes</a>
+        <a href="/exquisite-erotica/">Exquisite Erotica</a>
+        <a href="/fabulous-fables/">Fabulous Fables</a>
+        <a href="/luminous-literature/">Luminous Literature</a>
+        <a href="/supernova-adventures/">Supernova Adventures</a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <a href="/no-nonsense-non-fiction/">No Nonsense <span style="white-space:nowrap">Non-Fiction</span></a>
+    </nav>
+    <button class="gear" type="button" aria-label="View settings" title="View settings" aria-expanded="false" aria-controls="view-settings"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+  </div>
+  <section class="view-settings" id="view-settings" aria-label="View settings" hidden>
+    <h2>How would you like to browse?</h2>
+    <p class="hint">We'll remember this on your device.</p>
+    <div class="vs-row"><div class="lab"><b>Curators</b><span>Meet the characters who look after each shelf. Off: just the books.</span></div><button class="switch" type="button" role="switch" aria-checked="true" aria-label="Curators" data-key="curators"><span class="knob"></span></button></div>
+    <div class="vs-row vs-pace vs-voice"><div class="lab"><b>Curators&#x2019; voices</b><span>Read their words, hear them, or both. Nothing plays until you press play.</span></div><div class="pace" role="group" aria-label="Curators&#x2019; voices"><button type="button" data-voice="text" aria-pressed="false">Text only</button><button type="button" data-voice="both" aria-pressed="true">Sound &amp; text</button><button type="button" data-voice="sound" aria-pressed="false">Sound only</button></div></div>
+    <div class="vs-row"><div class="lab"><b>Motion</b><span>Gentle animation on the curators. Follows your device setting.</span></div><button class="switch" type="button" role="switch" aria-checked="true" aria-label="Motion" data-key="motion"><span class="knob"></span></button></div>
+    <div class="vs-row vs-pace"><div class="lab"><b>Reading pace</b><span>Used to work out how long a book will take you.</span></div><div class="pace" role="group" aria-label="Reading pace"><button type="button" data-pace="slow" aria-pressed="false">Slow</button><button type="button" data-pace="average" aria-pressed="true">Average</button><button type="button" data-pace="fast" aria-pressed="false">Fast</button></div></div>
+    <p class="vs-note">Voices and motion only apply to the curators, so they're paused while the curators are off.</p>
+  </section>
+</header>
+<main class="cf">
+  <h1>Case File</h1>
+  <p class="standfirst">Detective Dick&#x2019;s replies to Open a Case enquiries. Private: not linked anywhere, not indexed.</p>
+  <fieldset><legend>1. The case</legend>
+    <div class="row"><label>Case key (stays on this computer)<input type="password" id="k" autocomplete="off"></label></div>
+    <button type="button" class="alt" id="load">Load open cases</button> <span class="msg" id="lmsg"></span>
+    <ul class="cases" id="cases"></ul>
+    <div class="row"><label>First name<input type="text" id="first"></label><label>Email<input type="email" id="email"></label></div>
+    <label>What they searched for<input type="text" id="enquiry"></label>
+    <input type="hidden" id="lead">
+  </fieldset>
+  <fieldset><legend>2. The outcome</legend>
+    <div class="radios"><label><input type="radio" name="out" value="found" checked> Found it</label><label><input type="radio" name="out" value="replacement"> Replacement edition</label><label><input type="radio" name="out" value="not_found"> Can&#x2019;t get it</label></div>
+    <div id="offer">
+      <p class="msg">The offered book must be in our catalogue with a price (and the site rebuilt), so checkout can sell it.</p>
+      <div class="row"><label>ISBN of the book we&#x2019;re offering<input type="text" id="isbn" inputmode="numeric"></label><div><button type="button" class="alt" id="look">Look up</button></div></div>
+      <p class="msg" id="bmsg"></p>
+      <div id="repl" hidden>
+        <div class="row"><label>ISBN they searched for<input type="text" id="searched"></label></div>
+        <label>Why a different edition (shown to them)<textarea id="reason" placeholder="You searched for the eBook. We sell printed books, so here is the paperback."></textarea></label>
+        <label>Other editions (one per line, optional)<textarea id="others" placeholder="9780000000000 (hardback)&#10;9780000000001 (2nd edition, coming 2027)"></textarea></label>
+      </div>
+      <div class="row"><label>Title<input type="text" id="title"></label><label>Author<input type="text" id="author"></label></div>
+      <div class="row"><label>Availability<select id="avail"><option value="available">Available with our supplier</option><option value="back">On back order with our supplier</option></select></label><label>Note (optional)<input type="text" id="note" placeholder="Usually ships within 7 days"></label></div>
+      <div class="row"><label>Cover image (https)<input type="text" id="cover"></label><label>Cover credit<input type="text" id="credit" placeholder="Open Library"></label></div>
+      <button type="button" class="alt" id="ol">Try an Open Library cover</button>
+      <img class="cover-prev" id="cprev" alt="" hidden>
+      <label>Blurb<textarea id="blurb" rows="6"></textarea></label>
+    </div>
+    <div id="nf" hidden>
+      <label>Title (if you know it)<input type="text" id="nftitle"></label>
+      <label>What Dick found<textarea id="findings" rows="5" placeholder="Out of print since 1998; the publisher has closed..."></textarea></label>
+      <label>Where to try next (one per line; links and emails work)<textarea id="contacts" rows="4" placeholder="Second-hand: https://www.abebooks.com.au"></textarea></label>
+    </div>
+  </fieldset>
+  <fieldset><legend>3. Send</legend>
+    <button type="button" class="alt" id="prev">Preview the email</button><button type="button" id="send">Send as Detective Dick</button>
+    <p class="msg" id="smsg"></p>
+    <iframe id="frame" title="Email preview" hidden></iframe>
+  </fieldset>
+</main>
+<script>
+(function () {
+  var API = 'https://poofbooks-pay.big--daddy.workers.dev/v1/case/admin';
+  var $ = function (id) { return document.getElementById(id); };
+  try { $('k').value = localStorage.getItem('poof-case-key') || ''; } catch (e) {}
+  $('k').addEventListener('change', function () { try { localStorage.setItem('poof-case-key', $('k').value.trim()); } catch (e) {} });
+  function out() { return document.querySelector('input[name=out]:checked').value; }
+  function sync() { var o = out(); $('offer').hidden = o === 'not_found'; $('nf').hidden = o !== 'not_found'; $('repl').hidden = o !== 'replacement'; }
+  document.querySelectorAll('input[name=out]').forEach(function (r) { r.addEventListener('change', sync); }); sync();
+  function call(body) {
+    return fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Case-Key': $('k').value.trim() }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (j) { j._status = r.status; return j; }); });
+  }
+  function msg(id, t, ok) { var e = $(id); e.textContent = t; e.className = 'msg ' + (ok ? 'ok' : 'err'); }
+  $('load').addEventListener('click', function () {
+    msg('lmsg', 'Loading\u2026', true);
+    call({ action: 'cases' }).then(function (j) {
+      if (j.error) return msg('lmsg', j.error);
+      var ul = $('cases'); ul.innerHTML = '';
+      (j.cases || []).forEach(function (c) {
+        var li = document.createElement('li'); if (c.replied) li.className = 'done';
+        li.textContent = (c.created || '').slice(0, 10) + ' \u00b7 ' + (c.firstName || '?') + ' <' + (c.email || '') + '> \u00b7 ' + (c.enquiry || '') + (c.replied ? ' \u00b7 replied' : '');
+        li.addEventListener('click', function () { $('first').value = c.firstName || ''; $('email').value = c.email || ''; $('enquiry').value = c.enquiry || ''; $('lead').value = c.id;
+          if (/^97[89]\d{10}$/.test((c.enquiry || '').replace(/[^0-9]/g, ''))) $('searched').value = c.enquiry.replace(/[^0-9]/g, ''); });
+        ul.appendChild(li);
+      });
+      msg('lmsg', (j.cases || []).length + ' Title Enquirer leads', true);
+    }).catch(function () { msg('lmsg', 'Couldn\u2019t reach the Worker.'); });
+  });
+  $('look').addEventListener('click', function () {
+    var isbn = $('isbn').value.replace(/[^0-9]/g, ''); $('isbn').value = isbn;
+    msg('bmsg', 'Looking up\u2026', true);
+    Promise.all([fetch('/assets/data/sellable.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }), call({ action: 'book', isbn: isbn })]).then(function (r) {
+      var s = r[0][isbn], b = r[1];
+      if (b.error) return msg('bmsg', b.error);
+      $('title').value = $('title').value || b.title;
+      if (s) { $('author').value = $('author').value || s.a || ''; $('avail').value = s.s === 'back' ? 'back' : 'available';
+        if (!$('cover').value && s.c) { $('cover').value = s.c.replace('front-240.webp', 'front-480.webp'); $('credit').value = ''; showCover(); }
+        if (s.u && !$('blurb').value) fetch('/books/' + s.u + '/').then(function (r) { return r.text(); }).then(function (h) {
+          var d = new DOMParser().parseFromString(h, 'text/html'), p = d.querySelector('#about .prose');
+          if (p) $('blurb').value = Array.from(p.querySelectorAll('p')).map(function (x) { return x.textContent.trim(); }).filter(Boolean).join('\n\n');
+        });
+      }
+      msg('bmsg', b.title + ' \u00b7 ' + b.format + ' \u00b7 A$' + (b.priceCents / 100).toFixed(2) + (s ? ' \u00b7 live on the site' : ' \u00b7 NOT in the site build yet: rebuild and push before sending'), !!s);
+    }).catch(function () { msg('bmsg', 'Couldn\u2019t look that up.'); });
+  });
+  function showCover() { var c = $('cover').value.trim(); $('cprev').hidden = !c; if (c) $('cprev').src = c; }
+  $('cover').addEventListener('change', showCover);
+  $('ol').addEventListener('click', function () {
+    var isbn = $('isbn').value.replace(/[^0-9]/g, ''); if (!isbn) return;
+    var url = 'https://covers.openlibrary.org/b/isbn/' + isbn + '-L.jpg?default=false', img = new Image();
+    img.onload = function () { $('cover').value = url; $('credit').value = 'Open Library'; showCover(); msg('bmsg', 'Open Library has a cover. Check it\u2019s the right edition.', true); };
+    img.onerror = function () { msg('bmsg', 'Open Library has no cover for that ISBN.'); };
+    img.src = url;
+  });
+  function body(action) {
+    var o = out();
+    return { action: action, outcome: o, leadId: $('lead').value, firstName: $('first').value.trim(), email: $('email').value.trim(), enquiry: $('enquiry').value.trim(),
+      isbn: $('isbn').value.trim(), searchedIsbn: $('searched').value.trim(), reason: $('reason').value, otherIsbns: $('others').value,
+      title: o === 'not_found' ? $('nftitle').value.trim() : $('title').value.trim(), author: $('author').value.trim(), availability: $('avail').value,
+      note: $('note').value.trim(), cover: $('cover').value.trim(), coverCredit: $('credit').value.trim(), blurb: $('blurb').value,
+      findings: $('findings').value, contacts: $('contacts').value };
+  }
+  $('prev').addEventListener('click', function () {
+    msg('smsg', 'Building preview\u2026', true);
+    call(body('preview')).then(function (j) {
+      if (j.error) return msg('smsg', j.error);
+      $('frame').hidden = false; $('frame').srcdoc = j.html; msg('smsg', 'Subject: ' + j.subject, true);
+    }).catch(function () { msg('smsg', 'Couldn\u2019t reach the Worker.'); });
+  });
+  $('send').addEventListener('click', function () {
+    if (!confirm('Send this to ' + $('email').value + ' as Detective Dick?')) return;
+    msg('smsg', 'Sending\u2026', true);
+    call(body('send')).then(function (j) {
+      if (j.error) return msg('smsg', j.error);
+      msg('smsg', 'Email ' + j.email + '. Case ' + j.ref + '. CRM: ' + j.crm + (j.url ? '. Link: ' + j.url : ''), j.email === 'sent');
+    }).catch(function () { msg('smsg', 'Couldn\u2019t reach the Worker.'); });
+  });
+})();
+</script>
+<footer>
+  <a href="/">poofbooks.com</a>
+  <a href="/about/">About this site</a>
+  <a href="/the-loft/">Authors</a>
+  <a href="/support/">Help</a>
+  <a href="/terms/">Terms</a>
+  <a href="/privacy/">Privacy</a>
+  <a href="/privacy/#cookies" data-cookie-settings>Cookie&nbsp;settings</a>
+  <span class="social" style="display:inline-flex;align-items:center;gap:16px"><a href="https://www.facebook.com/bigdaddysbookshelf" target="_blank" rel="noopener" aria-label="Poof Books on Facebook" title="Facebook" style="display:inline-flex;align-items:center;text-decoration:none"><svg viewBox="0 0 24 24" height="20" width="20" aria-hidden="true" fill="currentColor"><path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4v3.3h2.8V22h3.3z"/></svg></a><a href="https://www.instagram.com/poof.books/" target="_blank" rel="noopener" aria-label="Poof Books on Instagram" title="Instagram" style="display:inline-flex;align-items:center;text-decoration:none"><svg viewBox="0 0 1000 1000" height="20" width="20" aria-hidden="true" fill="currentColor"><path d="M295.42,6c-53.2,2.51-89.53,11-121.29,23.48-32.87,12.81-60.73,30-88.45,57.82S40.89,143,28.17,175.92c-12.31,31.83-20.65,68.19-23,121.42S2.3,367.68,2.56,503.46,3.42,656.26,6,709.6c2.54,53.19,11,89.51,23.48,121.28,12.83,32.87,30,60.72,57.83,88.45S143,964.09,176,976.83c31.8,12.29,68.17,20.67,121.39,23s70.35,2.87,206.09,2.61,152.83-.86,206.16-3.39S799.1,988,830.88,975.58c32.87-12.86,60.74-30,88.45-57.84S964.1,862,976.81,829.06c12.32-31.8,20.69-68.17,23-121.35,2.33-53.37,2.88-70.41,2.62-206.17s-.87-152.78-3.4-206.1-11-89.53-23.47-121.32c-12.85-32.87-30-60.7-57.82-88.45S862,40.87,829.07,28.19c-31.82-12.31-68.17-20.7-121.39-23S637.33,2.3,501.54,2.56,348.75,3.4,295.42,6m5.84,903.88c-48.75-2.12-75.22-10.22-92.86-17-23.36-9-40-19.88-57.58-37.29s-28.38-34.11-37.5-57.42c-6.85-17.64-15.1-44.08-17.38-92.83-2.48-52.69-3-68.51-3.29-202s.22-149.29,2.53-202c2.08-48.71,10.23-75.21,17-92.84,9-23.39,19.84-40,37.29-57.57s34.1-28.39,57.43-37.51c17.62-6.88,44.06-15.06,92.79-17.38,52.73-2.5,68.53-3,202-3.29s149.31.21,202.06,2.53c48.71,2.12,75.22,10.19,92.83,17,23.37,9,40,19.81,57.57,37.29s28.4,34.07,37.52,57.45c6.89,17.57,15.07,44,17.37,92.76,2.51,52.73,3.08,68.54,3.32,202s-.23,149.31-2.54,202c-2.13,48.75-10.21,75.23-17,92.89-9,23.35-19.85,40-37.31,57.56s-34.09,28.38-57.43,37.5c-17.6,6.87-44.07,15.07-92.76,17.39-52.73,2.48-68.53,3-202.05,3.29s-149.27-.25-202-2.53m407.6-674.61a60,60,0,1,0,59.88-60.1,60,60,0,0,0-59.88,60.1M245.77,503c.28,141.8,115.44,256.49,257.21,256.22S759.52,643.8,759.25,502,643.79,245.48,502,245.76,245.5,361.22,245.77,503m90.06-.18a166.67,166.67,0,1,1,167,166.34,166.65,166.65,0,0,1-167-166.34" transform="translate(-2.5 -2.5)"/></svg></a><a href="https://www.youtube.com/@PoofBooks" target="_blank" rel="noopener" aria-label="Poof Books on YouTube" title="YouTube" style="display:inline-flex;align-items:center;text-decoration:none"><svg viewBox="102 119 397 278" height="20" width="29" aria-hidden="true" fill="currentColor"><path fill-rule="nonzero" d="M 261.2 317.3 L 261.2 198.4 L 363.9 257.7 Z M 490.3 162.6 C 485.7 145.5 472.7 132.2 455.3 127.6 C 424.6 119.2 300.5 119.2 300.5 119.2 C 300.5 119.2 176.7 119.2 146.1 127.6 C 129 132.2 115.7 145.5 110.8 162.6 C 102.7 193.2 102.7 257.7 102.7 257.7 C 102.7 257.7 102.7 322.2 110.8 353.2 C 115.7 370 129 383.6 146.1 388.2 C 176.7 396.6 300.5 396.6 300.5 396.6 C 300.5 396.6 424.6 396.6 455.3 388.2 C 472.7 383.6 485.7 370 490.3 353.2 C 498.7 322.2 498.7 257.7 498.7 257.7 C 498.7 257.7 498.7 193.2 490.3 162.6"/></svg></a></span>
+</footer>
+</body>
+</html>

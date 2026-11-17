@@ -91,7 +91,7 @@
     if (!demo && sid) {
       bindVoice();
       fromStripe(sid, 8).then(function (o) {
-        try { if (window.PoofCart) PoofCart.clear(); } catch (e) {}
+        try { if (window.PoofCart) PoofCart.clear(); localStorage.removeItem('poof-case'); } catch (e) {}
         if (o.charged && o.charged.currency && o.charged.currency !== 'AUD') o.paidWith = o.paidWith || ('Charged ' + o.charged.currency + ' ' + o.charged.amount.toFixed(2));
         return fetch('/assets/data/sellable.json').then(function (r) { return r.ok ? r.json() : {}; }, function () { return {}; }).then(function (sell) {
           var NO_COVER = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200"><rect width="800" height="1200" fill="#2A2140"/></svg>');

@@ -528,6 +528,14 @@
   var APPEAR_LIGHT = { theme: 'stripe', variables: { colorPrimary: '#C2185B', colorBackground: '#FFFFFF', colorText: '#18122B',
     colorDanger: '#C62828', borderRadius: '12px', fontFamily: 'DM Sans, system-ui, sans-serif' } };
   var pay = { stripe: null, checkout: null, actions: null, key: '', els: [] };
+  // Detective Dick's case (open-a-case/found/ stores {ref, isbn}); sent only while that book is in the cart.
+  function caseRef() {
+    try {
+      var c = JSON.parse(localStorage.getItem('poof-case') || 'null');
+      if (c && c.ref && window.PoofCart && PoofCart.items().some(function (i) { return i.isbn === c.isbn; })) return c.ref;
+    } catch (e) {}
+    return undefined;
+  }
   function payKey(form) {
     return JSON.stringify([currentCart.map(function (l) { return [l.isbn, l.qty]; }), (shipOption() || {}).id, shipCents(),
       ['given', 'family', 'email', 'line1', 'line2', 'city', 'state', 'postcode', 'country'].map(function (n) { return form[n].value.trim(); }),
@@ -560,6 +568,7 @@
         items: currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; }),
         curators: !html.classList.contains('no-curators'), adult: !!(form.adult && form.adult.checked),
         looker: !!(form.looker && form.looker.checked),
+        case: caseRef(),
         email: form.email.value.trim(), given: form.given.value.trim(), family: form.family.value.trim(),
         address: { line1: form.line1.value, line2: form.line2.value, city: form.city.value, state: form.state.value, postcode: form.postcode.value, country: form.country.value },
         deliveryOption: o && o.id, deliveryCents: o && o.cents }) });
