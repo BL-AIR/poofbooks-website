@@ -61,7 +61,7 @@ html.no-curators .co-head h1 { font-size: clamp(44px, 6vw, 72px); }
 html.cart-empty .co-box { grid-area: form; max-width: 520px; position: static; }
 .empty-note { margin: 4px 0 0; font-size: 17px; line-height: 1.55; color: var(--muted); }
 .back-to-shelves { text-decoration: none; }
-html.cart-empty .summary .totals, html.cart-empty .summary .sum-note, html.cart-empty .summary [data-fx-note] { display: none !important; }
+html.cart-empty .summary .totals, html.cart-empty .summary .code-box, html.cart-empty .summary .sum-note, html.cart-empty .summary [data-fx-note] { display: none !important; }
 .summary h2 { margin: 0 0 6px; font-size: 20px; font-weight: 800; }
 .lines { list-style: none; margin: 0; padding: 0; }
 .line { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 14px; align-items: start; padding: 12px 0; border-top: 1px solid var(--rule); }
@@ -247,7 +247,7 @@ html.no-curators .thanks .co-panel { max-width: 760px; }
 .optin .hint { flex-basis: 100%; margin: 0 0 0 28px !important; }
 
 /* Discount code (17 Nov 2026): a quiet "Have a code?" link under the order lines; the Worker decides what a code takes off */
-.code-box { margin: 10px 0 2px; }
+.code-box { margin: 6px 0 4px; border-top: 1px solid var(--rule); padding-top: 6px; }
 .code-toggle { background: none; border: 0; padding: 4px 0; color: var(--lilac); font: inherit; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .code-toggle:hover, .code-toggle:focus-visible { color: var(--pink); }
 .code-form { display: flex; gap: 10px; margin-top: 8px; }

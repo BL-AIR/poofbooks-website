@@ -27,7 +27,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
 <link rel="stylesheet" href="/assets/css/section.css?v=202611151345">
-<link rel="stylesheet" href="/assets/css/checkout.css?v=202611180010">
+<link rel="stylesheet" href="/assets/css/checkout.css?v=202611180030">
 <script src="/assets/js/view-settings.js?v=202610290945" defer></script>
 <script src="/assets/js/cart.js?v=202611051800" defer></script>
 <script src="/assets/js/currency.js?v=202611051400" defer></script>
@@ -101,7 +101,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <section class="co-box summary" aria-labelledby="sum-h">
         <h2 id="sum-h">Your order</h2>
         <ul class="lines" data-lines></ul>
-        <!-- Discount code (17 Nov 2026): the payments Worker decides what a code takes off; this only sends it and shows the answer -->
+        <dl class="totals">
+          <div><dt>Books</dt><dd data-books-total></dd></div>
+          <div data-discount-row hidden><dt data-discount-label>Discount</dt><dd data-discount-total></dd></div>
+          <div><dt>Delivery</dt><dd data-delivery-total><span class="gap-inline">working it out…</span></dd></div>
+          <div class="grand"><dt>Total</dt><dd data-grand-total></dd></div>
+        </dl>
+        <!-- Discount code (17 Nov 2026; moved under the totals 18 Nov): the payments Worker decides what a code takes off; this only sends it and shows the answer -->
         <div class="code-box" data-code-box>
           <button type="button" class="code-toggle" data-code-toggle aria-expanded="false" aria-controls="code-form">Have a code?</button>
           <div class="code-form" id="code-form" data-code-form hidden>
@@ -110,12 +116,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </div>
           <p class="code-msg" data-code-msg role="status" aria-live="polite" hidden></p>
         </div>
-        <dl class="totals">
-          <div><dt>Books</dt><dd data-books-total></dd></div>
-          <div data-discount-row hidden><dt data-discount-label>Discount</dt><dd data-discount-total></dd></div>
-          <div><dt>Delivery</dt><dd data-delivery-total><span class="gap-inline">working it out…</span></dd></div>
-          <div class="grand"><dt>Total</dt><dd data-grand-total></dd></div>
-        </dl>
         <p class="sum-note">Prices in Australian dollars. At payment you can choose to pay in your own currency. No GST is charged.</p>
       </section>
 
