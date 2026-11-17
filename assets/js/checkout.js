@@ -18,6 +18,8 @@
   // Delivery options for the cart and address: priced by the same Worker (Australia Post for books we post ourselves,
   // A$0 for supplier drop-ships until their rates are in). The Worker prices delivery again when it charges.
   var SHIP_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/shipping';
+  // Discount codes: the same Worker checks a code against the cart, delivery postcode and email (margin, area and use limits).
+  var COUPON_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/coupon';
   // Address lookup: Google Places (New). A browser key, public by design: Google only accepts it from poofbooks.com
   // and only for Maps JavaScript + Places (New); daily caps and an A$1 budget alert are set in Google Cloud (project
   // poof-books, 2 Nov 2026). Loaded only when the customer starts typing an address.
@@ -101,6 +103,8 @@
   var currentCart = [];
   // Delivery: the options the Worker last gave for this cart and address, and the customer's choice.
   var ship = { options: [], choice: 'standard', key: '', needPostcode: false, error: '', pending: null };
+  // Discount code: what the Worker last said it takes off (cents), for the order box. The Worker works it out again when it charges.
+  var promo = { code: '', label: '', discountCents: 0, qualifying: 0, of: 0 };
   function shipCents() {
     var o = ship.options.filter(function (x) { return x.id === ship.choice; })[0] || ship.options[0];
     return o ? o.cents : null;
@@ -170,6 +174,7 @@
     var hasBack = renderCart(mine);
     say(hasBack ? 'backorder' : 'greeting', cartKey(mine));
     var form = $('[data-form]'); if (form) quoteDelivery(formAddr(form));
+    if (promo.code) checkCode(true);
   }
   function renderCart(cart) {
     var ul = $('[data-lines]'); ul.innerHTML = '';
@@ -299,6 +304,65 @@
     }
   }
 
+  /* ---------- Discount code ---------- */
+  // The Worker decides everything (margin, area, limits, one use per person); this box only sends the code and shows what
+  // comes back. The delivery postcode and email are sent too, because some codes are for one area or one use each.
+  function codeMsg(text, kind) {
+    var m = $('[data-code-msg]'); if (!m) return;
+    m.textContent = text || ''; m.hidden = !text; m.className = 'code-msg' + (kind ? ' ' + kind : '');
+  }
+  function clearPromo() { promo.discountCents = 0; promo.label = ''; promo.qualifying = 0; promo.of = 0; }
+  var promoSeq = 0;
+  // quiet = a re-check after the cart, postcode or email changed (no message when there is no code).
+  function checkCode(quiet) {
+    var form = $('[data-form]');
+    if (!usingRealCart || !currentCart.length) return Promise.resolve();
+    var before = promo.discountCents;
+    if (!promo.code) { clearPromo(); showTotals(); if (!quiet) codeMsg('', ''); return Promise.resolve(); }
+    var seq = ++promoSeq;
+    var body = { coupon: promo.code, items: currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; }),
+                 address: { postcode: form ? form.postcode.value.trim() : '', country: form ? form.country.value : 'AU' },
+                 email: form ? form.email.value.trim() : '' };
+    function changed() { if (before !== promo.discountCents && form && pay && pay.checkout) resetPayment(form, 'Your order changed, so press Continue to payment again.'); }
+    return fetch(COUPON_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (seq !== promoSeq) return;
+        if (j && j.ok) {
+          promo.discountCents = j.discountCents; promo.label = j.label; promo.qualifying = j.qualifying; promo.of = j.of;
+          codeMsg(j.label + ': A$' + aud(j.discountCents / 100) + ' off ' + (j.qualifying === j.of ? 'your books.' : j.qualifying + ' of your ' + j.of + ' books. The others aren\'t part of this offer.'), 'ok');
+        } else {
+          clearPromo();
+          codeMsg((j && j.message) || 'That code didn\'t work.', j && j.reason === 'need-postcode' ? '' : 'err');
+        }
+        showTotals(); changed();
+      }, function () {
+        if (seq !== promoSeq) return;
+        clearPromo(); codeMsg('We couldn\'t check that code just now. Please try again.', 'err'); showTotals(); changed();
+      });
+  }
+  function bindCode(form) {
+    var box = $('[data-code-box]'); if (!box) return;
+    var toggle = $('[data-code-toggle]'), wrap = $('[data-code-form]'), input = $('[data-code-input]'), t = null;
+    function open() { wrap.hidden = false; toggle.setAttribute('aria-expanded', 'true'); }
+    toggle.addEventListener('click', function () {
+      if (wrap.hidden) { open(); input.focus(); } else { wrap.hidden = true; toggle.setAttribute('aria-expanded', 'false'); }
+    });
+    function apply() { promo.code = input.value.trim(); checkCode(false); }
+    $('[data-code-apply]').addEventListener('click', apply);
+    input.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); apply(); } });
+    // A code can depend on the delivery postcode and the email, so look again when they change.
+    function again() { if (!promo.code) return; clearTimeout(t); t = setTimeout(function () { checkCode(true); }, 500); }
+    form.postcode.addEventListener('input', again);
+    form.country.addEventListener('change', again);
+    form.email.addEventListener('change', again);
+    // A club can share a link: /checkout/?code=WORDS opens the box with the code in it.
+    try {
+      var c = new URLSearchParams(location.search).get('code');
+      if (c && /^[A-Za-z0-9 -]{2,30}$/.test(c)) { input.value = c; open(); apply(); }
+    } catch (e) {}
+  }
+
   /* ---------- Delivery ---------- */
   // Books + delivery, on the summary, the Pay button and the wallet sheets.
   function showTotals() {
@@ -307,12 +371,17 @@
       if (c != null) d.replaceChildren(money(c / 100));
       else d.innerHTML = '<span class="gap-inline">' + (ship.needPostcode ? 'enter your postcode' : ship.error ? 'to be confirmed' : 'working it out…') + '</span>';
     }
-    var grand = cartTotal + (c || 0) / 100;
+    var disc = promo.discountCents / 100, dr = $('[data-discount-row]');
+    if (dr) {
+      dr.hidden = !promo.discountCents;
+      if (promo.discountCents) { var dm = money(disc); dm.textContent = '\u2212' + dm.textContent; $('[data-discount-label]').textContent = promo.label || 'Discount'; $('[data-discount-total]').replaceChildren(dm); }
+    }
+    var grand = cartTotal - disc + (c || 0) / 100;
     $('[data-grand-total]').replaceChildren(money(grand));
     var pt = $('[data-pay-total]'); if (pt) pt.textContent = aud(grand);
     var t = { amount: aud(grand), label: 'Poof Books' };
     walletRequests.forEach(function (r) {
-      try { r.update({ total: t, lineItems: [{ label: 'Books', amount: aud(cartTotal) }, { label: 'Delivery', amount: aud((c || 0) / 100) }] }); } catch (e) { /* older SDK */ }
+      try { r.update({ total: t, lineItems: [{ label: 'Books', amount: aud(cartTotal - disc) }, { label: 'Delivery', amount: aud((c || 0) / 100) }] }); } catch (e) { /* older SDK */ }
     });
   }
   function renderShip() {
@@ -568,7 +637,7 @@
   function payKey(form) {
     return JSON.stringify([currentCart.map(function (l) { return [l.isbn, l.qty]; }), (shipOption() || {}).id, shipCents(),
       ['given', 'family', 'email', 'line1', 'line2', 'city', 'state', 'postcode', 'country'].map(function (n) { return form[n].value.trim(); }),
-      !!(form.adult && form.adult.checked), !!(form.looker && form.looker.checked), html.classList.contains('no-curators')]);
+      !!(form.adult && form.adult.checked), !!(form.looker && form.looker.checked), html.classList.contains('no-curators'), promo.discountCents]);
   }
   function resetPayment(form, why) {
     if (!pay.checkout) return;
@@ -597,13 +666,14 @@
         items: currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; }),
         curators: !html.classList.contains('no-curators'), adult: !!(form.adult && form.adult.checked),
         looker: !!(form.looker && form.looker.checked),
-        case: caseRef(), source: saleSource(),
+        case: caseRef(), source: saleSource(), coupon: promo.discountCents ? promo.code : undefined,
         email: form.email.value.trim(), given: form.given.value.trim(), family: form.family.value.trim(),
         address: { line1: form.line1.value, line2: form.line2.value, city: form.city.value, state: form.state.value, postcode: form.postcode.value, country: form.country.value },
         deliveryOption: o && o.id, deliveryCents: o && o.cents }) });
       data = await res.json();
     } catch (e) { showProblem('We couldn\'t reach our payment service just now. You have not been charged.'); return; }
     if (data && data.code === 'DELIVERY_CHANGED' && data.delivery) { ship.options = data.delivery.options || []; renderShip(); }
+    if (data && data.code === 'COUPON_INVALID') { clearPromo(); codeMsg(String(data.error || '').replace(' You have not been charged.', ''), 'err'); showTotals(); }
     if (!res.ok || !data.ok) { showProblem(data && data.error ? data.error : 'The payment box couldn\'t open. You have not been charged.'); return; }
     try {
       pay.stripe = pay.stripe || window.Stripe(STRIPE_PK);
@@ -731,6 +801,7 @@
     say(hasBack ? 'backorder' : 'greeting', usingRealCart ? cartKey(mine) : null);
     if (demo === 'problem') showProblem('');
     if (usingRealCart) bindDelivery(form);
+    if (usingRealCart) bindCode(form);
     else { ship.options = [{ id: 'standard', label: 'Standard post', cents: 0 }]; renderShip(); }   // sample orders: no quote
     bindAddressLookup(form);
     startStripe(form);

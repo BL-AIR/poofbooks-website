@@ -245,3 +245,18 @@ html.no-curators .thanks .co-panel { max-width: 760px; }
 .optin { display: flex !important; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px !important; font-weight: 600; }
 .optin input { accent-color: var(--pink); width: 18px; height: 18px; margin: 0; flex: 0 0 auto; }
 .optin .hint { flex-basis: 100%; margin: 0 0 0 28px !important; }
+
+/* Discount code (17 Nov 2026): a quiet "Have a code?" link under the order lines; the Worker decides what a code takes off */
+.code-box { margin: 10px 0 2px; }
+.code-toggle { background: none; border: 0; padding: 4px 0; color: var(--lilac); font: inherit; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.code-toggle:hover, .code-toggle:focus-visible { color: var(--pink); }
+.code-form { display: flex; gap: 10px; margin-top: 8px; }
+.code-form input { flex: 1 1 auto; min-width: 0; min-height: 44px; padding: 9px 14px; background: var(--night); color: var(--cream); border: 1.5px solid var(--line); border-radius: 12px; font: inherit; font-size: 16px; text-transform: uppercase; letter-spacing: .04em; }
+.code-form input::placeholder { text-transform: none; letter-spacing: 0; }
+.code-form input:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255,95,162,.25); }
+.code-apply { flex: 0 0 auto; min-height: 44px; padding: 0 18px; border-radius: 12px; border: 1.5px solid var(--pink); background: transparent; color: var(--pink); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+.code-apply:hover, .code-apply:focus-visible { background: var(--pink); color: var(--night); }
+.code-msg { margin: 8px 0 0; font-size: 13.5px; line-height: 1.45; color: var(--muted); }
+.code-msg.ok { color: var(--lilac); }
+.code-msg.err { color: #FF6B6B; }
+[data-discount-row] dd { color: var(--lilac); }
