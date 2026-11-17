@@ -144,6 +144,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </main>
 <script>
 (function () {
+  var HANDBUILT = ['9781922263988', '9781922263971', '9781922263933'];   // checkout.js EDITIONS (The Art of Surrender): sold without sellable.json
   var API = 'https://poofbooks-pay.big--daddy.workers.dev';
   var $ = function (id) { return document.getElementById(id); };
   var q = new URLSearchParams(location.search), ref = (q.get('c') || '').toUpperCase(), autobuy = q.get('buy') === '1';
@@ -174,7 +175,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var buy = $('c-buy');
     if (o.ordered) { notice('You\u2019ve already ordered this one. Thank you! Lil Otter has it in hand.'); }
     if (o.expired) { buy.hidden = true; notice('This quote ran out on ' + new Date(o.expiresAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'long' }) + '. Reply to Detective Dick\u2019s email and he\u2019ll check the price again.'); return; }
-    if (!s) { buy.hidden = true; notice('Big Daddy is still putting this book on the shelf. Try again shortly, or reply to Detective Dick\u2019s email.'); return; }
+    if (!s && HANDBUILT.indexOf(o.isbn) < 0) { buy.hidden = true; notice('Big Daddy is still putting this book on the shelf. Try again shortly, or reply to Detective Dick\u2019s email.'); return; }
     function go() {
       try { localStorage.setItem('poof-case', JSON.stringify({ ref: ref, isbn: o.isbn })); } catch (e) {}
       if (window.PoofCart && !PoofCart.items().some(function (i) { return i.isbn === o.isbn; })) PoofCart.add(o.isbn, 1);

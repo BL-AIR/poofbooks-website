@@ -165,6 +165,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </main>
 <script>
 (function () {
+  var HANDBUILT = ['9781922263988', '9781922263971', '9781922263933'];   // checkout.js EDITIONS (The Art of Surrender)
   var API = 'https://poofbooks-pay.big--daddy.workers.dev/v1/case/admin';
   var $ = function (id) { return document.getElementById(id); };
   try { $('k').value = localStorage.getItem('poof-case-key') || ''; } catch (e) {}
@@ -195,18 +196,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   $('look').addEventListener('click', function () {
     var isbn = $('isbn').value.replace(/[^0-9]/g, ''); $('isbn').value = isbn;
     msg('bmsg', 'Looking up\u2026', true);
-    Promise.all([fetch('/assets/data/sellable.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }), call({ action: 'book', isbn: isbn })]).then(function (r) {
-      var s = r[0][isbn], b = r[1];
+    Promise.all([fetch('/assets/data/sellable.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }), call({ action: 'book', isbn: isbn }),
+                 fetch('/assets/data/search.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).catch(function () { return { works: [] }; })]).then(function (r) {
+      var s = r[0][isbn], b = r[1], w = (r[2].works || []).filter(function (x) { return (x.i || []).indexOf(isbn) >= 0; })[0];
       if (b.error) return msg('bmsg', b.error);
+      // Hand-built editions (checkout.js EDITIONS: The Art of Surrender) aren't in sellable.json but checkout sells them.
+      var hand = HANDBUILT.indexOf(isbn) >= 0;
+      if (!s && w) s = { a: (w.a || []).join(', '), c: w.c, u: (w.u || '').replace(/^\/books\/|\/$/g, ''), s: 'available' };
       $('title').value = $('title').value || b.title;
-      if (s) { $('author').value = $('author').value || s.a || ''; $('avail').value = s.s === 'back' ? 'back' : 'available';
+      if (s) { $('author').value = $('author').value || s.a || ''; if (!hand) $('avail').value = s.s === 'back' ? 'back' : 'available';
         if (!$('cover').value && s.c) { $('cover').value = s.c.replace('front-240.webp', 'front-480.webp'); $('credit').value = ''; showCover(); }
         if (s.u && !$('blurb').value) fetch('/books/' + s.u + '/').then(function (r) { return r.text(); }).then(function (h) {
           var d = new DOMParser().parseFromString(h, 'text/html'), p = d.querySelector('#about .prose');
           if (p) $('blurb').value = Array.from(p.querySelectorAll('p')).map(function (x) { return x.textContent.trim(); }).filter(Boolean).join('\n\n');
         });
       }
-      msg('bmsg', b.title + ' \u00b7 ' + b.format + ' \u00b7 A$' + (b.priceCents / 100).toFixed(2) + (s ? ' \u00b7 live on the site' : ' \u00b7 NOT in the site build yet: rebuild and push before sending'), !!s);
+      msg('bmsg', b.title + ' \u00b7 ' + b.format + ' \u00b7 A$' + (b.priceCents / 100).toFixed(2) + (r[0][isbn] || hand ? ' \u00b7 can go in the cart' : ' \u00b7 NOT in the site build yet: rebuild and push before sending'), !!(r[0][isbn] || hand));
     }).catch(function () { msg('bmsg', 'Couldn\u2019t look that up.'); });
   });
   function showCover() { var c = $('cover').value.trim(); $('cprev').hidden = !c; if (c) $('cprev').src = c; }
