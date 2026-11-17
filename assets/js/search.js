@@ -162,8 +162,16 @@ function qsStandin(w) { var s = POOF_SIC[w.h] || ['#4A3D6E', '']; return '<span 
         if (r.isbn === 'partial') msg.textContent = !items.length ? 'No ISBN on our shelves starts with ' + r.digits + '.'
           : r.more ? 'First ' + items.length + ' matches. Keep typing the ISBN to narrow them.'
           : items.length === 1 ? '1 book. Press Enter to open it.' : items.length + ' books.';
-        else if (!items.length) msg.textContent = r.isbn ? 'No book with ISBN ' + r.isbn + ' on our shelves yet.'
-          : 'Nothing on the shelves matches that. Check the spelling, or try just the author’s surname.';
+        else if (!items.length) {
+          msg.textContent = r.isbn ? 'No book with ISBN ' + r.isbn + ' on our shelves yet. '
+            : 'Nothing on the shelves matches that. Check the spelling, or try just the author’s surname. ';
+          // Not on our shelves doesn't mean we can't get it: hand the search to Detective Dick.
+          var cs = document.createElement('a');
+          cs.className = 'qs-case'; cs.href = '/open-a-case/?q=' + encodeURIComponent(raw.trim());
+          cs.textContent = 'Open a Case';
+          cs.addEventListener('click', function () { if (window.dataLayer) dataLayer.push({ event: 'open_a_case_click', search_term: raw.trim(), search_kind: r.isbn ? 'isbn' : 'text' }); });
+          msg.appendChild(cs);
+        }
         else msg.textContent = items.length === 1 ? '1 book. Press Enter to open it.' : items.length + ' books.';
         setActive(items.length ? 0 : -1);
         open(true);
@@ -185,6 +193,12 @@ function qsStandin(w) { var s = POOF_SIC[w.h] || ['#4A3D6E', '']; return '<span 
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    // "Open a Case" link style lives here, so section.css (on every page) needn't change.
+    var st = document.createElement('style');
+    st.textContent = '.qs-msg .qs-case{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:7px 14px;border-radius:999px;background:var(--pink);color:var(--on-pink,#18122B);font-weight:700;font-size:13px;text-decoration:none}' +
+      '.qs-msg .qs-case:hover{background:var(--lilac)}.qs-msg .qs-case:focus-visible{outline:3px solid var(--lilac);outline-offset:2px}' +
+      '.qs-msg .qs-case::before{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2710%27 cy=%2710%27 r=%276.5%27 fill=%27none%27 stroke=%27black%27 stroke-width=%272.5%27/%3E%3Cpath d=%27M15 15l6 6%27 stroke=%27black%27 stroke-width=%272.8%27 stroke-linecap=%27round%27/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2710%27 cy=%2710%27 r=%276.5%27 fill=%27none%27 stroke=%27black%27 stroke-width=%272.5%27/%3E%3Cpath d=%27M15 15l6 6%27 stroke=%27black%27 stroke-width=%272.8%27 stroke-linecap=%27round%27/%3E%3C/svg%3E") center/contain no-repeat}';
+    document.head.appendChild(st);
     document.querySelectorAll('[data-quick-search]').forEach(build);
   });
   // For testing in the console: PoofSearch.search('surender')
