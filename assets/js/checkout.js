@@ -531,7 +531,7 @@
   function payKey(form) {
     return JSON.stringify([currentCart.map(function (l) { return [l.isbn, l.qty]; }), (shipOption() || {}).id, shipCents(),
       ['given', 'family', 'email', 'line1', 'line2', 'city', 'state', 'postcode', 'country'].map(function (n) { return form[n].value.trim(); }),
-      !!(form.adult && form.adult.checked), html.classList.contains('no-curators')]);
+      !!(form.adult && form.adult.checked), !!(form.looker && form.looker.checked), html.classList.contains('no-curators')]);
   }
   function resetPayment(form, why) {
     if (!pay.checkout) return;
@@ -559,6 +559,7 @@
       res = await fetch(SESSION_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
         items: currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; }),
         curators: !html.classList.contains('no-curators'), adult: !!(form.adult && form.adult.checked),
+        looker: !!(form.looker && form.looker.checked),
         email: form.email.value.trim(), given: form.given.value.trim(), family: form.family.value.trim(),
         address: { line1: form.line1.value, line2: form.line2.value, city: form.city.value, state: form.state.value, postcode: form.postcode.value, country: form.country.value },
         deliveryOption: o && o.id, deliveryCents: o && o.cents }) });

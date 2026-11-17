@@ -240,3 +240,8 @@ html.no-curators .thanks .co-panel { max-width: 760px; }
 
 /* thank-you page: Australian-dollar total beside a foreign-currency charge */
 .total-aud { font-size: .7em; font-weight: 400; opacity: .75; }
+
+/* Looker List box at checkout (17 Nov 2026): unticked by default */
+.optin { display: flex !important; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px !important; font-weight: 600; }
+.optin input { accent-color: var(--pink); width: 18px; height: 18px; margin: 0; flex: 0 0 auto; }
+.optin .hint { flex-basis: 100%; margin: 0 0 0 28px !important; }
