@@ -529,6 +529,26 @@
     colorDanger: '#C62828', borderRadius: '12px', fontFamily: 'DM Sans, system-ui, sans-serif' } };
   var pay = { stripe: null, checkout: null, actions: null, key: '', els: [] };
   // Detective Dick's case (open-a-case/found/ stores {ref, isbn}); sent only while that book is in the cart.
+  // Where this sale came from (17 Nov 2026). The iPhone/iPad app opens /checkout/?add=<ISBN>&utm_source=app&utm_medium=ios&utm_campaign=buy.
+  // We remember it on this device for 7 days and send it with the order, so our own records (not Google Analytics) say 'ios'.
+  // Anything else is 'website'. Android will be utm_medium=android. A source only counts while the cart has something in it.
+  var SOURCES = { ios: 1, android: 1 };
+  function noteArrival() {
+    try {
+      var q = new URLSearchParams(location.search), add = (q.get('add') || '').replace(/[^0-9]/g, '');
+      var src = (q.get('utm_source') || '').toLowerCase(), med = (q.get('utm_medium') || '').toLowerCase();
+      if (src === 'app' && SOURCES[med]) localStorage.setItem('poof-src', JSON.stringify({ s: med, t: Date.now() }));
+      if (/^97[89]\d{10}$/.test(add) && window.PoofCart && line(add, 1) && !PoofCart.items().some(function (i) { return i.isbn === add; })) PoofCart.add(add, 1);
+      if (q.has('add')) { q.delete('add'); history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q.toString() : '') + location.hash); }   // a reload must not add it again; utm_* stay for analytics
+    } catch (e) {}
+  }
+  function saleSource() {
+    try {
+      var c = JSON.parse(localStorage.getItem('poof-src') || 'null');
+      if (c && SOURCES[c.s] && Date.now() - c.t < 7 * 864e5 && window.PoofCart && PoofCart.count() > 0) return c.s;
+    } catch (e) {}
+    return 'website';
+  }
   function caseRef() {
     try {
       var c = JSON.parse(localStorage.getItem('poof-case') || 'null');
@@ -568,7 +588,7 @@
         items: currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; }),
         curators: !html.classList.contains('no-curators'), adult: !!(form.adult && form.adult.checked),
         looker: !!(form.looker && form.looker.checked),
-        case: caseRef(),
+        case: caseRef(), source: saleSource(),
         email: form.email.value.trim(), given: form.given.value.trim(), family: form.family.value.trim(),
         address: { line1: form.line1.value, line2: form.line2.value, city: form.city.value, state: form.state.value, postcode: form.postcode.value, country: form.country.value },
         deliveryOption: o && o.id, deliveryCents: o && o.cents }) });
@@ -670,6 +690,7 @@
       .then(start);
   });
   function start() {
+    noteArrival();
     bindVoice();
     var form = $('[data-form]');
     var demo = new URLSearchParams(location.search).get('demo') || '';
