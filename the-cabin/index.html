@@ -27,8 +27,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
 <link rel="stylesheet" href="/assets/css/section.css?v=202611151345">
-<link rel="stylesheet" href="/assets/css/bestsellers.css?v=202611061245">
-<script src="/assets/js/bestsellers.js?v=202611061245" defer></script>
+<link rel="stylesheet" href="/assets/css/bestsellers.css?v=202611201100">
+<script src="/assets/js/top-tens.js?v=202611201100" defer></script>
 <script src="/assets/js/view-settings.js?v=202610290945" defer></script>
 <script src="/assets/js/search.js?v=202611171120" defer></script>
 <script src="/assets/js/cart.js?v=202611051800" defer></script>
@@ -326,16 +326,24 @@ html[data-theme="light"] .member-badge .mb-light { display: block; }
       <p class="signup-fine">A confirmation email comes first; you're not on the list until you click the link in it (check your spam folder if it doesn't arrive). Unsubscribe from the foot of any email. <a href="/privacy/#mailing-list">Privacy</a>.</p>
       <p class="signup-fine feedback"><span class="c-on">Give feedback to Big Daddy by sending email to:</span><span class="c-off">Feedback:</span> <a href="mailto:BigDaddy@poofbooks.com">BigDaddy@poofbooks.com</a></p>
     </div>
-    <aside class="sellers-band posted-band" id="sellers" aria-labelledby="sellers-h">
+    <aside class="sellers-band posted-band topten-band" id="sellers" aria-labelledby="sellers-h" aria-roledescription="carousel" tabindex="0">
       <h2 id="sellers-h">Best Sellers</h2>
-      <p class="sellers-tag">Look which poof books made last month&#x2019;s Top Ten Sellers List.</p>
-      <ol class="sellers-list"></ol>
-      <p class="sellers-empty" hidden>The first Top Ten goes up in February 2027, once the shop has had a full month of sales.</p>
-      <nav class="sellers-nav" aria-label="Best Sellers by month">
+      <nav class="sellers-nav" aria-label="Month">
         <button type="button" data-step="-1" aria-label="Previous month" disabled>&#8249;</button>
-        <span class="sellers-at" aria-live="polite"></span>
+        <span class="sellers-at"></span>
         <button type="button" data-step="1" aria-label="Next month" disabled>&#8250;</button>
       </nav>
+      <div class="topten-body">
+        <p class="sellers-tag">Look which poof books made last month&#x2019;s Top Ten Sellers List.</p>
+        <ol class="sellers-list"></ol>
+        <p class="sellers-empty" hidden>The first Top Ten goes up in February 2027, once the shop has had a full month of sales.</p>
+      </div>
+      <nav class="topten-nav" aria-label="Top Ten lists" hidden>
+        <button type="button" data-list="-1" aria-label="Previous list">&#8249;</button>
+        <span class="topten-at"></span>
+        <button type="button" data-list="1" aria-label="Next list">&#8250;</button>
+      </nav>
+      <p class="topten-live" aria-live="polite"></p>
     </aside>
     <aside class="clubs-band posted-band" aria-labelledby="clubs-h">
       <h2 id="clubs-h">Book Clubs Bulletin Boards</h2>

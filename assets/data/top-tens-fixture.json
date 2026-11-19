@@ -1,0 +1,26 @@
+{"_note":"TEST DATA for ?demo=top-tens only. Most Viewed: GA active users 22 Oct - 18 Nov 2026 (not a real month). Big Daddy's picks: PLACEHOLDERS until Blair gives his ten.",
+ "lists":[
+  {"key":"best-sellers","name":"Best Sellers","months":[]},
+  {"key":"most-viewed","name":"Most Viewed","months":[{"m":"2026-10","label":"October 2026","books":[
+   {"t":"The Art of Surrender","u":"/books/the-art-of-surrender/"},
+   {"t":"Insomniac City","u":"/books/insomniac-city-bill-hayes/"},
+   {"t":"The Longest Death","u":"/books/the-longest-death-kevin-jagernauth/"},
+   {"t":"Kitchen Venom","u":"/books/kitchen-venom-philip-hensher/"},
+   {"t":"The Quyre","u":"/books/the-quyre-andrew-elfenbein/"},
+   {"t":"Yeah the Boys","u":"/books/yeah-the-boys-holden-sheppard/"},
+   {"t":"Pure Men","u":"/books/pure-men-lara-vergnaud/"},
+   {"t":"Selamlik","u":"/books/selamlik-khaled-alesmael/"},
+   {"t":"The House in the Cerulean Sea","u":"/books/the-house-in-the-cerulean-sea-tj-klune/"},
+   {"t":"Box Hill","u":"/books/box-hill-adam-mars-jones/"}]}]},
+  {"key":"picks-bigdaddy","name":"Big Daddy’s Top Ten Picks","months":[{"m":null,"label":null,"books":[
+   {"t":"[Placeholder] Giovanni’s Room","u":"/books/giovannis-room-james-baldwin/"},
+   {"t":"[Placeholder] Holding the Man","u":"/books/holding-the-man-timothy-conigrave/"},
+   {"t":"[Placeholder] The Velvet Rage","u":"/books/the-velvet-rage-alan-downs/"},
+   {"t":"[Placeholder] Brokeback Mountain","u":"/books/brokeback-mountain-annie-proulx/"},
+   {"t":"[Placeholder] The Disappearers","u":"/books/the-disappearers-marlon-james/"},
+   {"t":"[Placeholder] Heated Rivalry","u":"/books/heated-rivalry-rachel-reid/"},
+   {"t":"[Placeholder] Nocturnes for the King of Naples","u":"/books/nocturnes-for-the-king-of-naples-edmund-white/"},
+   {"t":"[Placeholder] Boy, with Accidental Dinosaur","u":"/books/boy-with-accidental-dinosaur-ian-mcdonald/"},
+   {"t":"[Placeholder] The Talented Mr Ripley","u":"/books/the-talented-mr-ripley-patricia-highsmith/"},
+   {"t":"[Placeholder] Call Me by Your Name","u":"/books/call-me-by-your-name-andre-aciman/"}]}]}
+ ]}
