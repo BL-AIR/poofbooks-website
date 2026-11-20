@@ -12,7 +12,7 @@
   var API = 'https://poofbooks-api.big--daddy.workers.dev/v1/top-tens';
   // Box headings: one line each, no month (Blair, 11:54-11:55). Overrides the API's name so the website doesn't wait on the Worker.
   var NAMES = { 'best-sellers': 'Best Sellers', 'most-viewed': 'Most Viewed', 'picks-bigdaddy': 'Big Daddy\u2019s Top 10' };
-  var UNDATED = { 'best-sellers': 'From February 2027', 'picks-bigdaddy': 'Current picks' };
+  var UNDATED = { 'best-sellers': 'From Feb 2027', 'picks-bigdaddy': 'Current picks' };
   var TAGS = {
     'best-sellers': 'Look which poof books made last month’s Top Ten Sellers List.',
     'most-viewed': 'The ten book pages poof readers looked at most last month.',
