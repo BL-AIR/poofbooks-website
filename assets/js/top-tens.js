@@ -1,7 +1,7 @@
 /* The Cabin's Top Tens (Blair, 20 Nov 2026; replaces bestsellers.js on the Cabin).
    One box, several lists. Both arrow rows sit at the bottom so the three Cabin boxes' headings line up (Blair, 11:50):
    first the list arrows ("List 1 of 3"; cycle Best Sellers -> Most Viewed -> Big Daddy's Top Ten Picks, wrapping round),
-   then the month arrows (that list's complete months; hidden for picks, which have no month).
+   then the month arrows (that list's complete months; on every list, greyed with a plain label where there are no months).
    Data: the catalogue API /v1/top-tens ({ lists: [ { key, name, months: [ { m, label, books: [ { t, u } ] } ] } ] }), titles and
    links only. Best Sellers always comes first and keeps its "first Top Ten" message; any other list with no books is left out.
    A new list needs only an entry in TAGS (and the API's TOP_TENS), no layout work.
@@ -12,6 +12,7 @@
   var API = 'https://poofbooks-api.big--daddy.workers.dev/v1/top-tens';
   // Box headings: one line each, no month (Blair, 11:54-11:55). Overrides the API's name so the website doesn't wait on the Worker.
   var NAMES = { 'best-sellers': 'Best Sellers', 'most-viewed': 'Most Viewed', 'picks-bigdaddy': 'Big Daddy\u2019s Top 10' };
+  var UNDATED = { 'best-sellers': 'From February 2027', 'picks-bigdaddy': 'Current picks' };
   var TAGS = {
     'best-sellers': 'Look which poof books made last month’s Top Ten Sellers List.',
     'most-viewed': 'The ten book pages poof readers looked at most last month.',
@@ -40,9 +41,11 @@
     }).join('');
     empty.textContent = !mo ? firstMsg : 'No sales in ' + mo.label + '.';
     empty.hidden = books.length > 0;
+    // The month row shows on every list (Blair, 11:58), so the boxes keep the same shape. A list with no months yet, or a
+    // standing list with no month (Big Daddy's picks), shows a plain label with both arrows greyed out.
     var dated = L.months.length && L.months[0].m;
-    mNav.hidden = !dated;
-    at.textContent = dated && mo ? mo.label : '';
+    mNav.hidden = false;
+    at.textContent = dated && mo ? mo.label : (UNDATED[L.key] || '');
     mPrev.disabled = !dated || mi[li] <= 0;
     mNext.disabled = !dated || mi[li] >= L.months.length - 1;
     lNav.hidden = lists.length < 2;
