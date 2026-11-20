@@ -27,8 +27,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,800&display=swap">
 <link rel="stylesheet" href="/assets/css/section.css?v=202611151345">
-<link rel="stylesheet" href="/assets/css/bestsellers.css?v=202611201100">
-<script src="/assets/js/top-tens.js?v=202611201100" defer></script>
+<link rel="stylesheet" href="/assets/css/bestsellers.css?v=202611201200">
+<script src="/assets/js/top-tens.js?v=202611201200" defer></script>
 <script src="/assets/js/view-settings.js?v=202610290945" defer></script>
 <script src="/assets/js/search.js?v=202611171120" defer></script>
 <script src="/assets/js/cart.js?v=202611051800" defer></script>
@@ -328,11 +328,6 @@ html[data-theme="light"] .member-badge .mb-light { display: block; }
     </div>
     <aside class="sellers-band posted-band topten-band" id="sellers" aria-labelledby="sellers-h" aria-roledescription="carousel" tabindex="0">
       <h2 id="sellers-h">Best Sellers</h2>
-      <nav class="sellers-nav" aria-label="Month">
-        <button type="button" data-step="-1" aria-label="Previous month" disabled>&#8249;</button>
-        <span class="sellers-at"></span>
-        <button type="button" data-step="1" aria-label="Next month" disabled>&#8250;</button>
-      </nav>
       <div class="topten-body">
         <p class="sellers-tag">Look which poof books made last month&#x2019;s Top Ten Sellers List.</p>
         <ol class="sellers-list"></ol>
@@ -343,10 +338,15 @@ html[data-theme="light"] .member-badge .mb-light { display: block; }
         <span class="topten-at"></span>
         <button type="button" data-list="1" aria-label="Next list">&#8250;</button>
       </nav>
+      <nav class="sellers-nav" aria-label="Month">
+        <button type="button" data-step="-1" aria-label="Previous month" disabled>&#8249;</button>
+        <span class="sellers-at"></span>
+        <button type="button" data-step="1" aria-label="Next month" disabled>&#8250;</button>
+      </nav>
       <p class="topten-live" aria-live="polite"></p>
     </aside>
     <aside class="clubs-band posted-band" aria-labelledby="clubs-h">
-      <h2 id="clubs-h">Book Clubs Bulletin Boards</h2>
+      <h2 id="clubs-h">Book Clubs</h2>
       <p>Run a book club for gay men? We&#x2019;re pinning up clubs from everywhere: when you meet, what you&#x2019;re reading and how to join. Tell us your picks and we&#x2019;ll make sure they&#x2019;re on our shelves.</p>
       <p class="clubs-ask">Send Big Daddy your club&#x2019;s name, country and city, how often you meet, a contact email and your website, if you have one.</p>
       <a class="btn clubs-btn" href="mailto:BigDaddy@poofbooks.com?subject=BOOK%20CLUBS%3A%20&body=Hi%20Big%20Daddy%2C%0A%0APlease%20pin%20our%20book%20club%20on%20the%20Poof%20Books%20bulletin%20board.%0A%0AClub%20name%3A%20%0ACountry%20and%20city%3A%20%0AMeeting%20schedule%20%28e.g.%20monthly%2C%20weekly%29%3A%20%0AContact%20email%3A%20%0AWebsite%20%28if%20any%29%3A%20%0A%0AWhat%20we%27re%20reading%20next%20%28optional%29%3A%20%0A">Email Big Daddy</a>

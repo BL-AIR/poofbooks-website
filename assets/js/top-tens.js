@@ -1,6 +1,7 @@
 /* The Cabin's Top Tens (Blair, 20 Nov 2026; replaces bestsellers.js on the Cabin).
-   One box, several lists: the list arrows at the bottom cycle Best Sellers -> Most Viewed -> Big Daddy's Top Ten Picks and wrap
-   round; the month arrows at the top step through that list's complete months (hidden for picks, which have no month).
+   One box, several lists. Both arrow rows sit at the bottom so the three Cabin boxes' headings line up (Blair, 11:50):
+   first the list arrows ("List 1 of 3"; cycle Best Sellers -> Most Viewed -> Big Daddy's Top Ten Picks, wrapping round),
+   then the month arrows (that list's complete months; hidden for picks, which have no month).
    Data: the catalogue API /v1/top-tens ({ lists: [ { key, name, months: [ { m, label, books: [ { t, u } ] } ] } ] }), titles and
    links only. Best Sellers always comes first and keeps its "first Top Ten" message; any other list with no books is left out.
    A new list needs only an entry in TAGS (and the API's TOP_TENS), no layout work.
@@ -9,6 +10,8 @@
   var box = document.getElementById('sellers');
   if (!box) return;
   var API = 'https://poofbooks-api.big--daddy.workers.dev/v1/top-tens';
+  // Box headings: one line each, no month (Blair, 11:54-11:55). Overrides the API's name so the website doesn't wait on the Worker.
+  var NAMES = { 'best-sellers': 'Best Sellers', 'most-viewed': 'Most Viewed', 'picks-bigdaddy': 'Big Daddy\u2019s Top 10' };
   var TAGS = {
     'best-sellers': 'Look which poof books made last month’s Top Ten Sellers List.',
     'most-viewed': 'The ten book pages poof readers looked at most last month.',
@@ -24,12 +27,11 @@
       live = box.querySelector('.topten-live'), body = box.querySelector('.topten-body');
   var lists = [], li = 0, mi = [];
   function esc(s) { return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function monthOnly(label) { return label ? String(label).replace(/\s+\d{4}$/, '') : ''; }
   function show(announce, dir) {
     var L = lists[li];
     if (!L) return;
     var mo = L.months[mi[li]];
-    var title = L.name + (mo && mo.label ? ': ' + monthOnly(mo.label) : '');
+    var title = NAMES[L.key] || L.name;   // one line, no month: the month shows in the arrows underneath (Blair, 11:54)
     h.textContent = title;
     tag.textContent = TAGS[L.key] || '';
     var books = (mo && mo.books) || [];
@@ -44,8 +46,8 @@
     mPrev.disabled = !dated || mi[li] <= 0;
     mNext.disabled = !dated || mi[li] >= L.months.length - 1;
     lNav.hidden = lists.length < 2;
-    lAt.textContent = (li + 1) + ' of ' + lists.length;
-    if (announce) live.textContent = title + ', list ' + (li + 1) + ' of ' + lists.length + '.';
+    lAt.textContent = 'List ' + (li + 1) + ' of ' + lists.length;
+    if (announce) live.textContent = title + (mo && mo.label ? ', ' + mo.label : '') + ', list ' + (li + 1) + ' of ' + lists.length + '.';
     if (dir && document.documentElement.classList.contains('motion-on')) {
       body.classList.remove('slide-l', 'slide-r'); void body.offsetWidth;
       body.classList.add(dir > 0 ? 'slide-l' : 'slide-r');
