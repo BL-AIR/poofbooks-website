@@ -12,3 +12,5 @@
 .flag-tip strong { display: block; margin-bottom: 3px; font-weight: 700; }
 html.no-curators .flag-ai { display: none; }
 @media (max-width: 880px) { .site-footer .flags { grid-column: 1; grid-row: auto; justify-self: start; } }
+/* Narrow screens: pop-ups anchor to the whole flag row, so they never run off the edge. */
+@media (max-width: 600px) { .flags { position: relative; } .flag { position: static; } .flag-tip { left: 0 !important; right: 0; transform: none !important; width: auto; max-width: none; } }
