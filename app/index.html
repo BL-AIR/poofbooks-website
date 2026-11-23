@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Printed QR code target on every bookmark (poofbooks.com/app/?b=<curator>). This address is printed:
+     never remove or rename it. When an app is live, put its store link in APP_STORE / PLAY_STORE below
+     and phones are sent straight there. The Cloudflare Worker may take this route over later to count scans. -->
+<script>
+(function () {
+  var APP_STORE = '';   // e.g. 'https://apps.apple.com/app/idXXXXXXXXX' once the iOS app is live
+  var PLAY_STORE = '';  // the Google Play link once the Android app is live
+  var q = new URLSearchParams(location.search);
+  var b = (q.get('b') || '').toLowerCase().replace(/[^a-z]/g, '');
+  var ua = navigator.userAgent || '';
+  var ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  var android = /Android/.test(ua);
+  var dest = ios ? APP_STORE : (android ? PLAY_STORE : '');
+  if (dest) { location.replace(dest); return; }
+  document.documentElement.setAttribute('data-device', ios ? 'ios' : (android ? 'android' : 'other'));
+  document.documentElement.setAttribute('data-b', b);
+})();
+</script>
+<script>(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem('poof-theme')}catch(e){}if(t==='light'||t==='dark')d.setAttribute('data-theme',t);})();</script>
+<!-- Cookie consent: must load before Google Tag Manager. -->
+<script src="/assets/js/consent.js"></script>
+<link rel="stylesheet" href="/assets/css/consent.css">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WRD3V23L');</script>
+<!-- End Google Tag Manager -->
+<title>The Poof Books app — coming soon</title>
+<meta name="description" content="The Poof Books app is on its way. Join the Looker List to hear first.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#18122B">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/fonts/fonts.css?v=202611231400">
+<style>
+  :root { --night: #18122B; --surface: #221A3B; --pink: #FF5FA2; --lilac: #B9A3FF; --cream: #F4EFE6; --muted: #CFC6E8; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: var(--night); color: var(--cream); font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; line-height: 1.6; display: flex; align-items: center; justify-content: center; }
+  main { max-width: 30rem; padding: 48px 24px; text-align: center; }
+  .logo { width: 220px; max-width: 70%; margin: 0 auto 36px; display: block; }
+  .icon { width: 96px; height: 96px; border-radius: 22px; display: block; margin: 0 auto 24px; }
+  h1 { margin: 0 0 12px; font-size: clamp(28px, 6vw, 38px); font-weight: 800; line-height: 1.1; color: var(--pink); }
+  p { margin: 0 0 16px; color: var(--muted); font-size: 17px; }
+  .device { display: none; }
+  html[data-device="ios"] .device.ios, html[data-device="android"] .device.android, html[data-device="other"] .device.other, html:not([data-device]) .device.other { display: block; }
+  .btn { display: inline-block; margin: 12px 0 8px; padding: 14px 28px; border-radius: 999px; background: var(--pink); color: var(--night); font-weight: 800; text-decoration: none; }
+  .btn:hover { background: var(--lilac); }
+  .small { font-size: 14px; color: var(--muted); }
+  .small a { color: var(--lilac); }
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<main>
+  <img class="logo" src="/assets/logo.svg" alt="Poof Books">
+  <img class="icon" src="/apple-touch-icon.png" alt="">
+  <h1>The app is on its way</h1>
+  <p class="device ios">The Poof Books app for iPhone is nearly ready. Join the Looker List and you’ll be first to know when it lands.</p>
+  <p class="device android">The Poof Books app is coming to iPhone first, with Android to follow. Join the Looker List and we’ll tell you the moment it’s ready.</p>
+  <p class="device other">The Poof Books app is coming soon. Join the Looker List and you’ll be first to know when it lands.</p>
+  <a class="btn" id="join" href="/">Join the Looker List</a>
+  <p class="small">In the meantime, every shelf and curator is waiting at <a href="/">poofbooks.com</a>.</p>
+</main>
+<script>
+(function () {
+  var b = document.documentElement.getAttribute('data-b') || '';
+  var tags = 'utm_source=bookmark&utm_medium=print&utm_campaign=bookmark-app' + (b ? '&utm_content=' + b : '');
+  document.querySelectorAll('a[href="/"]').forEach(function (a) { a.href = '/?' + tags; });
+})();
+</script>
+</body>
+</html>

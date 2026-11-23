@@ -56,3 +56,11 @@ Master logo files live in the `Logos` folder alongside this repo.
 ## Footer
 
 Every page's footer carries the legal links (right-aligned on the same line as the AI statement) and the Facebook, Instagram and YouTube icons. Don't edit it by hand: `poofbooks-data/review-queue/footer_social.py` rewrites it on every page and template (CSS in `assets/css/section.css`: `.foot-right`, `.social`). Update the social links in that script and rerun it.
+
+## Printed QR codes: /go/ and /app/ (23 Nov 2026)
+
+The curator bookmarks (run 1) carry two printed QR codes each, so **these addresses must never be removed or renamed**; only where they point may change.
+
+- `go/<name>/index.html` (curtis, rumi, dick, eric, frank, larry, sam, pansy, lilotter): forwards straight to that curator's shelf (lilotter → the home page) with `utm_source=bookmark&utm_medium=print&utm_campaign=bookmark-shelf&utm_content=<name>`. noindex, canonical to the shelf.
+- `app/index.html` (`/app/?b=<name>`): "the app is on its way" page with wording for iPhone, Android or other, and a Looker List link tagged `utm_campaign=bookmark-app`. When an app is live, put its store link in `APP_STORE` or `PLAY_STORE` at the top of the file and phones are sent straight there.
+- Planned: the big--daddy Cloudflare Worker takes over `/go/*` and `/app*` to count every scan (by design, code type and device, no personal data) and redirect server-side. These pages are the fallback until then.
