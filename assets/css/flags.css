@@ -1,0 +1,14 @@
+/* Footer flags with pop-up statements (23 Nov 2026). The A.I. Flag hides when the curators are off. */
+.flags { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.site-footer .flags { grid-column: 1; grid-row: 2; }
+.flag { position: relative; display: inline-flex; }
+.flag > button { background: none; border: 0; padding: 3px; margin: 0; cursor: pointer; line-height: 0; border-radius: 3px; }
+.flag > button img { height: 20px; width: auto; display: block; box-shadow: 0 0 0 1px rgba(255,255,255,0.25); }
+.flag > button:hover img, .flag > button:focus-visible img, .flag.open > button img { box-shadow: 0 0 0 2px var(--pink, #FF5FA2); }
+.flag > button:focus { outline: none; }
+.flag-tip { position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); width: max-content; max-width: min(320px, 86vw);
+  background: var(--surface-raised, #2A2148); color: var(--cream, #F4EFE6); border: 1px solid var(--line, #4A3D6E); border-radius: 8px;
+  padding: 10px 12px; font-size: 13px; line-height: 1.5; text-align: left; z-index: 50; box-shadow: 0 6px 20px rgba(0,0,0,0.35); }
+.flag-tip strong { display: block; margin-bottom: 3px; font-weight: 700; }
+html.no-curators .flag-ai { display: none; }
+@media (max-width: 880px) { .site-footer .flags { grid-column: 1; grid-row: auto; justify-self: start; } }
