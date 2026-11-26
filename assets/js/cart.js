@@ -25,7 +25,7 @@
   if (tillOpen) document.documentElement.classList.add('till-open');
   if (!tillOpen) document.addEventListener('DOMContentLoaded', function () {
     var note = document.querySelector('.ib-buy .price-note');
-    if (note) note.innerHTML = 'On sale from ' + LAUNCH + '. <a href="/#signup-heading">Join the Looker List</a> to hear first.';
+    if (note) note.innerHTML = 'On sale from ' + LAUNCH + '. <a href="/#looker">Join the Looker List</a> to hear first.';
     var co = document.querySelector('main.checkout');
     if (co && !document.querySelector('.till-closed-note')) {
       var m = document.createElement('main');
@@ -33,7 +33,7 @@
       m.innerHTML = '<h1>The till opens on ' + LAUNCH + '</h1>' +
         '<p>Hola, boss! Lil Otter is still polishing the counter and tying the string. Poof Books opens for orders on ' + LAUNCH + '.</p>' +
         '<p>Join the Looker List and we’ll tell you the moment the doors open.</p>' +
-        '<p><a class="btn btn-primary" href="/#signup-heading">Join the Looker List</a></p>';
+        '<p><a class="btn btn-primary" href="/#looker">Join the Looker List</a></p>';
       co.parentNode.insertBefore(m, co);
     }
   });

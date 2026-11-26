@@ -13,7 +13,7 @@
     try { localStorage.setItem(KEY, 'yes'); } catch (e) {}
     if (window.dataLayer) window.dataLayer.push({ event: 'adult_gate_accepted' });
   }
-  function onCabin() { return /^\/the-cabin\//.test(location.pathname); }
+  function onCabin() { return /^\/(the-cabin\/)?$/.test(location.pathname); }   // the Cabin is the home page (27 Nov 2026)
 
   var modal = null, lastFocus = null;
   function buildModal() {
@@ -50,7 +50,7 @@
     var onShelf = GATED.test(location.pathname);
     modal.querySelector('[data-m="no"]').textContent = (onCabin() || onShelf) ? 'Stay in the Cabin' : 'Stay here';
     modal.querySelector('[data-m="yes"]').onclick = function () { accept(); location.href = href; };
-    modal.querySelector('[data-m="no"]').onclick = onShelf ? function () { location.href = '/the-cabin/'; } : close;
+    modal.querySelector('[data-m="no"]').onclick = onShelf ? function () { location.href = '/'; } : close;
     root.classList.add('gate-modal-open');
     modal.hidden = false;
     modal.querySelector('[data-m="yes"]').focus();

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem('poof-theme')}catch(e){}if(t==='light'||t==='dark')d.setAttribute('data-theme',t);else t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';if(t==='light')d.classList.add('lm')})();</script>
-<!-- Cookie consent: must load before Google Tag Manager. Sets every optional
-     category to "denied" until the visitor chooses (see assets/js/consent.js). -->
+<!-- Foyer (Big Daddy): the home page since 27 Nov 2026 (was /the-cabin/, which now redirects here). Hand-built: edit this file. -->
+<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,c=s.curators!==false,m=typeof s.motion==='boolean'?s.motion:!r,v=(s.voice==='text'||s.voice==='both'||s.voice==='sound')?s.voice:(s.sound===false?'text':'both');if(!c)d.classList.add('no-curators');if(c&&v!=='text')d.classList.add('sound-on');if(c&&v==='sound')d.classList.add('words-off');if(c&&m)d.classList.add('motion-on')})();</script>
 <script src="/assets/js/consent.js"></script>
 <link rel="stylesheet" href="/assets/css/consent.css">
 <!-- Google Tag Manager -->
@@ -15,237 +15,231 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-WRD3V23L');</script>
 <!-- End Google Tag Manager -->
-<title>Poof Books — Opening soon</title>
-<meta name="description" content="Poof Books is an online bookshop of M2M books for gay men, opening soon.">
-<meta name="theme-color" content="#18122B" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#FCE4EE" media="(prefers-color-scheme: light)">
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Poof Books — M2M books. Nothing else.</title>
+<meta name="description" content="Poof Books is an online bookshop for gay men: fiction and non-fiction for and about men who love men. Eight shelves, eight curators, and not a single book that isn’t ours.">
+<meta name="robots" content="noimageindex">
+<link rel="canonical" href="https://poofbooks.com/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://poofbooks.com/">
-<meta property="og:title" content="Poof Books — Opening soon">
-<meta property="og:description" content="M2M books for gay men. Opening soon.">
+<meta property="og:title" content="Poof Books — M2M books. Nothing else.">
+<meta property="og:description" content="An online bookshop for gay men: eight shelves, eight curators, books for and about men who love men.">
 <meta property="og:image" content="https://poofbooks.com/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#18122B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FCE4EE" media="(prefers-color-scheme: light)">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/fonts/fonts.css?v=202611231400">
-<style>
-  :root {
-    --night: #18122B;
-    --pink: #FF5FA2;
-    --lilac: #B9A3FF;
-    --cream: #F4EFE6;
-    --muted: #CFC6E8;
-  }
-  * { box-sizing: border-box; }
-  html, body { height: 100%; }
-  body {
-    margin: 0;
-    background: var(--night);
-    color: var(--cream);
-    font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    min-height: 100svh;
-  }
-  main {
-    position: relative;
-    flex: 1 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 64px 24px 40px;
-  }
-  .logo {
-    display: block;
-    width: min(680px, 88vw);
-    height: auto;
-  }
-  .eyebrow {
-    margin: 56px 0 0;
-    font-weight: 800;
-    font-size: 14px;
-    letter-spacing: 0.32em;
-    padding-left: 0.32em;
-    color: var(--lilac);
-  }
-  h1 {
-    margin: 14px 0 0;
-    font-weight: 800;
-    font-size: clamp(28px, 4.4vw, 44px);
-    line-height: 1.15;
-    letter-spacing: -0.01em;
-    color: var(--pink);
-  }
-  .lede {
-    margin: 18px auto 0;
-    max-width: 34em;
-    font-size: clamp(16px, 1.6vw, 18px);
-    line-height: 1.6;
-    color: var(--muted);
-  }
-  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
-  footer a:hover { color: var(--pink); }
-  .lede span { display: block; }
-  /* Reading statues as bookends: each emerges from its outer edge of the window,
-     vertically centred so the gap above equals the gap to the footer line */
-  main { overflow: hidden; }
-  .figure {
-    position: absolute;
-    top: 50%;
-    width: auto;
-    pointer-events: none;
-    z-index: 0;
-  }
-  /* Thinker: frame line falls at the inner point of the rock's indent (10.8% of his width) */
-  .figure-left {
-    left: 0;
-    height: min(78%, calc((50vw - 380px) / 0.57));
-    transform: translate(-10.8%, -50%);
-  }
-  /* David: zoomed in so his head matches the Thinker's; head aligned with the Thinker's,
-     legs run off the bottom of the frame */
-  .figure-right {
-    right: 0;
-    top: 11%;
-    height: min(100%, calc((50vw - 380px) / 0.36));
-    transform: translateX(8%);
-  }
-  .logo, .eyebrow, h1, .lede, .signup { position: relative; z-index: 1; }
-  /* Looker List signup */
-  .signup {
-    margin: 44px auto 0;
-    width: min(620px, 100%);
-    padding-top: 32px;
-    border-top: 1px solid #2E2546;
-  }
-  .signup h2 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--lilac);
-  }
-  .signup-promise {
-    margin: 8px auto 0;
-    max-width: 30em;
-    font-size: 15px;
-    line-height: 1.55;
-    color: var(--muted);
-  }
-  .signup-fields {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .signup-field { flex: 0.75 1 0; min-width: 0; display: flex; }
-  .signup-field-email { flex: 1 1 0; }
-  .signup-button { flex: 0 0 auto; display: flex; }
-  .signup-fields input[type="text"], .signup-fields input[type="email"] {
-    width: 100%;
-    padding: 12px 14px;
-    font: inherit;
-    font-size: 16px;
-    color: var(--cream);
-    background: #231B3B;
-    border: 1px solid #3A2F57;
-    border-radius: 10px;
-  }
-  .signup-fields input::placeholder { color: #8E84AE; }
-  .signup-fields input[type="text"]:focus, .signup-fields input[type="email"]:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255, 95, 162, 0.25); }
-  .signup-fields input[type="button"] {
-    padding: 12px 20px;
-    font: inherit;
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--night);
-    background: var(--pink);
-    border: 0;
-    border-radius: 10px;
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-  .signup-fields input[type="button"]:hover { background: var(--lilac); }
-  .signup-fields input[type="button"]:focus-visible { outline: 3px solid var(--lilac); outline-offset: 2px; }
-  #errorMsgDiv { display: none; order: 10; flex-basis: 100%; font-size: 14px; color: var(--pink); }
-  #zcOptinOverLay, #zcOptinSuccessPopup { display: none; }
-  .signup-fine {
-    margin: 14px auto 0;
-    max-width: 34em;
-    font-size: 13px;
-    line-height: 1.55;
-    color: #A79DC6;
-  }
-  .signup-fine a { color: var(--muted); text-underline-offset: 3px; }
-  .signup-fine a:hover { color: var(--pink); }
-  .visually-hidden, .hp-field {
-    position: absolute !important;
-    width: 1px; height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-  }
-  .hp-field { left: -9999px; }
-  @media (max-width: 560px) {
-    .signup-fields { flex-direction: column; }
-    .signup-field, .signup-field-email, .signup-button { flex: none; }
-    .signup-button input { width: 100%; }
-  }
-  @media (max-width: 1100px) {
-    .figure-left, .figure-right { height: 70%; opacity: 0.14; }
-    .figure-right { top: 50%; transform: translate(8%, -50%); }
-  }
-  footer {
-    padding: 24px;
-    border-top: 1px solid #2E2546;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 28px;
-    justify-content: center;
-    font-size: 14px;
-    color: var(--muted);
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .logo { animation: appear 900ms cubic-bezier(.2,.7,.2,1) both; }
-    .eyebrow, h1, .lede, .signup { animation: appear 900ms 250ms cubic-bezier(.2,.7,.2,1) both; }
-    @keyframes appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-  }
-</style>
+<link rel="stylesheet" href="/assets/css/section.css?v=202611151345">
+<link rel="stylesheet" href="/assets/css/bestsellers.css?v=202611201200">
+<script src="/assets/js/top-tens.js?v=202611201205" defer></script>
+<script src="/assets/js/view-settings.js?v=202610290945" defer></script>
+<script src="/assets/js/search.js?v=202611171120" defer></script>
+<script src="/assets/js/cart.js?v=202611270200" defer></script>
+<script src="/assets/js/currency.js?v=202611051400" defer></script>
+<script src="/assets/js/gate.js?v=202611270200" defer></script>
+<script src="/assets/js/shelf.js?v=202610311600" defer></script>
+<script src="/assets/js/showcase.js?v=202610301330" defer></script>
+<script src="/assets/js/trunk-plate.js?v=202611011047" defer></script>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611270130">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
+<style>
+/* ABA member badge (Blair, 11 Nov 2026). White logo on the dark theme, blue on the light theme. */
+.cabin-member { padding-top: 0; padding-bottom: 64px; text-align: center; }
+.member-badge { display: inline-flex; align-items: center; gap: 28px; text-align: left; }
+.member-badge a { text-decoration: none; }
+.mb-text { color: var(--muted); font-size: 14px; line-height: 1.5; }
+.mb-text:hover { color: var(--pink); }
+.member-badge img { height: 96px; width: auto; display: block; }
+.member-badge .mb-light { display: none; }
+@media (prefers-color-scheme: light) { html:not([data-theme="dark"]) .member-badge .mb-dark { display: none; } html:not([data-theme="dark"]) .member-badge .mb-light { display: block; } }
+html[data-theme="light"] .member-badge .mb-dark { display: none; }
+html[data-theme="light"] .member-badge .mb-light { display: block; }
+@media (max-width: 560px) { .member-badge { flex-wrap: wrap; justify-content: center; text-align: center; gap: 16px 24px; } .member-badge img { height: 80px; } .mb-text { flex-basis: 100%; } }
+</style>
+<style>
+  /* Shelf symbol panels on The Cabin's shelf cards, Curators off: where the curator's Reading Room picture sits when Curators are on (Blair, 15 Nov 2026). Colours = Design System shelf-* tokens. */
+  .card-sym { height: 132px; display: flex; align-items: center; justify-content: center; }
+  .card-sym svg { width: 60px; height: 60px; fill: none; stroke: #F4EFE6; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  @media (max-width: 600px) { .card-sym { height: 96px; } .card-sym svg { width: 44px; height: 44px; } }
+</style>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-<main>
-  <img class="figure figure-left" src="assets/thinker.svg" alt="" aria-hidden="true">
-  <img class="figure figure-right" src="assets/david.svg" alt="" aria-hidden="true">
-  <img class="logo" src="assets/logo.svg" width="662" height="170" alt="Poof Books">
-  <p class="eyebrow">OPENING SOON</p>
-  <h1>M2M books. Nothing else.</h1>
-  <p class="lede"><span>An online bookshop for gay men.</span><span>The shelves are being stocked.</span></p>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<header class="site-header">
+  <div class="wrap">
+    <a class="home" href="/" aria-label="Poof Books: back to the Cabin"><img src="/assets/logo.svg" width="662" height="170" alt="Poof Books"></a>
+    <nav class="sections" aria-label="Sections">
+        <a href="/faghetti-westerns/">Faghetti Westerns</a>
+        <a href="/rollicking-romances/">Rollicking Romances</a>
+        <a href="/conniving-crimes/">Conniving Crimes</a>
+        <a href="/exquisite-erotica/">Exquisite Erotica</a>
+        <a href="/fabulous-fables/">Fabulous Fables</a>
+        <a href="/luminous-literature/">Luminous Literature</a>
+        <a href="/supernova-adventures/">Supernova Adventures</a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <a href="/no-nonsense-non-fiction/">No Nonsense <span style="white-space:nowrap">Non-Fiction</span></a>
+    </nav>
+    <button class="gear" type="button" aria-label="View settings" title="View settings" aria-expanded="false" aria-controls="view-settings"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+  </div>
+  <section class="view-settings" id="view-settings" aria-label="View settings" hidden>
+    <h2>How would you like to browse?</h2>
+    <p class="hint">We'll remember this on your device.</p>
+    <div class="vs-row"><div class="lab"><b>Curators</b><span>Meet the characters who look after each shelf. Off: just the books.</span></div><button class="switch" type="button" role="switch" aria-checked="true" aria-label="Curators" data-key="curators"><span class="knob"></span></button></div>
+    <div class="vs-row vs-pace vs-voice"><div class="lab"><b>Curators&#x2019; voices</b><span>Read their words, hear them, or both. Nothing plays until you press play.</span></div><div class="pace" role="group" aria-label="Curators&#x2019; voices"><button type="button" data-voice="text" aria-pressed="false">Text only</button><button type="button" data-voice="both" aria-pressed="true">Sound &amp; text</button><button type="button" data-voice="sound" aria-pressed="false">Sound only</button></div></div>
+    <div class="vs-row"><div class="lab"><b>Motion</b><span>Gentle animation on the curators. Follows your device setting.</span></div><button class="switch" type="button" role="switch" aria-checked="true" aria-label="Motion" data-key="motion"><span class="knob"></span></button></div>
+    <div class="vs-row vs-pace"><div class="lab"><b>Reading pace</b><span>Used to work out how long a book will take you.</span></div><div class="pace" role="group" aria-label="Reading pace"><button type="button" data-pace="slow" aria-pressed="false">Slow</button><button type="button" data-pace="average" aria-pressed="true">Average</button><button type="button" data-pace="fast" aria-pressed="false">Fast</button></div></div>
+    <p class="vs-note">Voices and motion only apply to the curators, so they're paused while the curators are off.</p>
+  </section>
+</header>
 
-  <!-- Mailing list: Zoho Campaigns' own "No CSS" embed (Long Form) for the "Looker List signup -
-       website" form in the Poof Books Zoho Campaigns organisation (org 7007794325),
-       restyled to match the site. Zoho's script (optin.min.js) adds anti-spam tokens
-       at submit time; a hand-built post without them is silently flagged as spam, so
-       keep this markup's ids, names and hidden fields exactly as Zoho issued them.
-       The form feeds the "Looker List" list (double opt-in, sent from Poof Books
-       <BigDaddy@poofbooks.com>), pushes new contacts to the Poof Books Zoho CRM
-       (org 7007792676) as Leads, and redirects to /looker-list/thanks/ (set in Zoho).
-       If the form is edited in Zoho, re-copy the No CSS code and re-apply this markup. -->
-  <section class="signup" aria-labelledby="signup-heading">
-    <h2 id="signup-heading">The Poof Books Looker List</h2>
-    <p class="signup-promise">Be first through the door when the shop opens, with the odd early look at what's going on the shelves. Nothing else.</p>
-    <div name="signupFormContainer">
+<main>
+  <section class="room c-on" aria-label="Big Daddy's Reading Room">
+    <img class="room-bg" src="/assets/rooms/cabin.webp" width="1280" height="720" alt="">
+    <div class="room-shade" aria-hidden="true"></div>
+    <div class="room-glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="figure"><img class="fig" src="/assets/curators/cutouts/BigDaddy.webp" width="708" height="1207" alt="Big Daddy, the Poof Books overseer, with an axe on his shoulder and a book in his hand"><p class="sound-only fig-play"><button class="hear feet" type="button" data-audio="/assets/audio/BigDaddy.mp3?v=20261027" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg>Hear Big Daddy</button></p></div>
+      <div class="welcome top">
+        <p class="eyebrow">The Cabin · Big Daddy's Reading Room</p>
+        <h1>Poof Books</h1>
+        <p class="with">Big Daddy, the Overseer</p>
+        <div class="qs-row">
+          <div class="quick-search" data-quick-search></div>
+          <div class="fys"><span class="qs-label fys-label" id="fys-l1">Kinda know what you want?</span><a class="btn btn-primary fys-btn" href="/find-a-book/" aria-describedby="fys-l1">Find Your Story</a></div>
+        </div>
+        <figure class="speech">
+          <blockquote>Come in, shut the door, the fire&#x27;s going. I&#x27;m Big Daddy and this is my cabin. We stock one thing: books for and about men who love men. Nothing else. I&#x27;ve got a crew of eight, each minding his own shelf in his own Reading Room. Have a wander and pick whoever suits your mood. And if you&#x27;d rather just see the books, that little gear up top switches us lot off. No offence taken. Know exactly what you&#x27;re after and can&#x27;t be bothered wandering? Type the title, the author or the ISBN in that box up there and I&#x27;ll take you straight to it.</blockquote>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="plain foyer-title c-off" aria-label="Welcome">
+    <div class="wrap">
+      <p class="eyebrow">Online bookshop</p>
+      <h1>Poof Books</h1>
+      <p class="tagline">M2M books. Nothing else.</p>
+      <div class="qs-row">
+          <div class="quick-search" data-quick-search></div>
+          <div class="fys"><span class="qs-label fys-label" id="fys-l2">Kinda know what you want?</span><a class="btn btn-primary fys-btn" href="/find-a-book/" aria-describedby="fys-l2">Find Your Story</a></div>
+        </div>
+      <hr>
+    </div>
+  </section>
+
+  <section class="wrap about" aria-label="About this shelf">
+    <p class="c-on">Poof Books is an online bookshop for gay men: fiction and non-fiction for and about men who love men. Eight shelves, eight curators, and not a single book that isn’t ours.</p>
+    <p class="c-off">Poof Books is an online bookshop for gay men: fiction and non-fiction for and about men who love men. Eight shelves, and not a single book that isn’t ours.</p>
+  </section>
+
+  <section class="wrap cast" id="curators" aria-labelledby="cast">
+    <div class="cast-head">
+      <h2 id="cast"><span class="c-on">Meet the curators</span><span class="c-off">The shelves</span></h2>
+      <p class="c-on">Eight men, eight shelves, eight Reading Rooms. Click a curator to step into his room.</p>
+      <p class="c-off">Eight sections, each chosen with care. Pick a shelf to browse.</p>
+    </div>
+    <div class="cards">
+        <a class="card" href="/faghetti-westerns/">
+          <div class="card-sym c-off" style="background:#8A4B1F" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 16c3 2.2 15 2.2 18 0"/><path d="M6.5 15.5c0-5 1.3-8.5 3.3-8.5 1 0 1.4.8 2.2.8s1.2-.8 2.2-.8c2 0 3.3 3.5 3.3 8.5"/></svg></div>
+          <div class="card-stage c-on"><img class="bg" src="/assets/rooms/campfire.webp" width="1280" height="720" alt="" loading="lazy"><div class="shade"></div><img class="who" src="/assets/curators/cutouts/Curtis.webp" alt="" loading="lazy"></div>
+          <div class="card-text">
+            <p class="eyebrow c-on">By the Camp Fire</p><p class="eyebrow c-off">Westerns</p>
+            <h3>Faghetti Westerns</h3>
+            <p class="who-name c-on">with Curtis the Cowboy</p>
+            <p class="teaser">Westerns, read by firelight.</p>
+            <span class="go"><span class="c-on">Visit Curtis →</span><span class="c-off">Browse the shelf →</span></span>
+          </div>
+        </a>
+        <a class="card" href="/rollicking-romances/">
+          <div class="card-sym c-off" style="background:#9C2846" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="14" r="6.5"/><path d="M9.5 7.8 10 5l2 1.6L14 5l.5 2.8"/></svg></div>
+          <div class="card-stage c-on"><img class="bg" src="/assets/rooms/parapet.webp" width="1280" height="720" alt="" loading="lazy"><div class="shade"></div><img class="who" src="/assets/curators/cutouts/Rumi.webp" alt="" loading="lazy"></div>
+          <div class="card-text">
+            <p class="eyebrow c-on">On the Parapet</p><p class="eyebrow c-off">Romance</p>
+            <h3>Rollicking Romances</h3>
+            <p class="who-name c-on">with Rumi the Romantic</p>
+            <p class="teaser">Love stories under the moon.</p>
+            <span class="go"><span class="c-on">Visit Rumi →</span><span class="c-off">Browse the shelf →</span></span>
+          </div>
+        </a>
+        <a class="card" href="/conniving-crimes/">
+          <div class="card-sym c-off" style="background:#4F5B6E" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m14.5 14.5 6 6"/></svg></div>
+          <div class="card-stage c-on"><img class="bg" src="/assets/rooms/office.webp" width="1280" height="720" alt="" loading="lazy"><div class="shade"></div><img class="who" src="/assets/curators/cutouts/Dick.webp" alt="" loading="lazy"></div>
+          <div class="card-text">
+            <p class="eyebrow c-on">The Office</p><p class="eyebrow c-off">Crime &amp; mystery</p>
+            <h3>Conniving Crimes</h3>
+            <p class="who-name c-on">with Detective Dick</p>
+            <p class="teaser">Crime, mystery and the odd body.</p>
+            <span class="go"><span class="c-on">Visit Dick →</span><span class="c-off">Browse the shelf →</span></span>
+          </div>
+        </a>
+        <a class="card" href="/exquisite-erotica/">
+          <div class="card-sym c-off" style="background:#8A2A5E" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19.5 4.5C11 5 6 10.5 5 19.5c7-1 12.5-6 14.5-15Z"/><path d="m5 19.5 8.5-8.5"/></svg></div>
+          <div class="card-stage c-on"><img class="bg" src="/assets/rooms/boudoir.webp" width="1280" height="720" alt="" loading="lazy"><div class="shade"></div><img class="who" src="/assets/curators/cutouts/Eric.webp" alt="" loading="lazy"></div>
+          <div class="card-text">
+            <p class="eyebrow c-on">The Boudoir</p><p class="eyebrow c-off">Erotica · explicit</p>
+            <h3>Exquisite Erotica</h3>
+            <p class="who-name c-on">with Eric the Erotic</p>
+            <p class="teaser">Erotica for grown men. Explicit, and written for adults.</p>
+            <span class="go"><span class="c-on">Visit Eric →</span><span class="c-off">Browse the shelf →</span></span>
+          </div>
+        </a>
+        <a class="card" href="/fabulous-fables/">
+          <div class="card-sym c-off" style="background:#2F5634" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 12.5a8.5 6.5 0 0 1 17 0Z"/><path d="M10 12.5v5.5a2 2 0 0 0 4 0v-5.5"/><circle cx="9" cy="9.3" r=".8"/><circle cx="14.5" cy="8.4" r=".8"/></svg></div>
+          <div class="card-stage c-on"><img class="bg" src="/assets/rooms/forest.webp" width="1280" height="720" alt="" loading="lazy"><div class="shade"></div><img class="who" src="/assets/curators/cutouts/Frank.webp" alt="" loading="lazy"></div>
+          <div class="card-text">
+            <p class="eyebrow c-on">The Forest</p><p class="eyebrow c-off">Fantasy &amp; paranormal</p>
+            <h3>Fabulous Fables</h3>
+            <p class="who-name c-on">with Fairy Frank</p>
+            <p class="teaser">Fantasy, magic and the paranormal.</p>
+            <span class="go"><span class="c-on">Visit Frank →</span><span class="c-off">Browse the shelf →</span></span>
+          </div>
+        </a>
+        <a class="card" href="/luminous-literature/">
+          <div class="card-sym c-off" style="background:#7A5A12" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6.5c3-1 6-1 9 .8 3-1.8 6-1.8 9-.8V18c-3-1-6-1-9 .8-3-1.8-6-1.8-9-.8Z"/><path d="M12 7.3v11.5"/></svg></div>
+          <div class="card-stage c-on"><img class="bg" src="/assets/rooms/lounge.webp" width="1280" height="720" alt="" loading="lazy"><div class="shade"></div><img class="who" src="/assets/curators/cutouts/Larry.webp" alt="" loading="lazy"></div>
+          <div class="card-text">
+            <p class="eyebrow c-on">The Lounge</p><p class="eyebrow c-off">Literary fiction</p>
+            <h3>Luminous Literature</h3>
+            <p class="who-name c-on">with Larry Lit Lover</p>
+            <p class="teaser">Literary fiction that stays with you.</p>
+            <span class="go"><span class="c-on">Visit Larry →</span><span class="c-off">Browse the shelf →</span></span>
+          </div>
+        </a>
+        <a class="card" href="/supernova-adventures/">
+          <div class="card-sym c-off" style="background:#135560" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5.5"/><g transform="rotate(-20 12 12)"><path d="M2 12A10 3.2 0 0 1 7.28 9.18"/><path d="M16.72 9.18A10 3.2 0 0 1 22 12"/><path d="M2 12A10 3.2 0 0 0 22 12"/></g></svg></div>
+          <div class="card-stage c-on"><img class="bg" src="/assets/rooms/observation.webp" width="1280" height="720" alt="" loading="lazy"><div class="shade"></div><img class="who" src="/assets/curators/cutouts/Sam.webp" alt="" loading="lazy"></div>
+          <div class="card-text">
+            <p class="eyebrow c-on">The Observation Deck</p><p class="eyebrow c-off">Science fiction</p>
+            <h3>Supernova Adventures</h3>
+            <p class="who-name c-on">with Sci-Fi Sam</p>
+            <p class="teaser">Space opera, strange worlds and queer futures.</p>
+            <span class="go"><span class="c-on">Visit Sam →</span><span class="c-off">Browse the shelf →</span></span>
+          </div>
+        </a>
+        <a class="card" href="/no-nonsense-non-fiction/">
+          <div class="card-sym c-off" style="background:#36528C" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m2.5 9 9.5-4 9.5 4-9.5 4Z"/><path d="M6.5 10.8v4.2c3 2 8 2 11 0v-4.2"/><path d="M21.5 9v5"/></svg></div>
+          <div class="card-stage c-on"><img class="bg" src="/assets/rooms/lecturehall.webp" width="1280" height="720" alt="" loading="lazy"><div class="shade"></div><img class="who" src="/assets/curators/cutouts/Pansy.webp" alt="" loading="lazy"></div>
+          <div class="card-text">
+            <p class="eyebrow c-on">The Lecture Hall</p><p class="eyebrow c-off"><span style="white-space:nowrap">Non-fiction</span></p>
+            <h3>No Nonsense <span style="white-space:nowrap">Non-Fiction</span></h3>
+            <p class="who-name c-on">with Professor Pansy</p>
+            <p class="teaser">True stories, told straight.</p>
+            <span class="go"><span class="c-on">Visit Pansy →</span><span class="c-off">Browse the shelf →</span></span>
+          </div>
+        </a>
+    </div>
+  </section>
+
+  <section class="wrap looker" aria-labelledby="looker">
+    <div class="cabin-duo cabin-trio">
+    <div class="looker-band posted-band">
+      <div class="posted-text">
+        <div><h2 id="looker">The Poof Books Looker List</h2><p>Be first through the door when the shop opens, with the odd early look at what's going on the shelves. Tick the shelves you fancy and the crew will keep you posted. Nothing else.</p></div>
+      </div>
+      <div name="signupFormContainer" class="zform">
       <input type="hidden" id="signupTmplName" value="large_form_1">
       <input type="hidden" value="0" id="recapThemeOptin">
       <input type="hidden" id="orgNameFull" value="Poof Books">
@@ -260,50 +254,62 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div id="signupMainDiv" name="SIGNUPFORM">
               <div id="Zc_SignupSuccess" style="display:none"><span id="signupSuccessMsg">Thank you for signing up.</span></div>
               <form method="POST" id="zcampaignOptinForm" action="https://zcmp-user.maillist-manage.com.au/weboptin.zc" target="_zcSignup">
-                <div id="SIGNUP_BODY_ALL" name="SIGNUP_BODY_ALL">
-                  <div id="SIGNUP_BODY" name="SIGNUP_BODY">
-                    <div id="errorMsgDiv">Please check the marked field(s).</div>
-                    <div name="fieldsdivSf" class="zcsffieldsdiv signup-fields">
-                      <div class="signup-field">
-                        <label class="visually-hidden" for="ml-first">First name</label>
-                        <input id="ml-first" name="FIRSTNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="text" placeholder="First name" autocomplete="given-name">
-                        <span style="display:none" id="dt_FIRSTNAME">1,false,1,First Name,2</span>
-                      </div>
-                      <div class="signup-field signup-field-email">
-                        <label class="visually-hidden" for="ml-email">Email address</label>
-                        <input id="ml-email" name="CONTACT_EMAIL" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="email" placeholder="Email address" autocomplete="email">
-                        <span style="display:none" id="dt_CONTACT_EMAIL">1,true,6,Contact Email,2</span>
-                      </div>
-                      <!-- Zoho CRM needs a last name and (as Campaigns sees it) a company on every
-                           Lead; the form only asks for a first name, so both carry the source -->
-                      <input name="LASTNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="50" type="hidden" value="Looker List">
-                      <span style="display:none" id="dt_LASTNAME">1,false,1,Last Name,2</span>
-                      <input name="COMPANYNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="hidden" value="Looker List">
-                      <span style="display:none" id="dt_COMPANYNAME">1,false,1,Company Name,2</span>
-                      <div class="signup-button">
-                        <input type="button" action="Save" id="zcWebOptin" name="SIGNUP_SUBMIT_BUTTON" value="Join the list">
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Zoho Campaigns hidden tags: keep exactly as issued -->
-                  <input type="hidden" id="fieldBorder" value="rgb(222, 222, 222)">
-                  <input type="hidden" name="zc_trackCode" id="zc_trackCode" value="">
-                  <input type="hidden" name="viewFrom" id="viewFrom" value="URL_ACTION">
-                  <input type="hidden" id="submitType" name="submitType" value="optinCustomView">
-                  <input type="hidden" id="lD" name="lD" value="1bb1c5b8262e7d2">
-                  <input type="hidden" name="emailReportId" id="emailReportId" value="">
-                  <input type="hidden" name="zx" id="cmpZuid" value="11a1b275ac">
-                  <input type="hidden" name="zcvers" value="2.0">
-                  <input type="hidden" name="oldListIds" id="allCheckedListIds" value="">
-                  <input type="hidden" id="mode" name="mode" value="OptinCreateView">
-                  <input type="hidden" id="zcld" name="zcld" value="1bb1c5b8262e7d2">
-                  <input type="hidden" id="zctd" name="zctd" value="">
-                  <input type="hidden" id="document_domain" value="campaigns.zoho.com.au">
-                  <input type="hidden" id="zc_Url" value="zcmp-user.maillist-manage.com.au">
-                  <input type="hidden" id="new_optin_response_in" value="1">
-                  <input type="hidden" id="duplicate_optin_response_in" value="0">
-                  <input type="hidden" id="zc_formIx" name="zc_formIx" value="3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638">
+              <div id="SIGNUP_BODY_ALL" name="SIGNUP_BODY_ALL">
+              <div id="SIGNUP_BODY" name="SIGNUP_BODY">
+              <div id="errorMsgDiv">Please check the marked field(s).</div>
+              <fieldset class="signup-shelves">
+                <legend>Which shelves interest you? <span>Optional. Tick any.</span></legend>
+                <div class="shelf-chips">
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Faghetti Westerns" value="52667000000030005" id="52667000000030005" data-shelf="Faghetti Westerns"><span>Faghetti Westerns<small class="c-on">· Curtis</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Rollicking Romances" value="52667000000030007" id="52667000000030007" data-shelf="Rollicking Romances"><span>Rollicking Romances<small class="c-on">· Rumi</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Conniving Crimes" value="52667000000030009" id="52667000000030009" data-shelf="Conniving Crimes"><span>Conniving Crimes<small class="c-on">· Dick</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Exquisite Erotica" value="52667000000030011" id="52667000000030011" data-shelf="Exquisite Erotica"><span>Exquisite Erotica<small class="c-on">· Eric</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Fabulous Fables" value="52667000000030013" id="52667000000030013" data-shelf="Fabulous Fables"><span>Fabulous Fables<small class="c-on">· Frank</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Luminous Literature" value="52667000000030015" id="52667000000030015" data-shelf="Luminous Literature"><span>Luminous Literature<small class="c-on">· Larry</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="Supernova Adventures" value="52667000000030017" id="52667000000030017" data-shelf="Supernova Adventures"><span>Supernova Adventures<small class="c-on">· Sam</small></span></label>
+                  <label class="shelf-chip"><input type="checkbox" name="listCheckBox" title="No Nonsense Non-Fiction" value="52667000000030019" id="52667000000030019" data-shelf="No Nonsense Non-Fiction"><span>No Nonsense Non&#8209;Fiction<small class="c-on">· Pansy</small></span></label>
                 </div>
+                <select name="CONTACT_CF1" changeitem="SIGNUP_FORM_FIELD" multiple hidden aria-hidden="true" tabindex="-1"><option value="Faghetti Westerns">Faghetti Westerns</option><option value="Rollicking Romances">Rollicking Romances</option><option value="Conniving Crimes">Conniving Crimes</option><option value="Exquisite Erotica">Exquisite Erotica</option><option value="Fabulous Fables">Fabulous Fables</option><option value="Luminous Literature">Luminous Literature</option><option value="Supernova Adventures">Supernova Adventures</option><option value="No Nonsense Non-Fiction">No Nonsense Non-Fiction</option></select>
+                <span style="display:none" id="dt_CONTACT_CF1">1,false,21,Shelves,2</span>
+              </fieldset>
+              <div name="fieldsdivSf" class="zcsffieldsdiv signup-fields">
+                <div class="signup-field">
+                  <label class="visually-hidden" for="ml-first">First name</label>
+                  <input id="ml-first" name="FIRSTNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="text" placeholder="First name" autocomplete="given-name">
+                  <span style="display:none" id="dt_FIRSTNAME">1,false,1,First Name,2</span>
+                </div>
+                <div class="signup-field signup-field-email">
+                  <label class="visually-hidden" for="ml-email">Email address</label>
+                  <input id="ml-email" name="CONTACT_EMAIL" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="email" placeholder="Email address" autocomplete="email">
+                  <span style="display:none" id="dt_CONTACT_EMAIL">1,true,6,Contact Email,2</span>
+                </div>
+                <input name="LASTNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="50" type="hidden" value="Looker List">
+                <span style="display:none" id="dt_LASTNAME">1,false,1,Last Name,2</span>
+                <input name="COMPANYNAME" changeitem="SIGNUP_FORM_FIELD" maxlength="100" type="hidden" value="Looker List">
+                <span style="display:none" id="dt_COMPANYNAME">1,false,1,Company Name,2</span>
+                <div class="signup-button">
+                  <input type="button" action="Save" id="zcWebOptin" name="SIGNUP_SUBMIT_BUTTON" value="Join the list">
+                </div>
+              </div>
+              </div>
+              <input type="hidden" id="fieldBorder" value="rgb(222, 222, 222)">
+              <input type="hidden" name="zc_trackCode" id="zc_trackCode" value="">
+              <input type="hidden" name="viewFrom" id="viewFrom" value="URL_ACTION">
+              <input type="hidden" id="submitType" name="submitType" value="optinCustomView">
+              <input type="hidden" id="lD" name="lD" value="1bb1c5b8262e7d2">
+              <input type="hidden" name="emailReportId" id="emailReportId" value="">
+              <input type="hidden" name="zx" id="cmpZuid" value="11a1b275ac">
+              <input type="hidden" name="zcvers" value="2.0">
+              <input type="hidden" name="oldListIds" id="allCheckedListIds" value="">
+              <input type="hidden" id="mode" name="mode" value="OptinCreateView">
+              <input type="hidden" id="zcld" name="zcld" value="1bb1c5b8262e7d2">
+              <input type="hidden" id="zctd" name="zctd" value="">
+              <input type="hidden" id="document_domain" value="campaigns.zoho.com.au">
+              <input type="hidden" id="zc_Url" value="zcmp-user.maillist-manage.com.au">
+              <input type="hidden" id="new_optin_response_in" value="1">
+              <input type="hidden" id="duplicate_optin_response_in" value="0">
+              <input type="hidden" id="zc_formIx" name="zc_formIx" value="3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638">
+              </div>
               </form>
             </div>
           </div>
@@ -313,43 +319,67 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
       <div id="zcOptinOverLay" oncontextmenu="return false" style="display:none"></div>
-      <div id="zcOptinSuccessPopup" style="display:none">
-        <span id="closeSuccess" onclick="closeSuccessPopup()">×</span>
-        <div id="zcOptinSuccessPanel"></div>
-      </div>
+      <div id="zcOptinSuccessPopup" style="display:none"><span id="closeSuccess" onclick="closeSuccessPopup()">×</span><div id="zcOptinSuccessPanel"></div></div>
     </div>
-    <p class="signup-fine">A confirmation email comes first; you're not on the list until you click the link in it (check your spam folder if it doesn't arrive). Unsubscribe from the foot of any email. <a href="/privacy/#mailing-list">Privacy</a>.</p>
-  </section>
-  <script>
-    /* Called by Zoho's script just before it submits: tell GTM about the sign-up. */
+    <script>
     function runOnFormSubmit_sf3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638(th) {
       window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'newsletter_signup', list_name: 'Poof Books', form_location: 'poofbooks.com' });
+      window.dataLayer.push({ event: 'newsletter_signup', list_name: 'Poof Books', form_location: 'the-cabin' });
     }
-    /* Enter in either field submits, as a normal form would (Zoho's button is type="button"). */
-    (function () {
-      var form = document.getElementById('zcampaignOptinForm');
-      if (!form) return;
-      form.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'button') {
-          e.preventDefault();
-          document.getElementById('zcWebOptin').click();
-        }
-      });
-    })();
-  </script>
-  <script src="https://ma.zoho.com.au/js/optin.min.js" onload="setupSF('sf3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638','ZCFORMVIEW',false,'light',false,'0'); if (window.referenceSetter) referenceSetter(document.getElementById('refImage'));"></script>
+    </script>
+    <script src="/assets/js/signup.js?v=202610311300" defer></script>
+    <script type="text/plain" id="zc-optin" data-src="https://ma.zoho.com.au/js/optin.min.js" data-sf="sf3ze18c471c01ba4038821149218c8d7212498fbd798376f145af5c8401c7f4d638"></script><!-- loaded by signup.js when the form comes near (saves ~1 MB of Zoho + reCAPTCHA per page) -->
+      <p class="signup-fine">A confirmation email comes first; you're not on the list until you click the link in it (check your spam folder if it doesn't arrive). Unsubscribe from the foot of any email. <a href="/privacy/#mailing-list">Privacy</a>.</p>
+      <p class="signup-fine feedback"><span class="c-on">Give feedback to Big Daddy by sending email to:</span><span class="c-off">Feedback:</span> <a href="mailto:BigDaddy@poofbooks.com">BigDaddy@poofbooks.com</a></p>
+    </div>
+    <aside class="sellers-band posted-band topten-band" id="sellers" aria-labelledby="sellers-h" aria-roledescription="carousel" tabindex="0">
+      <h2 id="sellers-h">Best Sellers</h2>
+      <div class="topten-body">
+        <p class="sellers-tag">Look which poof books made last month&#x2019;s Top Ten Sellers List.</p>
+        <ol class="sellers-list"></ol>
+        <p class="sellers-empty" hidden>The first Top Ten goes up in February 2027, once the shop has had a full month of sales.</p>
+      </div>
+      <nav class="topten-nav" aria-label="Top Ten lists" hidden>
+        <button type="button" data-list="-1" aria-label="Previous list">&#8249;</button>
+        <span class="topten-at"></span>
+        <button type="button" data-list="1" aria-label="Next list">&#8250;</button>
+      </nav>
+      <nav class="sellers-nav" aria-label="Month">
+        <button type="button" data-step="-1" aria-label="Previous month" disabled>&#8249;</button>
+        <span class="sellers-at"></span>
+        <button type="button" data-step="1" aria-label="Next month" disabled>&#8250;</button>
+      </nav>
+      <p class="topten-live" aria-live="polite"></p>
+    </aside>
+    <aside class="clubs-band posted-band" aria-labelledby="clubs-h">
+      <h2 id="clubs-h">Book Clubs</h2>
+      <p>Run a book club for gay men? We&#x2019;re pinning up clubs from everywhere: when you meet, what you&#x2019;re reading and how to join. Tell us your picks and we&#x2019;ll make sure they&#x2019;re on our shelves.</p>
+      <p class="clubs-ask">Send Big Daddy your club&#x2019;s name, country and city, how often you meet, a contact email and your website, if you have one.</p>
+      <a class="btn clubs-btn" href="mailto:BigDaddy@poofbooks.com?subject=BOOK%20CLUBS%3A%20&body=Hi%20Big%20Daddy%2C%0A%0APlease%20pin%20our%20book%20club%20on%20the%20Poof%20Books%20bulletin%20board.%0A%0AClub%20name%3A%20%0ACountry%20and%20city%3A%20%0AMeeting%20schedule%20%28e.g.%20monthly%2C%20weekly%29%3A%20%0AContact%20email%3A%20%0AWebsite%20%28if%20any%29%3A%20%0A%0AWhat%20we%27re%20reading%20next%20%28optional%29%3A%20%0A">Email Big Daddy</a>
+    </aside>
+    </div>
+  </section>
+
+  <section class="wrap cabin-member" aria-label="Trade membership">
+    <div class="member-badge">
+      <a class="mb-logo" href="https://loveyourbookshop.org.au/" target="_blank" rel="noopener" aria-label="Australian Booksellers Association">
+        <img class="mb-dark" src="/assets/aba-member-white.png" width="186" height="141" alt="Australian Booksellers Association" loading="lazy">
+        <img class="mb-light" src="/assets/aba-member-blue.png" width="186" height="141" alt="Australian Booksellers Association" loading="lazy">
+      </a>
+      <a class="mb-logo" href="https://loveyourbookshop.org.au/" target="_blank" rel="noopener" aria-label="Love Your Bookshop">
+        <img src="/assets/lyb-logo.png" width="579" height="590" alt="Love Your Bookshop" loading="lazy">
+      </a>
+      <a class="mb-text" href="https://loveyourbookshop.org.au/" target="_blank" rel="noopener">Poof Books is a proud member of the<br>Australian Booksellers Association.</a>
+    </div>
+  </section>
 </main>
-<footer>
-  <span>poofbooks.com</span>
-  <a href="/about/">About this site</a>
-  <a href="/the-loft/">Authors</a>
-  <a href="/support/">Help</a>
-  <a href="/terms/">Terms</a>
-  <a href="/privacy/">Privacy</a>
-  <a href="/privacy/#cookies" data-cookie-settings>Cookie&nbsp;settings</a>
-  <div class="flags"><link rel="stylesheet" href="/assets/css/flags.css?v=202611231800"><span class="flag"><button type="button" aria-label="Australian Aboriginal Flag" aria-expanded="false" aria-describedby="flag-aboriginal"><img src="/assets/badges/aboriginal.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-aboriginal" role="tooltip" hidden><strong>Australian Aboriginal Flag</strong>Poof Books acknowledges the Traditional Custodians of the lands across Australia on which we live, work and read. We pay our respects to their Elders past and present, and to all Aboriginal and Torres Strait Islander peoples, whose stories are the oldest on this continent.</span></span><span class="flag"><button type="button" aria-label="Rainbow flag" aria-expanded="false" aria-describedby="flag-rainbow"><img src="/assets/badges/rainbow.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-rainbow" role="tooltip" hidden><strong>Rainbow flag</strong>Poof Books flies the rainbow flag because the fight against discrimination towards LGBTQI+ people is not over. Our rights were hard won, and we must stay ever vigilant to keep them.</span></span><span class="flag"><button type="button" aria-label="Gay men’s flag" aria-expanded="false" aria-describedby="flag-gay-men"><img src="/assets/badges/gay-men.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-gay-men" role="tooltip" hidden><strong>Gay men’s flag</strong>Poof Books recognises that gay men need safe spaces of our own, places to meet, talk and belong. We hope this shop is one of them.</span></span><span class="flag"><button type="button" aria-label="Bear flag" aria-expanded="false" aria-describedby="flag-bear"><img src="/assets/badges/bear.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-bear" role="tooltip" hidden><strong>Bear flag</strong>Gay men come in every shape, size, age and flavour. Poof Books celebrates all of us, and stands against discrimination towards anyone within our community.</span></span><span class="flag"><button type="button" aria-label="Leather pride flag" aria-expanded="false" aria-describedby="flag-leather"><img src="/assets/badges/leather.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-leather" role="tooltip" hidden><strong>Leather pride flag</strong>Poof Books celebrates consensual sexual expression in our community, and rejects the unjust censorship of our stories and our voices.</span></span><span class="flag flag-ai"><button type="button" aria-label="The A.I. Flag" aria-expanded="false" aria-describedby="flag-ai"><img src="/assets/badges/ai-flag.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-ai" role="tooltip" hidden><strong>The A.I. Flag</strong>Our curators are illustrated and voiced with AI tools. The books, and the choices, are human.</span></span><script src="/assets/js/flags.js?v=202611231800" defer></script></div><!--/flags-->
-  <span class="social" style="display:inline-flex;align-items:center;gap:16px"><a href="https://www.facebook.com/bigdaddysbookshelf" target="_blank" rel="noopener" aria-label="Poof Books on Facebook" title="Facebook" style="display:inline-flex;align-items:center;text-decoration:none"><svg viewBox="0 0 24 24" height="20" width="20" aria-hidden="true" fill="currentColor"><path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4v3.3h2.8V22h3.3z"/></svg></a><a href="https://www.instagram.com/poof.books/" target="_blank" rel="noopener" aria-label="Poof Books on Instagram" title="Instagram" style="display:inline-flex;align-items:center;text-decoration:none"><svg viewBox="0 0 1000 1000" height="20" width="20" aria-hidden="true" fill="currentColor"><path d="M295.42,6c-53.2,2.51-89.53,11-121.29,23.48-32.87,12.81-60.73,30-88.45,57.82S40.89,143,28.17,175.92c-12.31,31.83-20.65,68.19-23,121.42S2.3,367.68,2.56,503.46,3.42,656.26,6,709.6c2.54,53.19,11,89.51,23.48,121.28,12.83,32.87,30,60.72,57.83,88.45S143,964.09,176,976.83c31.8,12.29,68.17,20.67,121.39,23s70.35,2.87,206.09,2.61,152.83-.86,206.16-3.39S799.1,988,830.88,975.58c32.87-12.86,60.74-30,88.45-57.84S964.1,862,976.81,829.06c12.32-31.8,20.69-68.17,23-121.35,2.33-53.37,2.88-70.41,2.62-206.17s-.87-152.78-3.4-206.1-11-89.53-23.47-121.32c-12.85-32.87-30-60.7-57.82-88.45S862,40.87,829.07,28.19c-31.82-12.31-68.17-20.7-121.39-23S637.33,2.3,501.54,2.56,348.75,3.4,295.42,6m5.84,903.88c-48.75-2.12-75.22-10.22-92.86-17-23.36-9-40-19.88-57.58-37.29s-28.38-34.11-37.5-57.42c-6.85-17.64-15.1-44.08-17.38-92.83-2.48-52.69-3-68.51-3.29-202s.22-149.29,2.53-202c2.08-48.71,10.23-75.21,17-92.84,9-23.39,19.84-40,37.29-57.57s34.1-28.39,57.43-37.51c17.62-6.88,44.06-15.06,92.79-17.38,52.73-2.5,68.53-3,202-3.29s149.31.21,202.06,2.53c48.71,2.12,75.22,10.19,92.83,17,23.37,9,40,19.81,57.57,37.29s28.4,34.07,37.52,57.45c6.89,17.57,15.07,44,17.37,92.76,2.51,52.73,3.08,68.54,3.32,202s-.23,149.31-2.54,202c-2.13,48.75-10.21,75.23-17,92.89-9,23.35-19.85,40-37.31,57.56s-34.09,28.38-57.43,37.5c-17.6,6.87-44.07,15.07-92.76,17.39-52.73,2.48-68.53,3-202.05,3.29s-149.27-.25-202-2.53m407.6-674.61a60,60,0,1,0,59.88-60.1,60,60,0,0,0-59.88,60.1M245.77,503c.28,141.8,115.44,256.49,257.21,256.22S759.52,643.8,759.25,502,643.79,245.48,502,245.76,245.5,361.22,245.77,503m90.06-.18a166.67,166.67,0,1,1,167,166.34,166.65,166.65,0,0,1-167-166.34" transform="translate(-2.5 -2.5)"/></svg></a><a href="https://www.youtube.com/@PoofBooks" target="_blank" rel="noopener" aria-label="Poof Books on YouTube" title="YouTube" style="display:inline-flex;align-items:center;text-decoration:none"><svg viewBox="102 119 397 278" height="20" width="29" style="height:20px" aria-hidden="true" fill="currentColor"><path fill-rule="nonzero" d="M 261.2 317.3 L 261.2 198.4 L 363.9 257.7 Z M 490.3 162.6 C 485.7 145.5 472.7 132.2 455.3 127.6 C 424.6 119.2 300.5 119.2 300.5 119.2 C 300.5 119.2 176.7 119.2 146.1 127.6 C 129 132.2 115.7 145.5 110.8 162.6 C 102.7 193.2 102.7 257.7 102.7 257.7 C 102.7 257.7 102.7 322.2 110.8 353.2 C 115.7 370 129 383.6 146.1 388.2 C 176.7 396.6 300.5 396.6 300.5 396.6 C 300.5 396.6 424.6 396.6 455.3 388.2 C 472.7 383.6 485.7 370 490.3 353.2 C 498.7 322.2 498.7 257.7 498.7 257.7 C 498.7 257.7 498.7 193.2 490.3 162.6"/></svg></a><a href="https://www.tiktok.com/@poofbooks" target="_blank" rel="noopener" aria-label="Poof Books on TikTok" title="TikTok" style="display:inline-flex;align-items:center;text-decoration:none"><svg viewBox="0 0 24 24" height="20" width="20" style="height:20px" aria-hidden="true" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a><a href="https://bsky.app/profile/poofbooks.bsky.social" target="_blank" rel="noopener" aria-label="Poof Books on Bluesky" title="Bluesky" style="display:inline-flex;align-items:center;text-decoration:none"><svg viewBox="0 0 24 24" height="20" width="20" style="height:20px" aria-hidden="true" fill="currentColor"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/></svg></a></span>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Poof Books · M2M books. Nothing else.</span>
+    <div class="flags"><link rel="stylesheet" href="/assets/css/flags.css?v=202611231800"><span class="flag"><button type="button" aria-label="Australian Aboriginal Flag" aria-expanded="false" aria-describedby="flag-aboriginal"><img src="/assets/badges/aboriginal.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-aboriginal" role="tooltip" hidden><strong>Australian Aboriginal Flag</strong>Poof Books acknowledges the Traditional Custodians of the lands across Australia on which we live, work and read. We pay our respects to their Elders past and present, and to all Aboriginal and Torres Strait Islander peoples, whose stories are the oldest on this continent.</span></span><span class="flag"><button type="button" aria-label="Rainbow flag" aria-expanded="false" aria-describedby="flag-rainbow"><img src="/assets/badges/rainbow.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-rainbow" role="tooltip" hidden><strong>Rainbow flag</strong>Poof Books flies the rainbow flag because the fight against discrimination towards LGBTQI+ people is not over. Our rights were hard won, and we must stay ever vigilant to keep them.</span></span><span class="flag"><button type="button" aria-label="Gay men’s flag" aria-expanded="false" aria-describedby="flag-gay-men"><img src="/assets/badges/gay-men.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-gay-men" role="tooltip" hidden><strong>Gay men’s flag</strong>Poof Books recognises that gay men need safe spaces of our own, places to meet, talk and belong. We hope this shop is one of them.</span></span><span class="flag"><button type="button" aria-label="Bear flag" aria-expanded="false" aria-describedby="flag-bear"><img src="/assets/badges/bear.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-bear" role="tooltip" hidden><strong>Bear flag</strong>Gay men come in every shape, size, age and flavour. Poof Books celebrates all of us, and stands against discrimination towards anyone within our community.</span></span><span class="flag"><button type="button" aria-label="Leather pride flag" aria-expanded="false" aria-describedby="flag-leather"><img src="/assets/badges/leather.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-leather" role="tooltip" hidden><strong>Leather pride flag</strong>Poof Books celebrates consensual sexual expression in our community, and rejects the unjust censorship of our stories and our voices.</span></span><span class="flag flag-ai"><button type="button" aria-label="The A.I. Flag" aria-expanded="false" aria-describedby="flag-ai"><img src="/assets/badges/ai-flag.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-ai" role="tooltip" hidden><strong>The A.I. Flag</strong>Our curators are illustrated and voiced with AI tools. The books, and the choices, are human.</span></span><script src="/assets/js/flags.js?v=202611231800" defer></script></div><!--/flags-->
+    <div class="foot-right"><nav aria-label="Legal"><a href="/about/">About this site</a><a href="/the-loft/">Authors</a><a href="/support/">Help</a><a href="/terms/">Terms</a><a href="/privacy/">Privacy</a><a href="/privacy/#cookies" data-cookie-settings>Cookie&nbsp;settings</a></nav><span class="social"><a href="https://www.facebook.com/bigdaddysbookshelf" target="_blank" rel="noopener" aria-label="Poof Books on Facebook" title="Facebook"><svg viewBox="0 0 24 24" height="20" width="20" aria-hidden="true" fill="currentColor"><path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4v3.3h2.8V22h3.3z"/></svg></a><a href="https://www.instagram.com/poof.books/" target="_blank" rel="noopener" aria-label="Poof Books on Instagram" title="Instagram"><svg viewBox="0 0 1000 1000" height="20" width="20" aria-hidden="true" fill="currentColor"><path d="M295.42,6c-53.2,2.51-89.53,11-121.29,23.48-32.87,12.81-60.73,30-88.45,57.82S40.89,143,28.17,175.92c-12.31,31.83-20.65,68.19-23,121.42S2.3,367.68,2.56,503.46,3.42,656.26,6,709.6c2.54,53.19,11,89.51,23.48,121.28,12.83,32.87,30,60.72,57.83,88.45S143,964.09,176,976.83c31.8,12.29,68.17,20.67,121.39,23s70.35,2.87,206.09,2.61,152.83-.86,206.16-3.39S799.1,988,830.88,975.58c32.87-12.86,60.74-30,88.45-57.84S964.1,862,976.81,829.06c12.32-31.8,20.69-68.17,23-121.35,2.33-53.37,2.88-70.41,2.62-206.17s-.87-152.78-3.4-206.1-11-89.53-23.47-121.32c-12.85-32.87-30-60.7-57.82-88.45S862,40.87,829.07,28.19c-31.82-12.31-68.17-20.7-121.39-23S637.33,2.3,501.54,2.56,348.75,3.4,295.42,6m5.84,903.88c-48.75-2.12-75.22-10.22-92.86-17-23.36-9-40-19.88-57.58-37.29s-28.38-34.11-37.5-57.42c-6.85-17.64-15.1-44.08-17.38-92.83-2.48-52.69-3-68.51-3.29-202s.22-149.29,2.53-202c2.08-48.71,10.23-75.21,17-92.84,9-23.39,19.84-40,37.29-57.57s34.1-28.39,57.43-37.51c17.62-6.88,44.06-15.06,92.79-17.38,52.73-2.5,68.53-3,202-3.29s149.31.21,202.06,2.53c48.71,2.12,75.22,10.19,92.83,17,23.37,9,40,19.81,57.57,37.29s28.4,34.07,37.52,57.45c6.89,17.57,15.07,44,17.37,92.76,2.51,52.73,3.08,68.54,3.32,202s-.23,149.31-2.54,202c-2.13,48.75-10.21,75.23-17,92.89-9,23.35-19.85,40-37.31,57.56s-34.09,28.38-57.43,37.5c-17.6,6.87-44.07,15.07-92.76,17.39-52.73,2.48-68.53,3-202.05,3.29s-149.27-.25-202-2.53m407.6-674.61a60,60,0,1,0,59.88-60.1,60,60,0,0,0-59.88,60.1M245.77,503c.28,141.8,115.44,256.49,257.21,256.22S759.52,643.8,759.25,502,643.79,245.48,502,245.76,245.5,361.22,245.77,503m90.06-.18a166.67,166.67,0,1,1,167,166.34,166.65,166.65,0,0,1-167-166.34" transform="translate(-2.5 -2.5)"/></svg></a><a href="https://www.youtube.com/@PoofBooks" target="_blank" rel="noopener" aria-label="Poof Books on YouTube" title="YouTube"><svg viewBox="102 119 397 278" height="20" width="29" style="height:20px" aria-hidden="true" fill="currentColor"><path fill-rule="nonzero" d="M 261.2 317.3 L 261.2 198.4 L 363.9 257.7 Z M 490.3 162.6 C 485.7 145.5 472.7 132.2 455.3 127.6 C 424.6 119.2 300.5 119.2 300.5 119.2 C 300.5 119.2 176.7 119.2 146.1 127.6 C 129 132.2 115.7 145.5 110.8 162.6 C 102.7 193.2 102.7 257.7 102.7 257.7 C 102.7 257.7 102.7 322.2 110.8 353.2 C 115.7 370 129 383.6 146.1 388.2 C 176.7 396.6 300.5 396.6 300.5 396.6 C 300.5 396.6 424.6 396.6 455.3 388.2 C 472.7 383.6 485.7 370 490.3 353.2 C 498.7 322.2 498.7 257.7 498.7 257.7 C 498.7 257.7 498.7 193.2 490.3 162.6"/></svg></a><a href="https://www.tiktok.com/@poofbooks" target="_blank" rel="noopener" aria-label="Poof Books on TikTok" title="TikTok"><svg viewBox="0 0 24 24" height="20" width="20" style="height:20px" aria-hidden="true" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a><a href="https://bsky.app/profile/poofbooks.bsky.social" target="_blank" rel="noopener" aria-label="Poof Books on Bluesky" title="Bluesky"><svg viewBox="0 0 24 24" height="20" width="20" style="height:20px" aria-hidden="true" fill="currentColor"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/></svg></a></span></div>
+  </div>
 </footer>
 </body>
 </html>

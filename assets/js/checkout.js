@@ -454,7 +454,7 @@
     var box = $('.summary');
     box.querySelectorAll('[data-lines], .totals, .sum-note, [data-fx-note]').forEach(function (el) { el.hidden = true; });
     var p = document.createElement('p'); p.className = 'empty-note'; p.textContent = 'Your cart is empty.';
-    var a = document.createElement('a'); a.className = 'pay back-to-shelves'; a.href = '/the-cabin/#curators'; a.textContent = 'Back to the shelves';
+    var a = document.createElement('a'); a.className = 'pay back-to-shelves'; a.href = '/#curators'; a.textContent = 'Back to the shelves';
     box.append(p, a);
     $('[data-panel]').hidden = true;
     html.classList.add('cart-empty');
