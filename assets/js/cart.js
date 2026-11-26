@@ -10,6 +10,33 @@
 (function () {
   'use strict';
   var KEY = 'poof-cart';
+
+  // The till (27 Nov 2026): closed to the public until launch (4 Jan 2027). Testers unlock a device with ?till=open
+  // (remembered in localStorage "poof-till"); ?till=closed locks it again. theme.css hides the Buy buttons, cart and
+  // checkout unless html.till-open is set. At go-live, delete this block and the till block in theme.css.
+  var TILL_KEY = 'poof-till', LAUNCH = '4 January 2027';
+  try {
+    var tq = new URLSearchParams(location.search).get('till');
+    if (tq === 'open') localStorage.setItem(TILL_KEY, 'open');
+    if (tq === 'closed') localStorage.removeItem(TILL_KEY);
+  } catch (e) {}
+  var tillOpen = false;
+  try { tillOpen = localStorage.getItem(TILL_KEY) === 'open'; } catch (e) {}
+  if (tillOpen) document.documentElement.classList.add('till-open');
+  if (!tillOpen) document.addEventListener('DOMContentLoaded', function () {
+    var note = document.querySelector('.ib-buy .price-note');
+    if (note) note.innerHTML = 'On sale from ' + LAUNCH + '. <a href="/#signup-heading">Join the Looker List</a> to hear first.';
+    var co = document.querySelector('main.checkout');
+    if (co && !document.querySelector('.till-closed-note')) {
+      var m = document.createElement('main');
+      m.className = 'till-closed-note';
+      m.innerHTML = '<h1>The till opens on ' + LAUNCH + '</h1>' +
+        '<p>Hola, boss! Lil Otter is still polishing the counter and tying the string. Poof Books opens for orders on ' + LAUNCH + '.</p>' +
+        '<p>Join the Looker List and we’ll tell you the moment the doors open.</p>' +
+        '<p><a class="btn btn-primary" href="/#signup-heading">Join the Looker List</a></p>';
+      co.parentNode.insertBefore(m, co);
+    }
+  });
   // Shop and search measurement (track.js, 5 Nov 2026), on every page that has the cart.
   (function () { var s = document.createElement('script'); s.src = '/assets/js/track.js?v=202611051800'; s.async = true; (document.head || document.documentElement).appendChild(s); })();
 

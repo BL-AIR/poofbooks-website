@@ -112,3 +112,15 @@ html.lm .co-room .room-shade { background:
 @media (max-width: 760px) {
   html.lm .co-room .room-shade { background: linear-gradient(180deg, rgba(var(--night-rgb), 0) 0%, rgba(var(--night-rgb), 0) 50%, rgba(var(--night-rgb), .85) 85%, var(--night) 100%); }
 }
+
+/* The till (27 Nov 2026): closed to the public until launch. cart.js adds html.till-open on devices unlocked
+   with ?till=open (testers); ?till=closed locks again. At go-live, delete this block and the till code in cart.js. */
+html:not(.till-open) [data-buy],
+html:not(.till-open) [data-go-checkout],
+html:not(.till-open) .cart-btn,
+html:not(.till-open) .test-band,
+html:not(.till-open) main.checkout { display: none !important; }
+.till-closed-note { max-width: 640px; margin: 64px auto; padding: 0 var(--gutter, 20px); text-align: center; }
+.till-closed-note h1 { margin-bottom: .4em; }
+.till-closed-note p { line-height: 1.6; }
+.till-closed-note .btn { margin-top: 12px; }
