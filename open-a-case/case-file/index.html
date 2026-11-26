@@ -164,7 +164,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 (function () {
   var HANDBUILT = ['9781922263988', '9781922263971', '9781922263933'];   // checkout.js EDITIONS (The Art of Surrender)
-  var API = 'https://poofbooks-pay.big--daddy.workers.dev/v1/case/admin';
+  var API = '/v1/case/admin';   // same-origin; behind Cloudflare Access (26 Nov 2026)
   var $ = function (id) { return document.getElementById(id); };
   try { $('k').value = localStorage.getItem('poof-case-key') || ''; } catch (e) {}
   $('k').addEventListener('change', function () { try { localStorage.setItem('poof-case-key', $('k').value.trim()); } catch (e) {} });

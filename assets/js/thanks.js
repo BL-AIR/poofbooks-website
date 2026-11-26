@@ -16,7 +16,8 @@
     booksTotal: 39.95, delivery: null, total: 39.95
   };
 
-  var ORDER_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/stripe/order?session_id=';
+  // Same-origin since 26 Nov 2026. The Worker answers for an hour after payment, then not at all (privacy).
+  var ORDER_URL = '/v1/stripe/order?session_id=';
   // The Worker's order, with covers from the cart's sellable list where we have them. Retries while Stripe finishes.
   function fromStripe(id, tries) {
     return fetch(ORDER_URL + encodeURIComponent(id)).then(function (r) { return r.json().then(function (j) { return { s: r.status, j: j }; }); })
@@ -87,7 +88,9 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     var demo = new URLSearchParams(location.search).get('demo');
+    // The page's first script moves ?session_id= into sessionStorage before analytics loads (26 Nov 2026).
     var sid = new URLSearchParams(location.search).get('session_id');
+    if (!sid) { try { sid = sessionStorage.getItem('poof-sid'); } catch (e) {} }
     if (!demo && sid) {
       bindVoice();
       fromStripe(sid, 8).then(function (o) {

@@ -11,15 +11,17 @@
   'use strict';
   // Stripe publishable key (public by design). pk_test_... in the sandbox, pk_live_... at go-live.
   var STRIPE_PK = 'pk_test_51UIp5DRarfJlhaAL3wOkVFjL3Cd2lmOoTr8H1gYJaATLA7Tygil51E0kYsiKVPCP0aFh2MKnGhzCEae42VOsjN7z003UUDAMY2';
-  var SESSION_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/stripe/session';
+  // The payments Worker answers on our own domain (poofbooks.com/v1/..., 26 Nov 2026), behind Cloudflare's rate limit.
+  var SESSION_URL = '/v1/stripe/session';
   var SHOP_EMAIL = 'BigDaddy@poofbooks.com';
-  // Payments Worker: prices the cart itself, charges Square, saves the order and sends Lil Otter's receipt.
-  var PAY_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/checkout';
+  // Cloudflare Turnstile (site key, public by design): proves a person pressed Continue, so card testers can't script
+  // the payment step. The Worker checks the token with the secret key (a Worker secret, never here).
+  var TURNSTILE_SITEKEY = '0x4AAAAAAGT_ZwXdP5gYx3AD';
   // Delivery options for the cart and address: priced by the same Worker (Australia Post for books we post ourselves,
   // A$0 for supplier drop-ships until their rates are in). The Worker prices delivery again when it charges.
-  var SHIP_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/shipping';
+  var SHIP_URL = '/v1/shipping';
   // Discount codes: the same Worker checks a code against the cart, delivery postcode and email (margin, area and use limits).
-  var COUPON_URL = 'https://poofbooks-pay.big--daddy.workers.dev/v1/coupon';
+  var COUPON_URL = '/v1/coupon';
   // Address lookup: Google Places (New). A browser key, public by design: Google only accepts it from poofbooks.com
   // and only for Maps JavaScript + Places (New); daily caps and an A$1 budget alert are set in Google Cloud (project
   // poof-books, 2 Nov 2026). Loaded only when the customer starts typing an address.
@@ -493,38 +495,32 @@
     var brand = (c.brand || 'Card').replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, function (m) { return m.toUpperCase(); });
     return brand + (c.last4 ? ' ending ' + c.last4 : '');
   }
-  // Send the token and the order to the payments Worker. Resolves with the Worker's order, or throws an Error
-  // whose message is safe to show the customer.
-  function newKey() {
-    try { return crypto.randomUUID(); } catch (e) { return 'k' + Date.now() + Math.random().toString(36).slice(2); }
+  // (The Square-era helpers payViaWorker / orderFromWorker were removed on 26 Nov 2026 with the Worker's /v1/checkout.)
+
+  /* ---------- Cloudflare Turnstile: one fresh token per "Continue to payment" ---------- */
+  var ts = { id: null, token: '', waiters: [] };
+  function tsRender() {
+    if (ts.id !== null || !window.turnstile || !document.getElementById('turnstile-box')) return;
+    ts.id = window.turnstile.render('#turnstile-box', {
+      sitekey: TURNSTILE_SITEKEY, action: 'checkout', appearance: 'interaction-only',
+      theme: html.classList.contains('lm') ? 'light' : 'dark',
+      callback: function (t) { ts.token = t; ts.waiters.splice(0).forEach(function (f) { f(t); }); },
+      'expired-callback': function () { ts.token = ''; },
+      'error-callback': function () { ts.token = ''; }
+    });
   }
-  async function payViaWorker(payload) {
-    payload.items = currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; });
-    payload.curators = !html.classList.contains('no-curators');
-    payload.idempotencyKey = newKey();
-    if (!payload.deliveryOption) { var o = shipOption(); if (o) { payload.deliveryOption = o.id; payload.deliveryCents = o.cents; } }
-    var res, data;
-    try {
-      res = await fetch(PAY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-      data = await res.json();
-    } catch (e) {
-      throw new Error('We couldn\'t reach our payment service just now. You have not been charged.');
-    }
-    if (data && data.code === 'DELIVERY_CHANGED' && data.delivery) { ship.options = data.delivery.options || []; renderShip(); }
-    if (!res.ok || !data.ok) throw new Error(data && data.error ? data.error : 'The payment didn\'t go through. You have not been charged.');
-    return data;
+  window.poofTurnstileReady = tsRender;   // called by the Turnstile script's onload
+  function tsToken() {
+    tsRender();
+    if (ts.token) return Promise.resolve(ts.token);
+    return new Promise(function (res) {
+      ts.waiters.push(res);
+      setTimeout(function () { var k = ts.waiters.indexOf(res); if (k >= 0) { ts.waiters.splice(k, 1); res(''); } }, 15000);
+    });
   }
-  // The thank-you page's order, from the Worker's reply (its prices and order number), with covers from the cart.
-  function orderFromWorker(w) {
-    return {
-      ref: w.ref, test: !!w.test, placedAt: new Date().toISOString(),
-      email: w.email, name: w.name, address: w.address || [], paidWith: w.paidWith,
-      items: (w.items || []).map(function (i) {
-        var c = currentCart.filter(function (l) { return l.isbn === i.isbn; })[0];
-        return { title: i.title, author: c ? c.book.author : '', cover: c ? c.book.cover : '', format: i.format, qty: i.qty, price: i.price };
-      }),
-      booksTotal: w.booksTotal, delivery: w.delivery, total: w.total
-    };
+  function tsUsed() {   // tokens are single-use: get a fresh one ready for the next press
+    ts.token = '';
+    try { if (ts.id !== null) window.turnstile.reset(ts.id); } catch (e) {}
   }
 
   // A sample order (test-mode preview, no real cart) is never charged or emailed. Say so plainly rather than
@@ -661,8 +657,10 @@
     plainStatus('Opening the payment box…', 'ok');
     var o = shipOption(), res, data;
     if (window.PoofTrack) PoofTrack.shipping(o && o.label, o && o.cents);
+    var human = await tsToken();
     try {
       res = await fetch(SESSION_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+        turnstile: human || undefined,
         items: currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; }),
         curators: !html.classList.contains('no-curators'), adult: !!(form.adult && form.adult.checked),
         looker: !!(form.looker && form.looker.checked),
@@ -671,7 +669,8 @@
         address: { line1: form.line1.value, line2: form.line2.value, city: form.city.value, state: form.state.value, postcode: form.postcode.value, country: form.country.value },
         deliveryOption: o && o.id, deliveryCents: o && o.cents }) });
       data = await res.json();
-    } catch (e) { showProblem('We couldn\'t reach our payment service just now. You have not been charged.'); return; }
+    } catch (e) { tsUsed(); showProblem('We couldn\'t reach our payment service just now. You have not been charged.'); return; }
+    tsUsed();
     if (data && data.code === 'DELIVERY_CHANGED' && data.delivery) { ship.options = data.delivery.options || []; renderShip(); }
     if (data && data.code === 'COUPON_INVALID') { clearPromo(); codeMsg(String(data.error || '').replace(' You have not been charged.', ''), 'err'); showTotals(); }
     if (!res.ok || !data.ok) { showProblem(data && data.error ? data.error : 'The payment box couldn\'t open. You have not been charged.'); return; }
