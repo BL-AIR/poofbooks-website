@@ -71,7 +71,10 @@
 
   /* ---------- page state ---------- */
   var form, statusEl, payBtn;
-  var pay = { stripe: null, checkout: null, actions: null, key: '', els: [] };
+  var pay = { stripe: null, stripeKey: '', checkout: null, actions: null, key: '', els: [] };
+  // Poof Loot can run on its own Stripe keys (live before the book checkout): the Worker's config or session reply says which
+  // publishable key to use; the built-in test key is only the fallback (29 Nov 2026).
+  var cfgPk = '';
   function say(msg, kind) { statusEl.textContent = msg || ''; statusEl.className = 'loot-status' + (kind ? ' ' + kind : ''); }
 
   function amountCents() {
@@ -157,7 +160,8 @@
       return;
     }
     try {
-      pay.stripe = pay.stripe || window.Stripe(STRIPE_PK);
+      var pk = (data && data.publishableKey) || cfgPk || STRIPE_PK;
+      if (!pay.stripe || pay.stripeKey !== pk) { pay.stripe = window.Stripe(pk); pay.stripeKey = pk; }
       pay.checkout = pay.stripe.initCheckoutElementsSdk({
         clientSecret: data.clientSecret,
         elementsOptions: { appearance: html.classList.contains('lm') ? APPEAR_LIGHT : APPEAR_DARK }
@@ -170,7 +174,7 @@
       pay.key = payKey();
       $('[data-paybox]').hidden = false;
       payBtn.disabled = false; payBtn.textContent = 'Pay ' + dollars(amountCents());
-      say(data.test ? 'Test mode: use card 4242 4242 4242 4242, any future expiry, any CVC. Nothing is charged.' : '', 'ok');
+      say(data.test ? 'Test mode: use the Australian test card 4000 0003 6000 0006, any future expiry, any CVC. Nothing is charged.' : '', 'ok');
       $('[data-paybox]').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (e) {
       console.error('[Poof Loot]', e);
@@ -232,6 +236,7 @@
     noteSource();
     if (!html.classList.contains('till-open')) { show('closed', 'Poof Loot goes on sale when the shop opens on 4 January 2027.'); return; }
     fetch('/v1/giftcard/config').then(function (r) { return r.json(); }).then(function (c) {
+      if (c && c.publishableKey) cfgPk = c.publishableKey;
       if (!c || !c.on) show('closed', 'Poof Loot is coming soon.');
       else if (!c.available) show('closed', 'Poof Loot is for Australian readers for now.');
       else show('open');

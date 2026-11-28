@@ -70,7 +70,19 @@
       var p = money((other && l.chargePrice != null ? l.chargePrice : l.price) * l.qty); p.classList.add('line-price');
       li.append(img, t, p); ul.appendChild(li);
     });
-    $('[data-books-total]').replaceChildren(money((other ? o.chargeBooks : o.booksTotal) || 0));
+    // A discount is already inside booksTotal; show the books before it and the saving under it, so the sums add up as at checkout.
+    var cpOff = (!other && o.coupon && o.coupon.discount) ? o.coupon.discount : 0;
+    $('[data-books-total]').replaceChildren(money(((other ? o.chargeBooks : o.booksTotal) || 0) + cpOff));
+    // Discount code (29 Nov 2026): the order reply's coupon { code, label, discount }, shown as the checkout summary does.
+    var cr = $('[data-coupon-row]');
+    if (cr) {
+      var cp = cpOff ? o.coupon : null;
+      cr.hidden = !cp;
+      if (cp) {
+        $('[data-coupon-label]').textContent = (cp.label || 'Discount') + (cp.code ? ' (' + cp.code + ')' : '');
+        var cm = money(cp.discount); cm.textContent = '\u2212' + cm.textContent; $('[data-coupon-total]').replaceChildren(cm);
+      }
+    }
     var d = $('[data-delivery]');
     if (other && typeof o.chargeDelivery === 'number') d.replaceChildren(money(o.chargeDelivery));
     else if (typeof o.delivery === 'number') d.replaceChildren(money(o.delivery));

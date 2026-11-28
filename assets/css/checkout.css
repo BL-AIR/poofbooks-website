@@ -261,4 +261,5 @@ html.no-curators .thanks .co-panel { max-width: 760px; }
 .code-msg.err { color: #FF6B6B; }
 [data-discount-row] dd { color: var(--lilac); }
 [data-gift-row] dd { color: var(--lilac); }
-.sum [data-discount-row][hidden], .sum [data-gift-row][hidden], dl [data-discount-row][hidden], dl [data-gift-row][hidden] { display: none; }
+.sum [data-discount-row][hidden], .sum [data-gift-row][hidden], [data-discount-row][hidden], [data-gift-row][hidden], [data-coupon-row][hidden] { display: none; }
+[data-coupon-row] dd { color: var(--lilac); }
