@@ -107,6 +107,12 @@
   var ship = { options: [], choice: 'standard', key: '', needPostcode: false, error: '', pending: null, warning: '' };
   // Discount code: what the Worker last said it takes off (cents), for the order box. The Worker works it out again when it charges.
   var promo = { code: '', label: '', discountCents: 0, qualifying: 0, of: 0 };
+  // Poof Loot (28 Nov 2026): a gift card code goes in the same "Have a code?" box. It's recognised by its shape
+  // (16 letters and digits in fours) and sent with Continue to payment; the Worker says how much it covers.
+  var gift = { code: '', last4: '', appliedCents: 0, remainingCents: 0 };
+  function looksGift(v) { return /^[A-Z0-9]{4}([ -]?[A-Z0-9]{4}){3}$/i.test(String(v || '').trim()); }
+  function giftNorm(v) { var c = String(v).toUpperCase().replace(/[^A-Z0-9]/g, ''); return c.slice(0, 4) + '-' + c.slice(4, 8) + '-' + c.slice(8, 12) + '-' + c.slice(12, 16); }
+  function clearGift() { gift.code = ''; gift.last4 = ''; gift.appliedCents = 0; gift.remainingCents = 0; }
   function shipCents() {
     var o = ship.options.filter(function (x) { return x.id === ship.choice; })[0] || ship.options[0];
     return o ? o.cents : null;
@@ -370,7 +376,16 @@
     toggle.addEventListener('click', function () {
       if (wrap.hidden) { open(); input.focus(); } else { wrap.hidden = true; toggle.setAttribute('aria-expanded', 'false'); }
     });
-    function apply() { promo.code = input.value.trim(); checkCode(false); }
+    function apply() {
+      var v = input.value.trim();
+      if (looksGift(v)) {
+        clearGift(); gift.code = giftNorm(v); gift.last4 = gift.code.slice(-4); input.value = '';
+        codeMsg('Poof Loot \u2022\u2022\u2022\u2022' + gift.last4 + ' added. We\'ll take it off when you press Continue to payment.', 'ok');
+        if (pay && pay.checkout) resetPayment(form, 'Your order changed, so press Continue to payment again.');
+        showTotals(); return;
+      }
+      promo.code = v; checkCode(false);
+    }
     $('[data-code-apply]').addEventListener('click', apply);
     input.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); apply(); } });
     // A code can depend on the delivery postcode and the email, so look again when they change.
@@ -398,13 +413,23 @@
       dr.hidden = !promo.discountCents;
       if (promo.discountCents) { var dm = money(disc); dm.textContent = '\u2212' + dm.textContent; $('[data-discount-label]').textContent = promo.label || 'Discount'; $('[data-discount-total]').replaceChildren(dm); }
     }
+    var gr = $('[data-gift-row]');
+    if (gr) {
+      gr.hidden = !gift.code;
+      if (gift.code) {
+        $('[data-gift-label]').textContent = 'Poof Loot \u2022\u2022\u2022\u2022' + gift.last4;
+        var gt = $('[data-gift-total]');
+        if (gift.appliedCents) { var gm = money(gift.appliedCents / 100); gm.textContent = '\u2212' + gm.textContent; gt.replaceChildren(gm); }
+        else gt.innerHTML = '<span class="gap-inline">at payment</span>';
+      }
+    }
     if (chg) {                                  // another currency: the Worker's own figures (no codes outside A$ for now)
       var mc = c == null ? null : chgDelivery((shipOption() || {}).id);
       if (d && mc != null) d.replaceChildren(money(mc / 100));
       $('[data-grand-total]').replaceChildren(money((chg.booksCents + (mc || 0)) / 100));
       return;
     }
-    var grand = cartTotal - disc + (c || 0) / 100;
+    var grand = Math.max(0, cartTotal - disc + (c || 0) / 100 - gift.appliedCents / 100);
     $('[data-grand-total]').replaceChildren(money(grand));
     var pt = $('[data-pay-total]'); if (pt) pt.textContent = aud(grand);
     var t = { amount: aud(grand), label: 'Poof Books' };
@@ -679,7 +704,7 @@
   function payKey(form) {
     return JSON.stringify([currentCart.map(function (l) { return [l.isbn, l.qty]; }), (shipOption() || {}).id, shipCents(),
       ['given', 'family', 'email', 'line1', 'line2', 'city', 'state', 'postcode', 'country'].map(function (n) { return form[n].value.trim(); }),
-      !!(form.adult && form.adult.checked), !!(form.looker && form.looker.checked), html.classList.contains('no-curators'), promo.discountCents,
+      !!(form.adult && form.adult.checked), !!(form.looker && form.looker.checked), html.classList.contains('no-curators'), promo.discountCents, gift.code,
       !!(form.shipwarn && form.shipwarn.checked)]);
   }
   function resetPayment(form, why) {
@@ -711,7 +736,7 @@
         items: currentCart.map(function (l) { return { isbn: l.isbn, qty: l.qty }; }),
         curators: !html.classList.contains('no-curators'), adult: !!(form.adult && form.adult.checked),
         looker: !!(form.looker && form.looker.checked),
-        case: caseRef(), source: saleSource(), coupon: promo.discountCents ? promo.code : undefined,
+        case: caseRef(), source: saleSource(), coupon: promo.discountCents ? promo.code : undefined, giftCard: gift.code || undefined,
         email: form.email.value.trim(), given: form.given.value.trim(), family: form.family.value.trim(),
         address: { line1: form.line1.value, line2: form.line2.value, city: form.city.value, state: form.state.value, postcode: form.postcode.value, country: form.country.value },
         deliveryOption: o && o.id, deliveryCents: o && o.cents,
@@ -721,6 +746,20 @@
     tsUsed();
     if (data && data.code === 'DELIVERY_CHANGED' && data.delivery) { ship.options = data.delivery.options || []; renderShip(); }
     if (data && data.code === 'COUPON_INVALID') { clearPromo(); codeMsg(String(data.error || '').replace(' You have not been charged.', ''), 'err'); showTotals(); }
+    if (data && /^GIFTCARD_/.test(String(data.code || ''))) {
+      clearGift(); codeMsg(String(data.error || 'That Poof Loot code didn\'t work.').replace(' You have not been charged.', ''), 'err'); showTotals();
+    }
+    if (data && data.giftCard) {
+      gift.last4 = data.giftCard.last4 || gift.last4; gift.appliedCents = data.giftCard.appliedCents || 0; gift.remainingCents = data.giftCard.remainingCents || 0;
+      codeMsg('Poof Loot \u2022\u2022\u2022\u2022' + gift.last4 + ': A$' + aud(gift.appliedCents / 100) + ' off this order, A$' + aud(gift.remainingCents / 100) + ' left on the card.', 'ok');
+      showTotals();
+    }
+    // Paid in full by Poof Loot: no Stripe. The thank-you page reads the one-time token from sessionStorage (never the address bar).
+    if (res.ok && data && data.ok && data.paid && data.token) {
+      try { sessionStorage.setItem('poof-otoken', data.token); } catch (e) {}
+      plainStatus('Paid in full with Poof Loot. One moment\u2026', 'ok');
+      location.assign('/checkout/thanks/'); return;
+    }
     if (!res.ok || !data.ok) { showProblem(data && data.error ? data.error : 'The payment box couldn\'t open. You have not been charged.'); return; }
     try {
       pay.stripe = pay.stripe || window.Stripe(STRIPE_PK);

@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="/assets/js/currency.js?v=202611051400" defer></script>
 <script src="https://js.stripe.com/endive/stripe.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=poofTurnstileReady" async defer></script>
-<script src="/assets/js/checkout.js?v=202611281700" defer></script>
+<script src="/assets/js/checkout.js?v=202611282330" defer></script>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611270130">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
 </head>
@@ -103,6 +103,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <dl class="totals">
           <div><dt>Books</dt><dd data-books-total></dd></div>
           <div data-discount-row hidden><dt data-discount-label>Discount</dt><dd data-discount-total></dd></div>
+          <div data-gift-row hidden><dt data-gift-label>Poof Loot</dt><dd data-gift-total></dd></div>
           <div><dt>Delivery</dt><dd data-delivery-total><span class="gap-inline">working it out…</span></dd></div>
           <div class="grand"><dt>Total</dt><dd data-grand-total></dd></div>
         </dl>
@@ -110,7 +111,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="code-box" data-code-box>
           <button type="button" class="code-toggle" data-code-toggle aria-expanded="false" aria-controls="code-form">Have a code?</button>
           <div class="code-form" id="code-form" data-code-form hidden>
-            <input type="text" name="coupon" aria-label="Discount code" placeholder="Enter your code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="30" data-code-input>
+            <input type="text" name="coupon" aria-label="Discount code or Poof Loot gift card code" placeholder="Discount or Poof Loot code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="30" data-code-input>
             <button type="button" class="code-apply" data-code-apply>Apply</button>
           </div>
           <p class="code-msg" data-code-msg role="status" aria-live="polite" hidden></p>

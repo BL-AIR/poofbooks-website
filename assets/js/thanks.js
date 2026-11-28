@@ -21,10 +21,10 @@
   // Same-origin since 26 Nov 2026. The Worker answers for an hour after payment, then not at all (privacy).
   var ORDER_URL = '/v1/stripe/order?session_id=';
   // The Worker's order, with covers from the cart's sellable list where we have them. Retries while Stripe finishes.
-  function fromStripe(id, tries) {
-    return fetch(ORDER_URL + encodeURIComponent(id)).then(function (r) { return r.json().then(function (j) { return { s: r.status, j: j }; }); })
+  function fromStripe(id, tries, url) {
+    return fetch((url || ORDER_URL) + encodeURIComponent(id)).then(function (r) { return r.json().then(function (j) { return { s: r.status, j: j }; }); })
       .then(function (x) {
-        if (x.s === 202 && tries > 0) return new Promise(function (res) { setTimeout(res, 1500); }).then(function () { return fromStripe(id, tries - 1); });
+        if (x.s === 202 && tries > 0) return new Promise(function (res) { setTimeout(res, 1500); }).then(function () { return fromStripe(id, tries - 1, url); });
         if (!x.j || !x.j.ok) throw new Error((x.j && x.j.error) || 'not found');
         return x.j;
       });
@@ -97,9 +97,11 @@
     // The page's first script moves ?session_id= into sessionStorage before analytics loads (26 Nov 2026).
     var sid = new URLSearchParams(location.search).get('session_id');
     if (!sid) { try { sid = sessionStorage.getItem('poof-sid'); } catch (e) {} }
-    if (!demo && sid) {
+    // Paid in full with Poof Loot (28 Nov 2026): no Stripe session, a one-time token the checkout left in sessionStorage.
+    var otok = ''; if (!sid) { try { otok = sessionStorage.getItem('poof-otoken') || ''; sessionStorage.removeItem('poof-otoken'); } catch (e) {} }
+    if (!demo && (sid || otok)) {
       bindVoice();
-      fromStripe(sid, 8).then(function (o) {
+      fromStripe(sid || otok, 8, sid ? null : '/v1/stripe/order?token=').then(function (o) {
         try { if (window.PoofCart) PoofCart.clear(); localStorage.removeItem('poof-case'); } catch (e) {}
         if (o.charged && o.charged.currency && o.charged.currency !== 'AUD') o.paidWith = o.paidWith || ('Charged ' + o.charged.currency + ' ' + o.charged.amount.toFixed(2));
         return fetch('/assets/data/sellable.json').then(function (r) { return r.ok ? r.json() : {}; }, function () { return {}; }).then(function (sell) {
