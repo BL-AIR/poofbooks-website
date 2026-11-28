@@ -67,7 +67,8 @@ html.motion-on .loot-voula img { animation: loot-breathe 6s ease-in-out infinite
 .loot-pick > input:focus-visible + .loot-card { outline-color: var(--lilac); }
 .loot-pick .lp-label { font-size: 15px; font-weight: 600; color: var(--cream); text-align: center; }
 .loot-custom { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; color: var(--muted); }
-.loot .loot-custom input[type="number"] { width: 5em; min-height: 40px; padding: 8px 10px; }
+.loot .loot-custom input[type="number"] { width: 6.5em; min-height: 40px; padding: 8px 10px; text-align: center; -moz-appearance: textfield; appearance: textfield; }
+.loot .loot-custom input[type="number"]::-webkit-inner-spin-button, .loot .loot-custom input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 @media (prefers-reduced-motion: reduce) { .loot-pick .loot-card { transition: none; } }
 
 .loot-form { display: grid; gap: 18px; max-width: 40rem; }
