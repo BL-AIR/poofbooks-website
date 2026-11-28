@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="/assets/js/currency.js?v=202611051400" defer></script>
 <script src="https://js.stripe.com/endive/stripe.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=poofTurnstileReady" async defer></script>
-<script src="/assets/js/checkout.js?v=202611270200" defer></script>
+<script src="/assets/js/checkout.js?v=202611281530" defer></script>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611270130">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
 </head>
@@ -157,6 +157,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <option value="DE">Germany</option>
                 <option value="FR">France</option>
                 <option value="NL">Netherlands</option>
+                <option value="BG">Bulgaria</option>
+                <option value="CN">China</option>
+                <option value="GE">Georgia</option>
+                <option value="HU">Hungary</option>
+                <option value="ID">Indonesia</option>
+                <option value="KZ">Kazakhstan</option>
+                <option value="KG">Kyrgyzstan</option>
+                <option value="LB">Lebanon</option>
+                <option value="TR">T&#xFC;rkiye</option>
               </select></label>
               <label>Address<input name="line1" autocomplete="address-line1" required></label>
               <label class="opt">Apartment, unit, etc. <span>(optional)</span><input name="line2" autocomplete="address-line2"></label>
@@ -168,6 +177,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <div class="ship" role="radiogroup" aria-label="Delivery method">
                 <p class="ship-wait">Working out delivery…</p>
               </div>
+              <!-- Countries where Poof Books ships only with a warning (db/061 market_country.ship_policy = 'warn'): the Worker sends the text. -->
+              <label class="adult ship-warn" data-ship-warn hidden><input type="checkbox" name="shipwarn"> I understand and still want my books sent.<span class="hint" data-ship-warn-text></span></label>
             </fieldset>
 
             <fieldset class="co-step">

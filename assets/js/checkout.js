@@ -104,7 +104,7 @@
   var cartTotal = 0;
   var currentCart = [];
   // Delivery: the options the Worker last gave for this cart and address, and the customer's choice.
-  var ship = { options: [], choice: 'standard', key: '', needPostcode: false, error: '', pending: null };
+  var ship = { options: [], choice: 'standard', key: '', needPostcode: false, error: '', pending: null, warning: '' };
   // Discount code: what the Worker last said it takes off (cents), for the order box. The Worker works it out again when it charges.
   var promo = { code: '', label: '', discountCents: 0, qualifying: 0, of: 0 };
   function shipCents() {
@@ -386,7 +386,25 @@
       try { r.update({ total: t, lineItems: [{ label: 'Books', amount: aud(cartTotal - disc) }, { label: 'Delivery', amount: aud((c || 0) / 100) }] }); } catch (e) { /* older SDK */ }
     });
   }
+  // A country we ship to only with a warning (db/061): show the Worker's text and a tick box; changing country clears the tick.
+  function renderShipWarn() {
+    var w = $('[data-ship-warn]'), form = $('[data-form]'); if (!w) return;
+    var show = !!ship.warning && !ship.error;
+    if (!show && form && form.shipwarn) form.shipwarn.checked = false;
+    if (show && w.dataset.text !== ship.warning && form && form.shipwarn) form.shipwarn.checked = false;
+    w.dataset.text = show ? ship.warning : '';
+    $('[data-ship-warn-text]').textContent = show ? ship.warning : '';
+    w.hidden = !show;
+  }
+  function shipWarnOk(form) {
+    var w = $('[data-ship-warn]');
+    if (!w || w.hidden || form.shipwarn.checked) return true;
+    form.shipwarn.focus();
+    plainStatus('Please read the delivery note for your country and tick the box if you still want your books sent.', 'err');
+    return false;
+  }
   function renderShip() {
+    renderShipWarn();
     var box = $('.ship'); if (!box) return;
     box.innerHTML = '';
     if (ship.needPostcode || ship.error || !ship.options.length) {
@@ -418,8 +436,8 @@
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (x) {
         if (key !== ship.key) return;                        // a newer address has been typed since
-        if (!x.ok || !x.j.ok) { ship.options = []; ship.needPostcode = false; ship.error = (x.j && x.j.error) || 'We couldn\'t work out delivery just now.'; }
-        else { ship.options = x.j.options || []; ship.needPostcode = !!x.j.needPostcode; }
+        if (!x.ok || !x.j.ok) { ship.options = []; ship.needPostcode = false; ship.warning = ''; ship.error = (x.j && x.j.error) || 'We couldn\'t work out delivery just now.'; }
+        else { ship.options = x.j.options || []; ship.needPostcode = !!x.j.needPostcode; ship.warning = x.j.warning || ''; }
       }, function () { if (key === ship.key) { ship.options = []; ship.error = 'We couldn\'t reach our delivery calculator. Check your connection.'; } })
       .then(function () { if (key === ship.key) { ship.pending = null; renderShip(); } });
     ship.pending = p;
@@ -633,7 +651,8 @@
   function payKey(form) {
     return JSON.stringify([currentCart.map(function (l) { return [l.isbn, l.qty]; }), (shipOption() || {}).id, shipCents(),
       ['given', 'family', 'email', 'line1', 'line2', 'city', 'state', 'postcode', 'country'].map(function (n) { return form[n].value.trim(); }),
-      !!(form.adult && form.adult.checked), !!(form.looker && form.looker.checked), html.classList.contains('no-curators'), promo.discountCents]);
+      !!(form.adult && form.adult.checked), !!(form.looker && form.looker.checked), html.classList.contains('no-curators'), promo.discountCents,
+      !!(form.shipwarn && form.shipwarn.checked)]);
   }
   function resetPayment(form, why) {
     if (!pay.checkout) return;
@@ -667,7 +686,8 @@
         case: caseRef(), source: saleSource(), coupon: promo.discountCents ? promo.code : undefined,
         email: form.email.value.trim(), given: form.given.value.trim(), family: form.family.value.trim(),
         address: { line1: form.line1.value, line2: form.line2.value, city: form.city.value, state: form.state.value, postcode: form.postcode.value, country: form.country.value },
-        deliveryOption: o && o.id, deliveryCents: o && o.cents }) });
+        deliveryOption: o && o.id, deliveryCents: o && o.cents,
+        shipWarningAccepted: !!(ship.warning && form.shipwarn && form.shipwarn.checked) }) });
       data = await res.json();
     } catch (e) { tsUsed(); showProblem('We couldn\'t reach our payment service just now. You have not been charged.'); return; }
     tsUsed();
@@ -755,6 +775,7 @@
       await quoteDelivery(formAddr(form));
       if (ship.error || shipCents() == null) { plainStatus(ship.error || 'Please check your postcode: we need it to work out delivery.', 'err'); btn.disabled = false; return; }
       if (before !== shipCents()) { plainStatus('Delivery is now A$' + aud(shipCents() / 100) + '. Please check the total and press Continue again.', 'err'); btn.disabled = false; return; }
+      if (!shipWarnOk(form)) { btn.disabled = false; return; }
       if (!usingRealCart) { sampleOnly(); btn.disabled = false; return; }
       await openPayment(form);
       btn.disabled = false;
