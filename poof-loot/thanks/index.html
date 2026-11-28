@@ -26,7 +26,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/fonts/fonts.css?v=202611231400">
 <link rel="stylesheet" href="/assets/css/section.css?v=202611151345">
-<link rel="stylesheet" href="/assets/css/loot.css?v=202611282145">
+<link rel="stylesheet" href="/assets/css/loot.css?v=202611282155">
 <script src="/assets/js/view-settings.js?v=202610290945" defer></script>
 <script src="/assets/js/cart.js?v=202611270200" defer></script>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611270130">
@@ -61,24 +61,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </section>
 </header>
 <main class="loot" id="main">
-  <p class="eyebrow">Poof Books Gift Card</p>
-  <h1 data-thanks-h>Thank you</h1>
-  <div class="loot-hero">
-    <div>
+  <div class="loot-top">
+    <div class="loot-top-text">
+      <p class="eyebrow">Poof Books Gift Card</p>
+      <h1 data-thanks-h>Thank you</h1>
       <div class="loot-card" role="img" aria-label="Poof Loot gift card" style="max-width:340px;margin-bottom:24px">
         <div class="lc-pill"><img class="lc-icon" src="/assets/giftcard/pb-icon.webp" alt="" width="110" height="110"><div class="lc-words"><span class="lc-name">Poof Loot</span><span class="lc-value" data-t-value>Book Bucks</span><span class="lc-url">poofbooks.com</span></div></div>
       </div>
       <div data-t-body><p class="lead">Checking your payment…</p></div>
       <p class="loot-note" data-t-test hidden>Test mode: nothing was charged and no card is real.</p>
       <p><a class="btn btn-primary" href="/">Back to the shop</a></p>
-    </div>
-    <div class="loot-voula c-on" data-t-voula hidden>
-      <div class="loot-speech" role="note" aria-label="Voula Ptuous says">
+      <div class="loot-speech c-on" role="note" aria-label="Voula Ptuous says" data-t-voula hidden>
         <p class="who">Voula Ptuous</p>
-        <p>Done, darling! Now sit back and wait for the thank-you. Opa!</p>
+        <p data-t-say>Done, darling! Now sit back and wait for the thank-you. Opa!</p>
       </div>
-      <img src="/assets/curators/cutouts/Voula.webp" width="420" height="707" alt="Voula Ptuous">
     </div>
+    <div class="loot-voula-fig c-on" data-t-voula hidden><img src="/assets/curators/cutouts/Voula.webp" width="420" height="707" alt="Voula Ptuous, in her Miss Greece 1987 sash"></div>
   </div>
 </main>
 <script>
@@ -90,13 +88,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   function nice(d) { try { return new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(d + 'T00:00:00Z')); } catch (e) { return d; } }
   function today() { try { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Melbourne', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()); } catch (e) { return ''; } }
   function show(h) { body.innerHTML = h; }
+  function voula() { Array.prototype.forEach.call(document.querySelectorAll('[data-t-voula]'), function (el) { el.hidden = false; }); }
   if (!sid) { show('<p class="lead">We couldn\'t find your gift card order on this page. Your receipt email has the details. Questions? <a href="mailto:Voula@poofbooks.com">Voula@poofbooks.com</a></p>'); return; }
   var tries = 0;
   function ask() {
     fetch('/v1/giftcard/order?session_id=' + encodeURIComponent(sid)).then(function (r) { return r.json().then(function (d) { return { s: r.status, d: d }; }); }).then(function (x) {
       var d = x.d || {};
       if (x.s === 202 || d.pending) { if (++tries < 8) { setTimeout(ask, 2500); return; } show('<p class="lead">Your payment is still being confirmed. Your receipt email will follow shortly.</p>'); return; }
-      if (d.refused) { document.querySelector('[data-thanks-h]').textContent = 'Not charged'; show('<p class="lead">' + esc(d.message) + '</p>'); return; }
+      if (d.refused) { document.querySelector('[data-thanks-h]').textContent = 'Not charged'; show('<p class="lead">' + esc(d.message) + '</p>'); document.querySelector('[data-t-say]').textContent = 'Ach, darling, Poof Loot is for Australian cards only for now. Not one cent was taken. Try an Australian card and I\u2019ll wrap it with a bow.'; voula(); document.querySelector('[data-t-test]').hidden = true; return; }
       if (!d.ok) { show('<p class="lead">We couldn\'t find that order any more. Your receipt email has the details.</p>'); return; }
       try { sessionStorage.removeItem('poof-gc-sid'); } catch (e) {}
       document.querySelector('[data-t-value]').textContent = '$' + Math.round(d.amountCents / 100) + ' Book Bucks';
@@ -105,7 +104,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       show('<p class="lead"><b>$' + Math.round(d.amountCents / 100) + ' Book Bucks</b> of Poof Loot goes to ' + (d.sendToMe ? 'you' : '<b>' + esc(d.recipientName) + '</b>') + ' ' + when + '.</p>' +
            '<p>The code is in ' + where + (d.deliverOn && d.deliverOn !== today() ? ' (once it\'s sent)' : '') + '. We never show it here. Your receipt is on its way to you' + (d.ref ? ' (order ' + esc(d.ref) + ')' : '') + '.</p>' +
            (d.expires ? '<p class="loot-note">Expires ' + esc(d.expires) + '. No fees, ever.</p>' : ''));
-      document.querySelector('[data-t-voula]').hidden = false;
+      voula();
       document.querySelector('[data-t-test]').hidden = !d.test;
     }).catch(function () { show('<p class="lead">We couldn\'t check your order just now. Your receipt email has the details.</p>'); });
   }

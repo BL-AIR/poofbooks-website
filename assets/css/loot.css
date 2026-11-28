@@ -62,6 +62,8 @@ html.motion-on .loot-voula-fig img { animation: loot-breathe 6s ease-in-out infi
 .loot-speech p { margin: 0 0 8px; }
 .loot-speech p:last-child { margin-bottom: 0; }
 .loot-speech .who { font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--lilac); }
+.loot-voula[hidden] { display: none; }
+.loot-speech[hidden], .loot-voula-fig[hidden] { display: none; }
 html.motion-on .loot-voula img { animation: loot-breathe 6s ease-in-out infinite; transform-origin: 50% 100%; }
 @keyframes loot-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.012); } }
 @media (min-width: 860px) { .loot-voula img { width: 190px; } }
