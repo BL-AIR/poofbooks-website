@@ -383,10 +383,10 @@ html[data-theme="light"] .member-badge .mb-light { display: block; }
       </a>
     </div>
     <script>
-    /* Poof Loot in the Cabin (28 Nov 2026): shown only where the till is open (html.till-open, from cart.js) and
-       GET /v1/giftcard/config says on and available (Australian visitors). Asked once per visit; nothing personal. */
+    /* Poof Loot in the Cabin (28 Nov 2026): shown to Australian visitors (GET /v1/giftcard/config says on and
+       available), before launch too (Blair, 28 Nov); the page itself says it goes on sale on 4 January until the
+       till opens. Asked once per visit; nothing personal. */
     document.addEventListener('DOMContentLoaded', function () {
-      if (!document.documentElement.classList.contains('till-open')) return;
       var el = document.querySelector('[data-loot-promo]'); if (!el) return;
       function use(c) { if (c && c.on && c.available) el.hidden = false; }
       var c = null; try { c = JSON.parse(sessionStorage.getItem('poof-gc-cfg') || 'null'); } catch (e) {}
