@@ -43,12 +43,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="/assets/js/shelf.js?v=202610311600" defer></script>
 <script src="/assets/js/showcase.js?v=202610301330" defer></script>
 <script src="/assets/js/trunk-plate.js?v=202611011047" defer></script>
+<link rel="stylesheet" href="/assets/css/loot.css?v=202611282100">
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611270130">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
 <style>
 /* ABA member badge (Blair, 11 Nov 2026). White logo on the dark theme, blue on the light theme. */
 .cabin-member { padding-top: 0; padding-bottom: 64px; text-align: center; }
-.member-badge { display: inline-flex; align-items: center; gap: 28px; text-align: left; }
+.member-badge { display: inline-flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.mb-logos { display: flex; align-items: center; gap: 28px; }
 .member-badge a { text-decoration: none; }
 .mb-text { color: var(--muted); font-size: 14px; line-height: 1.5; }
 .mb-text:hover { color: var(--pink); }
@@ -57,7 +59,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 @media (prefers-color-scheme: light) { html:not([data-theme="dark"]) .member-badge .mb-dark { display: none; } html:not([data-theme="dark"]) .member-badge .mb-light { display: block; } }
 html[data-theme="light"] .member-badge .mb-dark { display: none; }
 html[data-theme="light"] .member-badge .mb-light { display: block; }
-@media (max-width: 560px) { .member-badge { flex-wrap: wrap; justify-content: center; text-align: center; gap: 16px 24px; } .member-badge img { height: 80px; } .mb-text { flex-basis: 100%; } }
+@media (max-width: 560px) { .mb-logos { gap: 20px; } .member-badge img { height: 80px; } }
+/* Poof Loot beside the ABA block, for Australian visitors (Blair, 28 Nov 2026): see assets/css/loot.css */
 </style>
 <style>
   /* Shelf symbol panels on The Cabin's shelf cards, Curators off: where the curator's Reading Room picture sits when Curators are on (Blair, 15 Nov 2026). Colours = Design System shelf-* tokens. */
@@ -360,8 +363,10 @@ html[data-theme="light"] .member-badge .mb-light { display: block; }
     </div>
   </section>
 
-  <section class="wrap cabin-member" aria-label="Trade membership">
-    <div class="member-badge">
+  <section class="wrap cabin-member" aria-label="Trade membership and gift cards">
+    <div class="member-row">
+      <div class="member-badge">
+        <div class="mb-logos">
       <a class="mb-logo" href="https://loveyourbookshop.org.au/" target="_blank" rel="noopener" aria-label="Australian Booksellers Association">
         <img class="mb-dark" src="/assets/aba-member-white.png" width="186" height="141" alt="Australian Booksellers Association" loading="lazy">
         <img class="mb-light" src="/assets/aba-member-blue.png" width="186" height="141" alt="Australian Booksellers Association" loading="lazy">
@@ -369,8 +374,29 @@ html[data-theme="light"] .member-badge .mb-light { display: block; }
       <a class="mb-logo" href="https://loveyourbookshop.org.au/" target="_blank" rel="noopener" aria-label="Love Your Bookshop">
         <img src="/assets/lyb-logo.png" width="579" height="590" alt="Love Your Bookshop" loading="lazy">
       </a>
-      <a class="mb-text" href="https://loveyourbookshop.org.au/" target="_blank" rel="noopener">Poof Books is a proud member of the<br>Australian Booksellers Association.</a>
+        </div>
+        <a class="mb-text" href="https://loveyourbookshop.org.au/" target="_blank" rel="noopener">Poof Books is a proud member of the<br>Australian Booksellers Association.</a>
+      </div>
+      <a class="loot-promo" href="/gift-cards/" data-loot-promo hidden>
+        <span class="loot-card" aria-hidden="true"><span class="lc-pill"><img class="lc-icon" src="/assets/giftcard/pb-icon.webp" alt="" width="110" height="110" loading="lazy"><span class="lc-words"><span class="lc-name">Poof Loot</span><span class="lc-value">$50 Book Bucks</span><span class="lc-url">poofbooks.com</span></span></span></span>
+        <span>Gift cards for the books on all shelves</span>
+      </a>
     </div>
+    <script>
+    /* Poof Loot in the Cabin (28 Nov 2026): shown only where the till is open (html.till-open, from cart.js) and
+       GET /v1/giftcard/config says on and available (Australian visitors). Asked once per visit; nothing personal. */
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!document.documentElement.classList.contains('till-open')) return;
+      var el = document.querySelector('[data-loot-promo]'); if (!el) return;
+      function use(c) { if (c && c.on && c.available) el.hidden = false; }
+      var c = null; try { c = JSON.parse(sessionStorage.getItem('poof-gc-cfg') || 'null'); } catch (e) {}
+      if (c) { use(c); return; }
+      fetch('/v1/giftcard/config').then(function (r) { return r.json(); }).then(function (d) {
+        try { sessionStorage.setItem('poof-gc-cfg', JSON.stringify({ on: !!d.on, available: !!d.available })); } catch (e) {}
+        use(d);
+      }).catch(function () {});
+    });
+    </script>
   </section>
 </main>
 
