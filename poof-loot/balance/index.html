@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem('poof-theme')}catch(e){}if(t==='light'||t==='dark')d.setAttribute('data-theme',t);else t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';if(t==='light')d.classList.add('lm')})();</script>
+<script>(function(){var d=document.documentElement,s={};try{s=JSON.parse(localStorage.getItem('poof-view')||'{}')||{}}catch(e){}var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,c=s.curators!==false,m=typeof s.motion==='boolean'?s.motion:!r,v=(s.voice==='text'||s.voice==='both'||s.voice==='sound')?s.voice:(s.sound===false?'text':'both');if(!c)d.classList.add('no-curators');if(c&&v!=='text')d.classList.add('sound-on');if(c&&v==='sound')d.classList.add('words-off');if(c&&m)d.classList.add('motion-on')})();</script>
+<script src="/assets/js/consent.js"></script>
+<link rel="stylesheet" href="/assets/css/consent.css">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WRD3V23L');</script>
+<!-- End Google Tag Manager -->
+<title>Check your Poof Loot balance — Poof Books</title>
+<meta name="description" content="Check the balance and expiry of a Poof Loot gift card.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#18122B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FCE4EE" media="(prefers-color-scheme: light)">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/fonts/fonts.css?v=202611231400">
+<link rel="stylesheet" href="/assets/css/section.css?v=202611151345">
+<link rel="stylesheet" href="/assets/css/loot.css?v=202611282145">
+<script src="/assets/js/view-settings.js?v=202610290945" defer></script>
+<script src="/assets/js/cart.js?v=202611270200" defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=poofTurnstileReady" async defer></script>
+<link rel="stylesheet" href="/assets/css/theme.css?v=202611270130">
+<script src="/assets/js/theme.js?v=202611042030" defer></script>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRD3V23L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<header class="site-header">
+  <div class="wrap">
+    <a class="home" href="/" aria-label="Poof Books: back to the Cabin"><img src="/assets/logo.svg" width="662" height="170" alt="Poof Books"></a>
+    <nav class="sections" aria-label="Sections">
+        <a href="/faghetti-westerns/">Faghetti Westerns</a>
+        <a href="/rollicking-romances/">Rollicking Romances</a>
+        <a href="/conniving-crimes/">Conniving Crimes</a>
+        <a href="/exquisite-erotica/">Exquisite Erotica</a>
+        <a href="/fabulous-fables/">Fabulous Fables</a>
+        <a href="/luminous-literature/">Luminous Literature</a>
+        <a href="/supernova-adventures/">Supernova Adventures</a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <a href="/no-nonsense-non-fiction/">No Nonsense <span style="white-space:nowrap">Non-Fiction</span></a>
+    </nav>
+    <button class="gear" type="button" aria-label="View settings" title="View settings" aria-expanded="false" aria-controls="view-settings"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+  </div>
+  <section class="view-settings" id="view-settings" aria-label="View settings" hidden>
+    <h2>How would you like to browse?</h2>
+    <p class="hint">We'll remember this on your device.</p>
+    <div class="vs-row"><div class="lab"><b>Curators</b><span>Meet the characters who look after each shelf. Off: just the books.</span></div><button class="switch" type="button" role="switch" aria-checked="true" aria-label="Curators" data-key="curators"><span class="knob"></span></button></div>
+    <div class="vs-row vs-pace vs-voice"><div class="lab"><b>Curators&#x2019; voices</b><span>Read their words, hear them, or both. Nothing plays until you press play.</span></div><div class="pace" role="group" aria-label="Curators&#x2019; voices"><button type="button" data-voice="text" aria-pressed="false">Text only</button><button type="button" data-voice="both" aria-pressed="true">Sound &amp; text</button><button type="button" data-voice="sound" aria-pressed="false">Sound only</button></div></div>
+    <div class="vs-row"><div class="lab"><b>Motion</b><span>Gentle animation on the curators. Follows your device setting.</span></div><button class="switch" type="button" role="switch" aria-checked="true" aria-label="Motion" data-key="motion"><span class="knob"></span></button></div>
+    <div class="vs-row vs-pace"><div class="lab"><b>Reading pace</b><span>Used to work out how long a book will take you.</span></div><div class="pace" role="group" aria-label="Reading pace"><button type="button" data-pace="slow" aria-pressed="false">Slow</button><button type="button" data-pace="average" aria-pressed="true">Average</button><button type="button" data-pace="fast" aria-pressed="false">Fast</button></div></div>
+    <p class="vs-note">Voices and motion only apply to the curators, so they're paused while the curators are off.</p>
+  </section>
+</header>
+<main class="loot" id="main">
+  <p class="eyebrow">Poof Books Gift Card</p>
+  <h1>Check your Poof Loot</h1>
+  <p class="lead">Enter the code from your card email to see what's left on it and when it expires.</p>
+
+  <form class="loot-form" id="bal-form" novalidate style="margin-top:28px">
+    <label class="field" for="bal-code">Your code
+      <input id="bal-code" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="24" placeholder="XXXX-XXXX-XXXX-XXXX" required>
+      <span class="hint">With or without the dashes.</span></label>
+    <div id="bal-ts"></div><style>#bal-ts:empty{display:none}</style>
+    <p class="loot-status" data-status role="status" aria-live="polite"></p>
+    <button class="btn btn-primary" type="submit" data-check style="border:0;font:inherit;font-size:16px;font-weight:600;cursor:pointer;justify-content:center">Check balance</button>
+  </form>
+
+  <section data-result hidden style="margin-top:36px;max-width:40rem">
+    <div class="loot-card" role="img" aria-label="Poof Loot gift card" style="max-width:340px;margin-bottom:22px">
+      <div class="lc-pill"><img class="lc-icon" src="/assets/giftcard/pb-icon.webp" alt="" width="110" height="110"><div class="lc-words"><span class="lc-name">Poof Loot</span><span class="lc-value" data-r-value>Book Bucks</span><span class="lc-url">poofbooks.com</span></div></div>
+    </div>
+    <div data-r-body></div>
+  </section>
+
+  <section class="loot-fine">
+    <ul>
+      <li>For orders delivered within Australia, spent in Australian dollars at poofbooks.com. No fees, ever.</li>
+      <li>Treat the code like cash. Lost it? Write to <a href="mailto:LilOtter@poofbooks.com">LilOtter@poofbooks.com</a>.</li>
+      <li>Want some? <a href="/poof-loot/">Poof Loot gift cards</a>. The full terms are in our <a href="/terms/#gift-cards">Terms of Sale</a>.</li>
+    </ul>
+  </section>
+</main>
+<script>
+/* Poof Loot balance page (28 Nov 2026). The code is held only in this page's memory for the one request:
+   never stored, never in the address bar, never sent to analytics. The box is cleared after each check.
+   Turnstile tokens are single-use: the widget resets after every check. */
+(function () {
+  'use strict';
+  var SITEKEY = '0x4AAAAAAGT_ZwXdP5gYx3AD', html = document.documentElement;
+  var ts = { id: null, token: '', waiters: [] };
+  function tsRender() {
+    if (ts.id !== null || !window.turnstile || !document.getElementById('bal-ts')) return;
+    ts.id = window.turnstile.render('#bal-ts', { sitekey: SITEKEY, action: 'giftcard', appearance: 'interaction-only',
+      theme: html.classList.contains('lm') ? 'light' : 'dark',
+      callback: function (t) { ts.token = t; ts.waiters.splice(0).forEach(function (f) { f(t); }); },
+      'expired-callback': function () { ts.token = ''; }, 'error-callback': function () { ts.token = ''; } });
+  }
+  window.poofTurnstileReady = tsRender;
+  function tsToken() {
+    tsRender();
+    if (ts.token) return Promise.resolve(ts.token);
+    return new Promise(function (res) { ts.waiters.push(res); setTimeout(function () { var k = ts.waiters.indexOf(res); if (k >= 0) { ts.waiters.splice(k, 1); res(''); } }, 15000); });
+  }
+  function tsUsed() { ts.token = ''; try { if (ts.id !== null) window.turnstile.reset(ts.id); } catch (e) {} }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function bucks(c) { var d = c / 100; return '$' + (d % 1 ? d.toFixed(2) : d); }
+  function aud(c) { return 'A$' + (c / 100).toFixed(2); }
+  function niceDay(d) { try { return new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(String(d).slice(0, 10) + 'T00:00:00Z')); } catch (e) { return d; } }
+  var STATUS = { active: 'Ready to spend', spent: 'All spent', expired: 'Expired', void: 'Cancelled' };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var form = document.getElementById('bal-form'), box = document.getElementById('bal-code');
+    var status = form.querySelector('[data-status]'), btn = form.querySelector('[data-check]');
+    var result = document.querySelector('[data-result]');
+    function say(m, k) { status.textContent = m || ''; status.className = 'loot-status' + (k ? ' ' + k : ''); }
+    tsRender();
+    form.addEventListener('submit', async function (ev) {
+      ev.preventDefault();
+      var code = box.value.toUpperCase().replace(/[^0-9A-Z]/g, '');
+      if (code.length !== 16) { box.classList.add('is-error'); say('That code should be 16 letters and numbers.', 'err'); return; }
+      box.classList.remove('is-error'); btn.disabled = true; say('Checking…', 'ok'); result.hidden = true;
+      var human = await tsToken(), res, d;
+      try {
+        res = await fetch('/v1/giftcard/balance', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: code, turnstile: human || undefined }) });
+        d = await res.json().catch(function () { return {}; });
+      } catch (e) { d = null; }
+      code = ''; box.value = ''; tsUsed(); btn.disabled = false;
+      if (!d) { say('We couldn\'t check just now. Please try again in a moment.', 'err'); return; }
+      if (res.status === 429) { say('Too many tries. Please wait an hour and try again.', 'err'); return; }
+      if (!res.ok || !d.ok) { say(d.message || d.error || 'That code didn\'t work.', 'err'); return; }
+      say('', '');
+      result.querySelector('[data-r-value]').textContent = bucks(d.balanceCents) + ' Book Bucks';
+      var uses = (d.uses || []).map(function (u) {
+        return '<li>' + esc(niceDay(u.date)) + ': ' + (u.amountCents < 0 ? '−' : '+') + esc(aud(Math.abs(u.amountCents))) + '</li>';
+      }).join('');
+      result.querySelector('[data-r-body]').innerHTML =
+        '<p class="lead"><b>' + esc(bucks(d.balanceCents)) + ' Book Bucks</b> left (' + esc(aud(d.balanceCents)) + ') on Poof Loot ••••' + esc(d.last4) + '.</p>' +
+        '<p>' + esc(STATUS[d.status] || d.status) + '. ' + (d.status === 'expired' ? 'Expired ' : 'Expires ') + esc(d.expires) + '. It started with ' + esc(bucks(d.initialCents)) + ' Book Bucks.</p>' +
+        (uses ? '<p class="loot-note">Last few uses:</p><ul class="loot-note" style="padding-left:18px">' + uses + '</ul>' : '') +
+        (d.status === 'active' && d.balanceCents > 0 ? '<p><a class="btn btn-primary" href="/">Go shopping</a></p>' : '');
+      result.hidden = false;
+    });
+  });
+})();
+</script>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Poof Books · M2M books. Nothing else.</span>
+    <div class="flags"><link rel="stylesheet" href="/assets/css/flags.css?v=202611231800"><span class="flag"><button type="button" aria-label="Australian Aboriginal Flag" aria-expanded="false" aria-describedby="flag-aboriginal"><img src="/assets/badges/aboriginal.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-aboriginal" role="tooltip" hidden><strong>Australian Aboriginal Flag</strong>Poof Books acknowledges the Traditional Custodians of the lands across Australia on which we live, work and read. We pay our respects to their Elders past and present, and to all Aboriginal and Torres Strait Islander peoples, whose stories are the oldest on this continent.</span></span><span class="flag"><button type="button" aria-label="Rainbow flag" aria-expanded="false" aria-describedby="flag-rainbow"><img src="/assets/badges/rainbow.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-rainbow" role="tooltip" hidden><strong>Rainbow flag</strong>Poof Books flies the rainbow flag because the fight against discrimination towards LGBTQI+ people is not over. Our rights were hard won, and we must stay ever vigilant to keep them.</span></span><span class="flag"><button type="button" aria-label="Gay men’s flag" aria-expanded="false" aria-describedby="flag-gay-men"><img src="/assets/badges/gay-men.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-gay-men" role="tooltip" hidden><strong>Gay men’s flag</strong>Poof Books recognises that gay men need safe spaces of our own, places to meet, talk and belong. We hope this shop is one of them.</span></span><span class="flag"><button type="button" aria-label="Bear flag" aria-expanded="false" aria-describedby="flag-bear"><img src="/assets/badges/bear.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-bear" role="tooltip" hidden><strong>Bear flag</strong>Gay men come in every shape, size, age and flavour. Poof Books celebrates all of us, and stands against discrimination towards anyone within our community.</span></span><span class="flag"><button type="button" aria-label="Leather pride flag" aria-expanded="false" aria-describedby="flag-leather"><img src="/assets/badges/leather.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-leather" role="tooltip" hidden><strong>Leather pride flag</strong>Poof Books celebrates consensual sexual expression in our community, and rejects the unjust censorship of our stories and our voices.</span></span><span class="flag flag-ai"><button type="button" aria-label="The A.I. Flag" aria-expanded="false" aria-describedby="flag-ai"><img src="/assets/badges/ai-flag.svg" alt="" width="34" height="20"></button><span class="flag-tip" id="flag-ai" role="tooltip" hidden><strong>The A.I. Flag</strong>Our curators are illustrated and voiced with AI tools. The books, and the choices, are human.</span></span><script src="/assets/js/flags.js?v=202611231800" defer></script></div><!--/flags-->
+    <div class="foot-right"><nav aria-label="Legal"><a href="/about/">About this site</a><a href="/the-loft/">Authors</a><a href="/support/">Help</a><a href="/terms/">Terms</a><a href="/privacy/">Privacy</a><a href="/privacy/#cookies" data-cookie-settings>Cookie&nbsp;settings</a></nav><span class="social"><a href="https://www.facebook.com/bigdaddysbookshelf" target="_blank" rel="noopener" aria-label="Poof Books on Facebook" title="Facebook"><svg viewBox="0 0 24 24" height="20" width="20" aria-hidden="true" fill="currentColor"><path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4v3.3h2.8V22h3.3z"/></svg></a><a href="https://www.instagram.com/poof.books/" target="_blank" rel="noopener" aria-label="Poof Books on Instagram" title="Instagram"><svg viewBox="0 0 1000 1000" height="20" width="20" aria-hidden="true" fill="currentColor"><path d="M295.42,6c-53.2,2.51-89.53,11-121.29,23.48-32.87,12.81-60.73,30-88.45,57.82S40.89,143,28.17,175.92c-12.31,31.83-20.65,68.19-23,121.42S2.3,367.68,2.56,503.46,3.42,656.26,6,709.6c2.54,53.19,11,89.51,23.48,121.28,12.83,32.87,30,60.72,57.83,88.45S143,964.09,176,976.83c31.8,12.29,68.17,20.67,121.39,23s70.35,2.87,206.09,2.61,152.83-.86,206.16-3.39S799.1,988,830.88,975.58c32.87-12.86,60.74-30,88.45-57.84S964.1,862,976.81,829.06c12.32-31.8,20.69-68.17,23-121.35,2.33-53.37,2.88-70.41,2.62-206.17s-.87-152.78-3.4-206.1-11-89.53-23.47-121.32c-12.85-32.87-30-60.7-57.82-88.45S862,40.87,829.07,28.19c-31.82-12.31-68.17-20.7-121.39-23S637.33,2.3,501.54,2.56,348.75,3.4,295.42,6m5.84,903.88c-48.75-2.12-75.22-10.22-92.86-17-23.36-9-40-19.88-57.58-37.29s-28.38-34.11-37.5-57.42c-6.85-17.64-15.1-44.08-17.38-92.83-2.48-52.69-3-68.51-3.29-202s.22-149.29,2.53-202c2.08-48.71,10.23-75.21,17-92.84,9-23.39,19.84-40,37.29-57.57s34.1-28.39,57.43-37.51c17.62-6.88,44.06-15.06,92.79-17.38,52.73-2.5,68.53-3,202-3.29s149.31.21,202.06,2.53c48.71,2.12,75.22,10.19,92.83,17,23.37,9,40,19.81,57.57,37.29s28.4,34.07,37.52,57.45c6.89,17.57,15.07,44,17.37,92.76,2.51,52.73,3.08,68.54,3.32,202s-.23,149.31-2.54,202c-2.13,48.75-10.21,75.23-17,92.89-9,23.35-19.85,40-37.31,57.56s-34.09,28.38-57.43,37.5c-17.6,6.87-44.07,15.07-92.76,17.39-52.73,2.48-68.53,3-202.05,3.29s-149.27-.25-202-2.53m407.6-674.61a60,60,0,1,0,59.88-60.1,60,60,0,0,0-59.88,60.1M245.77,503c.28,141.8,115.44,256.49,257.21,256.22S759.52,643.8,759.25,502,643.79,245.48,502,245.76,245.5,361.22,245.77,503m90.06-.18a166.67,166.67,0,1,1,167,166.34,166.65,166.65,0,0,1-167-166.34" transform="translate(-2.5 -2.5)"/></svg></a><a href="https://www.youtube.com/@PoofBooks" target="_blank" rel="noopener" aria-label="Poof Books on YouTube" title="YouTube"><svg viewBox="102 119 397 278" height="20" width="29" style="height:20px" aria-hidden="true" fill="currentColor"><path fill-rule="nonzero" d="M 261.2 317.3 L 261.2 198.4 L 363.9 257.7 Z M 490.3 162.6 C 485.7 145.5 472.7 132.2 455.3 127.6 C 424.6 119.2 300.5 119.2 300.5 119.2 C 300.5 119.2 176.7 119.2 146.1 127.6 C 129 132.2 115.7 145.5 110.8 162.6 C 102.7 193.2 102.7 257.7 102.7 257.7 C 102.7 257.7 102.7 322.2 110.8 353.2 C 115.7 370 129 383.6 146.1 388.2 C 176.7 396.6 300.5 396.6 300.5 396.6 C 300.5 396.6 424.6 396.6 455.3 388.2 C 472.7 383.6 485.7 370 490.3 353.2 C 498.7 322.2 498.7 257.7 498.7 257.7 C 498.7 257.7 498.7 193.2 490.3 162.6"/></svg></a><a href="https://www.tiktok.com/@poofbooks" target="_blank" rel="noopener" aria-label="Poof Books on TikTok" title="TikTok"><svg viewBox="0 0 24 24" height="20" width="20" style="height:20px" aria-hidden="true" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a><a href="https://bsky.app/profile/poofbooks.bsky.social" target="_blank" rel="noopener" aria-label="Poof Books on Bluesky" title="Bluesky"><svg viewBox="0 0 24 24" height="20" width="20" style="height:20px" aria-hidden="true" fill="currentColor"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/></svg></a></span></div>
+  </div>
+</footer>
+</body>
+</html>
