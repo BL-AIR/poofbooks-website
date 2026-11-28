@@ -90,7 +90,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   function nice(d) { try { return new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(d + 'T00:00:00Z')); } catch (e) { return d; } }
   function today() { try { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Melbourne', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()); } catch (e) { return ''; } }
   function show(h) { body.innerHTML = h; }
-  if (!sid) { show('<p class="lead">We couldn\'t find your gift card order on this page. Your receipt email has the details. Questions? <a href="mailto:LilOtter@poofbooks.com">LilOtter@poofbooks.com</a></p>'); return; }
+  if (!sid) { show('<p class="lead">We couldn\'t find your gift card order on this page. Your receipt email has the details. Questions? <a href="mailto:Voula@poofbooks.com">Voula@poofbooks.com</a></p>'); return; }
   var tries = 0;
   function ask() {
     fetch('/v1/giftcard/order?session_id=' + encodeURIComponent(sid)).then(function (r) { return r.json().then(function (d) { return { s: r.status, d: d }; }); }).then(function (x) {
