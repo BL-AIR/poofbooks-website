@@ -222,7 +222,7 @@
 
   function show(which, note) {
     $('[data-loot-loading]').hidden = true;
-    $('[data-loot-open]').hidden = which !== 'open';
+    $all('[data-loot-open]').forEach(function (el) { el.hidden = which !== 'open'; });
     $('[data-loot-closed]').hidden = which === 'open';
     if (which !== 'open') $('[data-closed-text]').textContent = note;
     if (which === 'open') setup();

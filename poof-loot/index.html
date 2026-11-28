@@ -24,12 +24,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/fonts/fonts.css?v=202611231400">
 <link rel="stylesheet" href="/assets/css/section.css?v=202611151345">
-<link rel="stylesheet" href="/assets/css/loot.css?v=202611282125">
+<link rel="stylesheet" href="/assets/css/loot.css?v=202611282135">
 <script src="/assets/js/view-settings.js?v=202610290945" defer></script>
 <script src="/assets/js/cart.js?v=202611270200" defer></script>
 <script src="https://js.stripe.com/endive/stripe.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=poofTurnstileReady" async defer></script>
-<script src="/assets/js/loot.js?v=202611282115" defer></script>
+<script src="/assets/js/loot.js?v=202611282135" defer></script>
 <link rel="stylesheet" href="/assets/css/theme.css?v=202611270130">
 <script src="/assets/js/theme.js?v=202611042030" defer></script>
 </head>
@@ -62,10 +62,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </section>
 </header>
 <main class="loot" id="main">
-  <p class="eyebrow">Poof Books Gift Card</p>
-  <h1>Poof Loot</h1>
-
-  <p class="loot-note" data-loot-loading>Just a moment…</p>
+  <div class="loot-top">
+    <div class="loot-top-text">
+      <p class="eyebrow">Poof Books Gift Card</p>
+      <h1>Poof Loot</h1>
+      <p class="loot-note" data-loot-loading>Just a moment…</p>
+      <div data-loot-open hidden>
+        <p class="lead">Gift cards for the books on all shelves. He picks the books; you get the credit for the thought.</p>
+        <p class="loot-note">For orders delivered within Australia. Bought with an Australian card. Spent in Australian dollars.</p>
+        <div class="loot-speech c-on" role="note" aria-label="Voula Ptuous says">
+          <p class="who">Voula Ptuous</p>
+          <p>Darling! Voula here, Miss Greece 1987, and I know a thing or two about presents. Socks? Tragic. Aftershave? Please. Give him Poof Loot and let him choose his own books from every shelf.</p>
+          <p>Pick a card, tell me who it's for and when, and I'll make sure it lands on the day. Opa!</p>
+        </div>
+      </div>
+    </div>
+    <div class="loot-voula-fig c-on" data-loot-open hidden><img src="/assets/curators/cutouts/Voula.webp" width="420" height="707" alt="Voula Ptuous, in her Miss Greece 1987 sash"></div>
+  </div>
 
   <section class="loot-closed" data-loot-closed hidden>
     <div class="loot-card" role="img" aria-label="Poof Loot gift card: $50 Book Bucks">
@@ -76,21 +89,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </section>
 
   <div data-loot-open hidden>
-    <div class="loot-hero">
-      <div>
-        <p class="lead">Gift cards for the books on all shelves. He picks the books; you get the credit for the thought.</p>
-        <p class="loot-note">For orders delivered within Australia. Bought with an Australian card. Spent in Australian dollars.</p>
-      </div>
-      <div class="loot-voula c-on">
-        <div class="loot-speech" role="note" aria-label="Voula Ptuous says">
-          <p class="who">Voula Ptuous</p>
-          <p>Darling! Voula here, Miss Greece 1987, and I know a thing or two about presents. Socks? Tragic. Aftershave? Please. Give him Poof Loot and let him choose his own books from every shelf.</p>
-          <p>Pick a card, tell me who it's for and when, and I'll make sure it lands on the day. Opa!</p>
-        </div>
-        <img src="/assets/curators/cutouts/Voula.webp" width="420" height="707" alt="Voula Ptuous, in her Miss Greece 1987 sash">
-      </div>
-    </div>
-
     <form id="loot-form" novalidate>
       <h2 class="loot-step">1. Choose a card</h2>
       <fieldset class="loot-cards">
