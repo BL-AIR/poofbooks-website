@@ -114,9 +114,29 @@
   function shipOption() { return ship.options.filter(function (x) { return x.id === ship.choice; })[0] || ship.options[0] || null; }
 
   function aud(n) { return n.toFixed(2); }
-  // Always Australian dollars here (no data-aud, so the header's currency guide leaves it alone): the order box shows what
-  // we charge; Stripe offers the customer's own currency at payment.
-  function money(n) { var s = document.createElement('span'); s.className = 'money'; s.textContent = 'A$' + aud(n); return s; }
+  // What we charge (no data-aud, so the header's currency guide leaves it alone). Since 28 Nov 2026 the payments Worker prices an
+  // order in the delivery country's currency (its regional prices); until it has answered, and for Australian-dollar markets,
+  // this is A$. chg = the Worker's charge block when the order is in another currency.
+  var chg = null;
+  function money(n) { var s = document.createElement('span'); s.className = 'money'; s.textContent = (chg ? chg.symbol : 'A$') + aud(n); return s; }
+  function chgDelivery(id) { var o = chg && chg.options.filter(function (x) { return x.id === id; })[0]; return o ? o.cents : null; }
+  var SUM_NOTE = null;
+  function applyCharge() {
+    chg = ship.charge && ship.charge.currency && ship.charge.currency !== 'AUD' ? ship.charge : null;
+    var byIsbn = {};
+    if (chg) chg.lines.forEach(function (l) { byIsbn[l.isbn] = l.totalCents; });
+    currentCart.forEach(function (l) {
+      var el = document.querySelector('.line[data-isbn="' + l.isbn + '"] .line-price'); if (!el) return;
+      var m = money(chg && byIsbn[l.isbn] != null ? byIsbn[l.isbn] / 100 : l.price * l.qty); m.classList.add('line-price');
+      el.replaceWith(m);
+    });
+    var bt = $('[data-books-total]'); if (bt) bt.replaceChildren(money(chg ? chg.booksCents / 100 : cartTotal));
+    var note = $('.sum-note');
+    if (note) {
+      if (SUM_NOTE == null) SUM_NOTE = note.textContent;
+      note.textContent = chg ? 'Prices in ' + chg.currency + ' for delivery to this country, and charged in ' + chg.currency + '. No GST is charged.' : SUM_NOTE;
+    }
+  }
 
   /* ---------- Lil Otter's voice ---------- */
   function stopVoice() {
@@ -183,7 +203,7 @@
     var total = 0, adult = false;
     cart.forEach(function (l) {
       total += l.price * l.qty; if (l.adult) adult = true;
-      var li = document.createElement('li'); li.className = 'line';
+      var li = document.createElement('li'); li.className = 'line'; li.dataset.isbn = l.isbn || '';
       var img = document.createElement('img'); img.src = l.book.cover; img.width = 800; img.height = 1200; img.alt = '';
       var t = document.createElement('div'); t.className = 'line-text';
       var b = document.createElement('b'); b.textContent = l.book.title;
@@ -212,9 +232,9 @@
       }
       li.append(img, t, p); ul.appendChild(li);
     });
-    $('[data-books-total]').replaceChildren(money(total));
     cartTotal = total;
     currentCart = cart;
+    ship.charge = null; applyCharge();     // A$ until the Worker prices this cart for the delivery country
     showTotals();
     $('[data-adult]').hidden = !adult;
     return cart.some(function (l) { return l.stock === 'back'; });
@@ -378,6 +398,12 @@
       dr.hidden = !promo.discountCents;
       if (promo.discountCents) { var dm = money(disc); dm.textContent = '\u2212' + dm.textContent; $('[data-discount-label]').textContent = promo.label || 'Discount'; $('[data-discount-total]').replaceChildren(dm); }
     }
+    if (chg) {                                  // another currency: the Worker's own figures (no codes outside A$ for now)
+      var mc = c == null ? null : chgDelivery((shipOption() || {}).id);
+      if (d && mc != null) d.replaceChildren(money(mc / 100));
+      $('[data-grand-total]').replaceChildren(money((chg.booksCents + (mc || 0)) / 100));
+      return;
+    }
     var grand = cartTotal - disc + (c || 0) / 100;
     $('[data-grand-total]').replaceChildren(money(grand));
     var pt = $('[data-pay-total]'); if (pt) pt.textContent = aud(grand);
@@ -405,6 +431,7 @@
   }
   function renderShip() {
     renderShipWarn();
+    applyCharge();
     var box = $('.ship'); if (!box) return;
     box.innerHTML = '';
     if (ship.needPostcode || ship.error || !ship.options.length) {
@@ -420,7 +447,8 @@
       b.textContent = o.label;
       sm.textContent = o.id === 'express' ? 'Tracked, faster.' : o.cents === 0 ? 'Sent straight from our supplier.' : 'Tracked. Priced by weight and size.';
       t.append(b, sm);
-      lab.append(r, t, money(o.cents / 100)); box.appendChild(lab);
+      var mo = chgDelivery(o.id);
+      lab.append(r, t, money((chg && mo != null ? mo : o.cents) / 100)); box.appendChild(lab);
     });
     showTotals();
   }
@@ -436,8 +464,8 @@
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (x) {
         if (key !== ship.key) return;                        // a newer address has been typed since
-        if (!x.ok || !x.j.ok) { ship.options = []; ship.needPostcode = false; ship.warning = ''; ship.error = (x.j && x.j.error) || 'We couldn\'t work out delivery just now.'; }
-        else { ship.options = x.j.options || []; ship.needPostcode = !!x.j.needPostcode; ship.warning = x.j.warning || ''; }
+        if (!x.ok || !x.j.ok) { ship.options = []; ship.needPostcode = false; ship.warning = ''; ship.charge = null; ship.error = (x.j && x.j.error) || 'We couldn\'t work out delivery just now.'; }
+        else { ship.options = x.j.options || []; ship.needPostcode = !!x.j.needPostcode; ship.warning = x.j.warning || ''; ship.charge = x.j.charge || null; }
       }, function () { if (key === ship.key) { ship.options = []; ship.error = 'We couldn\'t reach our delivery calculator. Check your connection.'; } })
       .then(function () { if (key === ship.key) { ship.pending = null; renderShip(); } });
     ship.pending = p;

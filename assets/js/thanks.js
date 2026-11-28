@@ -7,7 +7,9 @@
   'use strict';
   var html = document.documentElement, audio = null;
   function $(s) { return document.querySelector(s); }
-  function money(n) { var s = document.createElement('span'); s.className = 'money'; s.textContent = 'A$' + n.toFixed(2); return s; }
+  // An order charged in another currency (since 28 Nov 2026) shows that currency throughout; otherwise A$.
+  var SYM = { AUD: 'A$', NZD: 'NZ$', USD: 'US$', CAD: 'CA$', GBP: '£', EUR: '€' }, CUR = 'AUD';
+  function money(n) { var s = document.createElement('span'); s.className = 'money'; s.textContent = (SYM[CUR] || CUR + ' ') + n.toFixed(2); return s; }
 
   var SAMPLE = {
     ref: 'TEST-SAMPLE', test: true, email: 'boss@example.com', name: 'Sample Reader',
@@ -55,6 +57,8 @@
     if (o.email) document.querySelectorAll('[data-email]').forEach(function (el) { el.textContent = o.email; });
     $('[data-ref]').textContent = o.ref;
     var ul = $('[data-lines]');
+    var other = !!(o.chargeCurrency && o.chargeCurrency !== 'AUD');
+    CUR = other ? o.chargeCurrency : 'AUD';
     (o.items || []).forEach(function (l) {
       var li = document.createElement('li'); li.className = 'line';
       var img = document.createElement('img'); img.src = l.cover; img.width = 800; img.height = 1200; img.alt = '';
@@ -63,15 +67,17 @@
       var a = document.createElement('span'); a.textContent = l.author;
       var f = document.createElement('span'); f.textContent = l.format + ' · Qty ' + l.qty;
       t.append(b, a, f);
-      var p = money(l.price * l.qty); p.classList.add('line-price');
+      var p = money((other && l.chargePrice != null ? l.chargePrice : l.price) * l.qty); p.classList.add('line-price');
       li.append(img, t, p); ul.appendChild(li);
     });
-    $('[data-books-total]').replaceChildren(money(o.booksTotal || 0));
+    $('[data-books-total]').replaceChildren(money((other ? o.chargeBooks : o.booksTotal) || 0));
     var d = $('[data-delivery]');
-    if (typeof o.delivery === 'number') d.replaceChildren(money(o.delivery));
+    if (other && typeof o.chargeDelivery === 'number') d.replaceChildren(money(o.chargeDelivery));
+    else if (typeof o.delivery === 'number') d.replaceChildren(money(o.delivery));
     else d.innerHTML = '<span class="gap-inline">rates to come</span>';
     var tot = $('[data-total]');
-    if (o.charged && o.charged.currency && o.charged.currency !== 'AUD' && o.charged.text) {
+    if (other && o.charged && o.charged.text) tot.replaceChildren(document.createTextNode(o.charged.text));
+    else if (o.charged && o.charged.currency && o.charged.currency !== 'AUD' && o.charged.text) {
       // Paid in his own currency: that is the headline; our Australian-dollar total sits beside it.
       var small = document.createElement('span'); small.className = 'total-aud'; small.textContent = ' (A$' + (o.total || 0).toFixed(2) + ')';
       tot.replaceChildren(document.createTextNode(o.charged.text), small);
