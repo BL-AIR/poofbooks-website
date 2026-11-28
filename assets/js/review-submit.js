@@ -35,7 +35,7 @@
 
   if (!token) return closed('This page needs the private link from your commission email. If you can’t find it, write to BigDaddy@poofbooks.com.');
 
-  fetch(API + '/v1/commission', { headers: { 'X-Review-Token': token } })
+  fetch(API + '/commission', { headers: { 'X-Review-Token': token } })
     .then(function (r) { return r.json(); })
     .then(function (d) {
       if (!d.ok) return closed(d.message || 'This link isn’t working. Please write to BigDaddy@poofbooks.com.');
@@ -81,7 +81,7 @@
     var need = !v.format ? 'format' : ['about', 'for_whom', 'liked'].filter(function (k) { return !v[k].trim(); })[0];
     if (need) return fail(need, need === 'format' ? 'Please say how you read it.' : 'Please fill in “' + form.querySelector('label[for=' + need + '] b').textContent + '”.');
     err.hidden = true; send.disabled = true; send.textContent = 'Sending…';
-    fetch(API + '/v1/review', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Review-Token': token }, body: JSON.stringify(v) })
+    fetch(API + '/review', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Review-Token': token }, body: JSON.stringify(v) })
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (!d.ok) { send.disabled = false; send.textContent = 'Send my review'; return fail(d.field, d.message); }
