@@ -88,7 +88,9 @@
       ad.appendChild(document.createTextNode(x));
     });
     if (!ad.textContent) ad.textContent = 'From your wallet';
-    $('[data-paid-with]').textContent = o.paidWith || 'Card';
+    // One payment per line: "Poof Loot ••••5G5Q (A$50.00) + Visa ending 4242" reads better split (28 Nov 2026).
+    var pw = $('[data-paid-with]'); pw.textContent = '';
+    String(o.paidWith || 'Card').split(' + ').forEach(function (part, i) { if (i) pw.appendChild(document.createElement('br')); pw.appendChild(document.createTextNode(part)); });
     $('[data-order]').hidden = false;
   }
 
